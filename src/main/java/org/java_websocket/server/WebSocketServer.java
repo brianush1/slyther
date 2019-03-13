@@ -67,6 +67,8 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.Handshakedata;
 import org.java_websocket.handshake.ServerHandshakeBuilder;
 
+import net.gegy1000.slyther.util.Log;
+
 /**
  * <tt>WebSocketServer</tt> is an abstract class that only takes care of the
  * HTTP handshake portion of WebSockets. It's up to a subclass to add
@@ -305,6 +307,8 @@ public abstract class WebSocketServer extends WebSocketAdapter implements Runnab
 			server.register( selector, server.validOps() );
 		} catch ( IOException ex ) {
 			handleFatal( null, ex );
+			Log.fatal("Fatal error opening listen socket", ex);
+			System.exit(1);
 			return;
 		}
 		try {
