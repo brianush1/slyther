@@ -223,16 +223,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			if (Display.wasResized() && doResize) {
 				setupDisplay();
 			}
-			if (Keyboard.next()) {
-				int key = Keyboard.getEventKey();
-				//Log.debug("got key {}", key);
-				if (Keyboard.getEventKeyState()) {
-					if (key == Keyboard.KEY_F11) {
-						toggleFullscreen();
-						setupDisplay();
-					}
-				}
-			}
 			doResize = true;
 
 			long currentTime = System.nanoTime();
@@ -328,6 +318,21 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		} catch (LWJGLException e) {
 			Log.warn("Can't set fullscreen mode");
 		}
+	}
+
+	/** Check and handle if this key is a global client key.
+	 * Currently only F11=Fullscreen toggle is handled
+	 * @param key
+	 * @param character
+	 * @return true if we ate the key
+	 */
+	public boolean handleKeyboard(int key, char character) {
+		if (key == Keyboard.KEY_F11) {
+			toggleFullscreen();
+			setupDisplay();
+			return(true);
+		}
+		return(false);
 	}
 
 	public void connect() {

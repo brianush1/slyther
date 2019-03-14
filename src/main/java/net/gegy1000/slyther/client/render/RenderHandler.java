@@ -108,6 +108,8 @@ public class RenderHandler {
             if (Keyboard.getEventKeyState()) {
                 int key = Keyboard.getEventKey();
                 char character = Keyboard.getEventCharacter();
+                if (client.handleKeyboard(key, character))
+                	continue;
                 for (Gui gui : getGuis()) {
                     gui.keyPressedBase(key, character);
                 }
