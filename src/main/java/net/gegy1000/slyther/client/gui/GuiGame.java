@@ -18,6 +18,7 @@ public class GuiGame extends Gui {
 
     @Override
     public void init() {
+        client.leaderboard.clear();
     }
 
     @Override
@@ -459,7 +460,8 @@ public class GuiGame extends Gui {
             drawString("Rank " + client.rank + "/" + client.snakeCount, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
             drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);
 
-            drawLargeString("Leaderboard:", renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F, 2.0F, 0.5F, 0xFFFFFF);
+            if (!client.leaderboard.isEmpty())
+            	drawLargeString("Leaderboard:", renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F, 2.0F, 0.5F, 0xFFFFFF);
 
             int leaderboardY = (largeFont.getHeight() / 2) + 4;
 
