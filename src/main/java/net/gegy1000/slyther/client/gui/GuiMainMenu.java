@@ -61,7 +61,9 @@ public class GuiMainMenu extends Gui {
             renderHandler.openGui(new GuiSelectServer(this));
             return true;
         }));
+        float quitY=150.0F;
         if (SlytherClient.RECORD_FILE.exists()) {
+        	quitY = 200.0F;
             elements.add(new ButtonElement(this, "Replay Last Game", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + 150.0F, 150.0F, 40.0F, (button) -> {
                 closeGui();
                 client.replay();
@@ -69,6 +71,10 @@ public class GuiMainMenu extends Gui {
                 return true;
             }));
         }
+        elements.add(new ButtonElement(this, "Exit", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + quitY, 150.0F, 40.0F, (button) -> {
+        	System.exit(0);
+            return true;
+        }));
     }
 
     @Override
