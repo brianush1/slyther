@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiGame extends Gui {
-    private int backgroundX;
-    private float zoomVelocity;
-
+    private int		backgroundX;
+    private float	zoomVelocity;
+    private	int		leaderboardAlpha;
+    
     @Override
     public void init() {
         client.leaderboard.clear();
+        leaderboardAlpha = 1;
     }
 
     @Override
@@ -460,25 +462,31 @@ public class GuiGame extends Gui {
             drawString("Rank " + client.rank + "/" + client.snakeCount, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
             drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);
 
-            if (!client.leaderboard.isEmpty())
-            	drawLargeString("Leaderboard:", renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F, 2.0F, 0.5F, 0xFFFFFF);
+            if (!client.leaderboard.isEmpty()) {
+	            if (leaderboardAlpha < 255)
+	            	leaderboardAlpha+=2;
+	            final int titleAlphaTarget = 0x80;
+	            int titleAlpha = leaderboardAlpha*titleAlphaTarget/256;
+            	drawLargeString("Leaderboard:", renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F, 2.0F, 0.5F, 0xFFFFFF | titleAlpha<<24);
 
-            int leaderboardY = (largeFont.getHeight() / 2) + 4;
-
-            List<LeaderboardEntry> leaderboard = new ArrayList<>(client.leaderboard);
-
-            int alpha = 255;
-            int alphaChange = (int) ((leaderboard.size() / 10.0F) * 20);
-
-            for (int i = 1; i <= leaderboard.size(); i++) {
-                LeaderboardEntry leaderboardEntry = leaderboard.get(i - 1);
-                String text = i + ". " + leaderboardEntry;
-                drawString(text, renderResolution.getWidth() - (font.getWidth(text) / 2.0F) - 8.0F, leaderboardY, 0.5F, (leaderboardEntry.player ? Color.WHITE : leaderboardEntry.color).toHex() | (leaderboardEntry.player ? 255 : alpha) << 24);
-
-                leaderboardY += font.getHeight() / 2.0F + 2;
-                alpha -= alphaChange;
+	            int leaderboardY = (largeFont.getHeight() / 2) + 4;
+	
+	            List<LeaderboardEntry> leaderboard = new ArrayList<>(client.leaderboard);
+	            int alpha = 255;
+	            alpha = leaderboardAlpha;
+	            int alphaChange = (int) ((leaderboard.size() / 10.0F) * 20);
+	
+	            for (int i = 1; i <= leaderboard.size(); i++) {
+	                LeaderboardEntry leaderboardEntry = leaderboard.get(i - 1);
+	                String text = i + ". " + leaderboardEntry;
+	                drawString(text, renderResolution.getWidth() - (font.getWidth(text) / 2.0F) - 8.0F, leaderboardY, 0.5F, (leaderboardEntry.player ? Color.WHITE : leaderboardEntry.color).toHex() | (leaderboardEntry.player ? 255 : alpha) << 24);
+	
+	                leaderboardY += font.getHeight() / 2.0F + 2;
+	                alpha -= alphaChange;
+	                if (alpha < 1)
+	                	alpha = 1;
+	            }
             }
-
             float mapX = renderResolution.getWidth() - 100.0F + 40.0F;
             float mapY = renderResolution.getHeight() - 100.0F + 40.0F;
             drawCircle(mapX, mapY, 42.5F, 0x222222);
