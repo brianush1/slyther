@@ -2,6 +2,8 @@ package net.gegy1000.slyther.client.controller;
 
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
+
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
@@ -15,7 +17,8 @@ public class DefaultController implements IController {
     @Override
     public void update(SlytherClient client) {
         ClientSnake player = client.player;
-        accelerating = Mouse.isButtonDown(0) || Mouse.isButtonDown(1);
+        
+        accelerating = Mouse.isButtonDown(0) || Mouse.isButtonDown(1) || Keyboard.isKeyDown(Keyboard.KEY_UP);
         int mouseX = Mouse.getX() - (Display.getWidth() / 2);
         int mouseY = (Display.getHeight() - Mouse.getY()) - (Display.getHeight() / 2);
         if (mouseX != lastMouseX || mouseY != lastMouseY) {
