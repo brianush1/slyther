@@ -1,26 +1,34 @@
 package net.gegy1000.slyther.client.gui;
 
-import net.gegy1000.slyther.client.SlytherClient;
-import net.gegy1000.slyther.client.game.entity.ClientSnake;
-import net.gegy1000.slyther.game.Color;
-import net.gegy1000.slyther.game.LeaderboardEntry;
-import net.gegy1000.slyther.game.entity.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.gegy1000.slyther.client.SlytherClient;
+import net.gegy1000.slyther.client.game.entity.ClientSnake;
+import net.gegy1000.slyther.game.Color;
+import net.gegy1000.slyther.game.LeaderboardEntry;
+import net.gegy1000.slyther.game.entity.Food;
+import net.gegy1000.slyther.game.entity.Prey;
+import net.gegy1000.slyther.game.entity.Sector;
+import net.gegy1000.slyther.game.entity.Snake;
+import net.gegy1000.slyther.game.entity.SnakePoint;
 
 public class GuiGame extends Gui {
     private int		backgroundX;
     private float	zoomVelocity;
     private	int		leaderboardAlpha;
+    private int		playerNameAlpha;
     
     @Override
     public void init() {
         client.leaderboard.clear();
         leaderboardAlpha = 1;
+        playerNameAlpha = 512;
+        
     }
 
     @Override
@@ -358,7 +366,17 @@ public class GuiGame extends Gui {
                         GL11.glPopMatrix();
                     }
                     if (snake.name.length() > 0) {
-                        drawCenteredString(snake.name, originX, originY + (32 * snake.scale), snake.scale / 2.0F, 0xFFFFFF);
+                    	int nameAlpha = 240;
+                    	if (snake == client.player) {
+                    		if (playerNameAlpha >= 1)
+                    			playerNameAlpha--;
+                    		nameAlpha = playerNameAlpha;
+                    		if (nameAlpha > 255)
+                    			nameAlpha = 255;
+                    	}
+                    	if (nameAlpha > 1)
+                    		drawCenteredString(snake.name, originX, originY + (32 * snake.scale), 
+                    				snake.scale / 2.0F, 0xFFFFFF | nameAlpha << 24);
                     }
                     if (snake.antenna) {
                         GL11.glPushMatrix();
@@ -467,7 +485,9 @@ public class GuiGame extends Gui {
 	            	leaderboardAlpha+=2;
 	            final int titleAlphaTarget = 0x80;
 	            int titleAlpha = leaderboardAlpha*titleAlphaTarget/256;
-            	drawLargeString("Leaderboard:", renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F, 2.0F, 0.5F, 0xFFFFFF | titleAlpha<<24);
+            	drawLargeString("Leaderboard:", 
+            			renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F,
+            			2.0F, 0.5F, 0xFFFFFF | titleAlpha<<24);
 
 	            int leaderboardY = (largeFont.getHeight() / 2) + 4;
 	
@@ -479,7 +499,9 @@ public class GuiGame extends Gui {
 	            for (int i = 1; i <= leaderboard.size(); i++) {
 	                LeaderboardEntry leaderboardEntry = leaderboard.get(i - 1);
 	                String text = i + ". " + leaderboardEntry;
-	                drawString(text, renderResolution.getWidth() - (font.getWidth(text) / 2.0F) - 8.0F, leaderboardY, 0.5F, (leaderboardEntry.player ? Color.WHITE : leaderboardEntry.color).toHex() | (leaderboardEntry.player ? 255 : alpha) << 24);
+	                drawString(text, renderResolution.getWidth() - (font.getWidth(text) / 2.0F) - 8.0F,
+	                		leaderboardY, 0.5F, 
+	                		(leaderboardEntry.player ? Color.WHITE : leaderboardEntry.color).toHex() | (leaderboardEntry.player ? 255 : alpha) << 24);
 	
 	                leaderboardY += font.getHeight() / 2.0F + 2;
 	                alpha -= alphaChange;
