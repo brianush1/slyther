@@ -1,5 +1,6 @@
 package net.gegy1000.slyther.client.gui;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class GuiGame extends Gui {
     private float	zoomVelocity;
     private	int		leaderboardAlpha;
     private int		playerNameAlpha;
+    private boolean	showDebug = false;
+    private final DecimalFormat df3 = new DecimalFormat("0.000");
     
     @Override
     public void init() {
@@ -511,9 +514,9 @@ public class GuiGame extends Gui {
             }
             float mapX = renderResolution.getWidth() - 100.0F + 40.0F;
             float mapY = renderResolution.getHeight() - 100.0F + 40.0F;
-            drawCircle(mapX, mapY, 42.5F, 0x222222);
-            drawCircle(mapX, mapY, 40.0F, 0x555555);
-            GL11.glColor4f(0.8F, 0.8F, 0.8F, 1.0F);
+            drawCircle(mapX, mapY, 42.5F, 0x222222, 0.6F);
+            drawCircle(mapX, mapY, 40.0F, 0x555555, 0.6F);
+            GL11.glColor4f(0.8F, 0.8F, 0.8F, 0.5F);
             for (int x = 0; x < 80; x++) {
                 for (int y = 0; y < 80; y++) {
                     if (client.map[x][y]) {
@@ -521,12 +524,22 @@ public class GuiGame extends Gui {
                     }
                 }
             }
-            float locationMarkerX = (renderResolution.getWidth() - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
-            float locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 4.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+            //float locationMarkerX = (renderResolution.getWidth()  - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+            //float locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+            float locationMarkerX = (renderResolution.getWidth()  - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+            float locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
             drawCircle(locationMarkerX, locationMarkerY, 3.0F, 0x202020);
             drawCircle(locationMarkerX, locationMarkerY, 2.0F, 0xFFFFFF);
             if (client.lagging) {
                 drawCenteredLargeString("Warning: Experiencing Network Lag", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 8.0F, 0.5F, 0xFF0000);
+            }
+            if (showDebug) {
+            	int debugY = (int)(font.getHeight() / 2.0F + 2);
+            	String s = "Pos: X=" + df3.format(client.player.posX) + " Y=" + df3.format(client.player.posY);
+            	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+            	debugY += (int)(font.getHeight() / 2.0F + 2);
+            	s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
+            	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
             }
         } else {
             GL11.glPopMatrix();
@@ -543,6 +556,9 @@ public class GuiGame extends Gui {
         if (key == Keyboard.KEY_BACK || key == Keyboard.KEY_ESCAPE) {
             client.close();
             closeGui();
+        }
+        if (key == Keyboard.KEY_F3) {
+        	showDebug = !showDebug;
         }
     }
 
