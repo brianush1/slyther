@@ -16,9 +16,10 @@ public class MessagePlayerDeath extends SlytherServerMessageBase {
 
     @Override
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
-        int type = buffer.readUInt8();
+        //int type = buffer.readUInt8();
         Snake player = client.player;
-        Log.info("Final length: {}", player.getLength());
+        client.finalLength = player.getLength();
+        Log.info("Final length: {}", client.finalLength);
     }
 
     @Override
