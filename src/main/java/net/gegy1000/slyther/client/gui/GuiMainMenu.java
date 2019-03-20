@@ -190,6 +190,12 @@ public class GuiMainMenu extends Gui {
             }
         }
         GL11.glPopMatrix();
+        if (client.finalLength != -1) {
+        	String fl = "Your final length was " + client.finalLength;
+        	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F - 110.0F, 0.45F, 0xFFFFFF);
+        	fl = "Your rank: " + client.rank + " of " + client.snakeCount;
+        	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F -  95.0F, 0.38F, 0xFFFFFF);
+        }
     }
 
     @Override

@@ -116,6 +116,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int rank;
 	public int bestRank;
 	public int snakeCount;
+	public int finalLength = -1;
+	public int finalRank;
+	public int finalSnakeCount;
 
 	public String longestPlayerName;
 	public int longestPlayerScore;
@@ -327,11 +330,16 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	 * @return true if we ate the key
 	 */
 	public boolean handleKeyboard(int key, char character) {
+		Log.debug("Key = {} char = {}", key, character);
 		if (key == Keyboard.KEY_F11) {
 			toggleFullscreen();
 			setupDisplay();
 			return(true);
 		}
+		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
+			return(true);
+		if (key == Keyboard.KEY_LMENU)
+			return(true);
 		return(false);
 	}
 
