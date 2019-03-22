@@ -73,7 +73,7 @@ public abstract class Gui {
         Collections.reverse(elements);
         for (Element element : elements) {
             if (element.mouseClicked(mouseX, mouseY, button)) {
-                break;
+                break;			// XXX shouldn't this be return? Someone ate the click, don't propagate.
             }
         }
         mouseClicked(mouseX, mouseY, button);
@@ -114,6 +114,17 @@ public abstract class Gui {
 
     public void drawCircle(float centerX, float centerY, float radius, int color) {
         GL11.glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(centerX - radius, centerY - radius, 0.0F);
+        radius /= 128.0F;
+        GL11.glScalef(radius, radius, 1.0F);
+        renderHandler.textureManager.bindTexture("/textures/circle.png");
+        drawTexture(0.0F, 0.0F, 0.0F, 0.0F, 256.0F, 256.0F, 256.0F, 256.0F);
+        GL11.glPopMatrix();
+    }
+
+    public void drawCircle(float centerX, float centerY, float radius, int color, float alpha) {
+        GL11.glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, alpha);
         GL11.glPushMatrix();
         GL11.glTranslatef(centerX - radius, centerY - radius, 0.0F);
         radius /= 128.0F;
