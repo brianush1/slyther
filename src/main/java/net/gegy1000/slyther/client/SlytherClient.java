@@ -119,6 +119,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int finalLength = -1;
 	public int finalRank;
 	public int finalSnakeCount;
+    public int killCount = 0;
 
 	public String longestPlayerName;
 	public int longestPlayerScore;
@@ -382,7 +383,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		CST = cst;
 		PROTOCOL_VERSION = protocolVersion;
 		setMSCPS(mscps);
-
+		Log.info("PROTOCOL_VERSION: {}", PROTOCOL_VERSION);
 		if (PROTOCOL_VERSION < 8) {
 			throw new RuntimeException("Unsupported protocol version (" + PROTOCOL_VERSION + ")" + "!");
 		}
