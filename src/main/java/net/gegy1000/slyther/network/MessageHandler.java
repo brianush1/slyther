@@ -1,5 +1,8 @@
 package net.gegy1000.slyther.network;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
 import net.gegy1000.slyther.network.message.SlytherServerMessageBase;
 import net.gegy1000.slyther.network.message.client.MessageAccelerate;
@@ -9,6 +12,7 @@ import net.gegy1000.slyther.network.message.client.MessageSetAngle;
 import net.gegy1000.slyther.network.message.client.MessageSetTurn;
 import net.gegy1000.slyther.network.message.server.MessageAddSector;
 import net.gegy1000.slyther.network.message.server.MessageGotServerVersion;
+import net.gegy1000.slyther.network.message.server.MessageKill;
 import net.gegy1000.slyther.network.message.server.MessageNewFood;
 import net.gegy1000.slyther.network.message.server.MessageNewPrey;
 import net.gegy1000.slyther.network.message.server.MessageNewSnake;
@@ -27,9 +31,6 @@ import net.gegy1000.slyther.network.message.server.MessageUpdateMap;
 import net.gegy1000.slyther.network.message.server.MessageUpdateSnake;
 import net.gegy1000.slyther.network.message.server.MessageUpdateSnakeLength;
 import net.gegy1000.slyther.util.Log;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public enum MessageHandler {
     INSTANCE;
@@ -56,6 +57,7 @@ public enum MessageHandler {
         registerServer(MessagePlayerDeath.class);
         registerServer(MessageUpdateMap.class);
         registerServer(MessageGotServerVersion.class);
+        registerServer(MessageKill.class);
     }
 
     public void registerServer(Class<? extends SlytherServerMessageBase> message) {
