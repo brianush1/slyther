@@ -1,18 +1,22 @@
 package net.gegy1000.slyther.client.gui;
 
-import com.google.gson.GsonBuilder;
-import net.gegy1000.slyther.client.SlytherClient;
-import net.gegy1000.slyther.client.gui.element.ButtonElement;
-import net.gegy1000.slyther.client.gui.element.TextBoxElement;
-import net.gegy1000.slyther.util.Log;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Modifier;
+import java.text.DecimalFormat;
+import java.util.Date;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
+import com.google.gson.GsonBuilder;
+
+import net.gegy1000.slyther.client.SlytherClient;
+import net.gegy1000.slyther.client.gui.element.ButtonElement;
+import net.gegy1000.slyther.client.gui.element.TextBoxElement;
+import net.gegy1000.slyther.util.Log;
 
 public class GuiMainMenu extends Gui {
     private float backgroundX;
@@ -27,7 +31,9 @@ public class GuiMainMenu extends Gui {
     private final double lgsc = 1;
 
     private final int logoWidth = 900, logoHeight = 270;
-
+    private String killAndTimeMessage = null;
+    private final DecimalFormat df2 = new DecimalFormat("00");
+    
     public GuiMainMenu() {
         try (Reader reader = new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/data/logo.json"))) {
             logoLetterParts = new GsonBuilder()
@@ -41,22 +47,28 @@ public class GuiMainMenu extends Gui {
     @Override
     public void init() {
         elements.clear();
-        elements.add(new TextBoxElement(this, client.configuration.nickname, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F - 60.0F, 200.0F, 40.0F, (textbox) -> {
-            client.configuration.nickname = textbox.getText();
-            return null;
-        }));
-        elements.add(new ButtonElement(this, "Play", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F, 150.0F, 40.0F, (button) -> {
-            closeGui();
-            client.connect();
-            renderHandler.openGui(new GuiGame());
-            return true;
-        }));
-        elements.add(new ButtonElement(this, "Change Skin", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + 50.0F, 150.0F, 40.0F, (button) -> {
+        elements.add(new TextBoxElement(this, client.configuration.nickname, renderResolution.getWidth() / 2.0F,
+        		renderResolution.getHeight() / 2.0F - 50.0F, 200.0F, 40.0F, (textbox) -> {
+        			client.configuration.nickname = textbox.getText();
+        			return null;
+        		}));
+        elements.add(new ButtonElement(this, "Play", renderResolution.getWidth() / 2.0F, 
+        		renderResolution.getHeight() / 2.0F, 150.0F, 40.0F, (button) -> {
+        			closeGui();
+        			client.connect();
+        			client.gameStartTime = new Date();
+        			client.killCount = 0;
+        			renderHandler.openGui(new GuiGame());
+        			return true;
+        		}));
+        elements.add(new ButtonElement(this, "Change Skin", renderResolution.getWidth() / 2.0F,
+        		renderResolution.getHeight() / 2.0F + 50.0F, 150.0F, 40.0F, (button) -> {
             closeGui();
             renderHandler.openGui(new GuiSelectSkin(this));
             return true;
         }));
-        elements.add(new ButtonElement(this, "Select Server", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + 100.0F, 150.0F, 40.0F, (button) -> {
+        elements.add(new ButtonElement(this, "Select Server", renderResolution.getWidth() / 2.0F,
+        		renderResolution.getHeight() / 2.0F + 100.0F, 150.0F, 40.0F, (button) -> {
             closeGui();
             renderHandler.openGui(new GuiSelectServer(this));
             return true;
@@ -195,6 +207,24 @@ public class GuiMainMenu extends Gui {
         	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F - 110.0F, 0.45F, 0xFFFFFF);
         	fl = "Your rank: " + client.rank + " of " + client.snakeCount;
         	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F -  95.0F, 0.38F, 0xFFFFFF);
+        	if (killAndTimeMessage == null) {
+        		int secs;
+        		int mins;
+        		int hrs = 0;
+        		secs = client.gameRunTime % 60;
+        		mins = client.gameRunTime / 60;
+        		if (mins > 60) {
+        			hrs = mins / 60;
+        			mins = mins % 60;
+        		}
+        		if (hrs == 0)
+        			fl = "" + mins + ":" + df2.format(secs);
+        		else
+        			fl = "" + hrs + ":" + df2.format(mins) + ":" + df2.format(secs);
+        		killAndTimeMessage = "Kills: " + client.killCount + " Time: " + fl;
+        	}
+        	drawCenteredString(killAndTimeMessage, renderResolution.getWidth() / 2.0F, 
+        			renderResolution.getHeight() / 2.0F -  83.0F, 0.38F, 0xFFFFFF);
         }
     }
 

@@ -3,6 +3,7 @@ package net.gegy1000.slyther.client;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -120,6 +121,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int finalRank;
 	public int finalSnakeCount;
     public int killCount = 0;
+    public Date gameStartTime;
+    public int	gameRunTime;
+    
 
 	public String longestPlayerName;
 	public int longestPlayerScore;

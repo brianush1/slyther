@@ -1,5 +1,7 @@
 package net.gegy1000.slyther.network.message.server;
 
+import java.util.Date;
+
 import net.gegy1000.slyther.client.ClientNetworkManager;
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.game.entity.Snake;
@@ -19,6 +21,7 @@ public class MessagePlayerDeath extends SlytherServerMessageBase {
         //int type = buffer.readUInt8();
         Snake player = client.player;
         client.finalLength = player.getLength();
+        client.gameRunTime = (int)((new Date().getTime() - client.gameStartTime.getTime()) / 1000);
         Log.info("Final length: {}", client.finalLength);
     }
 
