@@ -13,6 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import net.gegy1000.slyther.util.Log;
 import net.gegy1000.slyther.util.OperatingSystem;
 import net.gegy1000.slyther.util.SystemUtils;
 import net.gegy1000.slyther.util.UIUtils;
@@ -26,6 +27,8 @@ public class ClientMain {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         loadNatives();
         SlytherClient client = new SlytherClient();
+        if (args.length >= 1)
+        	Log.showDebug = true;
         client.run();
     }
 

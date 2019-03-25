@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Supplier;
 
 public final class Log {
+	public static boolean showDebug = false;
+
     private Log() {}
 
     private static final Logger LOGGER = LogManager.getLogger("Slyther");
@@ -14,7 +16,8 @@ public final class Log {
     }
 
     public static void debug(String message, Object... params) {
-        LOGGER.debug(message, params);
+    	if (Log.showDebug)
+    		LOGGER.debug(message, params);
     }
 
     public static void error(String message, Object... params) {
