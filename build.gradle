@@ -47,7 +47,7 @@ task uberjar(type: Jar) {
         'Implementation-Version': project.version,
         'Main-Class': project.mainClassName
     }
-    baseName = project.name + '-all'
+    //baseName = project.name + '-all'
     from {
         configurations.compile.collect {
             it.isDirectory() ? it : zipTree(it).matching {
