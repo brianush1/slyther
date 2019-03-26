@@ -387,7 +387,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		CST = cst;
 		PROTOCOL_VERSION = protocolVersion;
 		setMSCPS(mscps);
-		Log.info("PROTOCOL_VERSION: {}", PROTOCOL_VERSION);
+		Log.debug("PROTOCOL_VERSION: {}", PROTOCOL_VERSION);
 		if (PROTOCOL_VERSION < 8) {
 			throw new RuntimeException("Unsupported protocol version (" + PROTOCOL_VERSION + ")" + "!");
 		}

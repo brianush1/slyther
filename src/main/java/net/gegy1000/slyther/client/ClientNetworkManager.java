@@ -141,7 +141,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.info("Connection closed with code {} for reason \"{}\"", code, reason);
+        Log.debug("Connection closed with code {} for reason \"{}\"", code, reason);
         if (code != SHUTDOWN_CODE) {
             client.reset();   
         }
