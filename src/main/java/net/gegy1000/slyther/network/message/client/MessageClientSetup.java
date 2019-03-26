@@ -37,6 +37,7 @@ public class MessageClientSetup extends SlytherClientMessageBase {
 
     @Override
     public void read(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
+    	// apparantly unused?
         int protocolVersion = buffer.readUInt8() + 1;
         Skin skin = Skin.values()[buffer.readUInt8() % Skin.values().length];
         String name = buffer.readASCIIBytes();
@@ -44,6 +45,6 @@ public class MessageClientSetup extends SlytherClientMessageBase {
             name = "";
         }
         client.setup(name, skin, protocolVersion);
-        Log.debug("{} ({}) connected with skin {}", client.name, client.id, client.skin);
+        Log.debug("{} ({}) connected with skin {} protocol {}", client.name, client.id, client.skin, protocolVersion);
     }
 }
