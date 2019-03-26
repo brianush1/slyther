@@ -122,12 +122,13 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int finalSnakeCount;
     public int killCount = 0;
     public Date gameStartTime;
-    public int	gameRunTime;
+    public int	gamePlayTime = 0;
     
 
 	public String longestPlayerName;
 	public int longestPlayerScore;
 	public String longestPlayerMessage;
+	public String fpsMessage = "";
 
 	public ClientConfig configuration;
 
@@ -224,6 +225,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 
 		setupDisplay();
+		if (this.configuration.showFullScreen) {
+			this.toggleFullscreen();
+			setupDisplay();
+		}
 
 		boolean doResize = false;
 
@@ -264,10 +269,12 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 					networkManager.bytesPerSecond = 0;
 					networkManager.packetsPerSecond = 0;
 				}
-				Display.setTitle("Slyther - FPS: " + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond);
+				fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
+				Display.setTitle("Slyther - " + fpsMessage);
 				fps = 0;
 
 				timer += 1000;
+				gamePlayTime++;
 				ups = 0;
 			}
 
@@ -313,17 +320,20 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		ServerHandler.INSTANCE.pingServers();
 	}
 
-	private void toggleFullscreen() {
+	public void toggleFullscreen() {
 		try {
 			if (Display.isFullscreen()) {
 				Display.setFullscreen(false);
 				Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
+				configuration.showFullScreen = false;
 			} else {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
 				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+				configuration.showFullScreen = true;
 			}
-		} catch (LWJGLException e) {
+			saveConfig();
+			} catch (LWJGLException e) {
 			Log.warn("Can't set fullscreen mode");
 		}
 	}

@@ -62,7 +62,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
     }
 
     public static ClientNetworkManager create(SlytherClient client, String ip, boolean shouldRecord) throws Exception {
-        Log.info("Connecting to server {}", ip);
+        Log.debug("Connecting to server {}", ip);
         Map<String, String> headers = new HashMap<>(ServerHandler.INSTANCE.getHeaders());
         headers.put("Host", ip);
         return new ClientNetworkManager(new URI("ws://" + ip + "/slither"), client, ip, headers, shouldRecord, false);
@@ -82,7 +82,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
     @Override
     public void onOpen(ServerHandshake serverHandshake) {
         send(new MessageStartLogin());
-        Log.info("Connected to {}", ip);
+        Log.debug("Connected to {}", ip);
         lastPacketTime = System.currentTimeMillis();
     }
 

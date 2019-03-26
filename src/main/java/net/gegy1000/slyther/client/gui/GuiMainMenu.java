@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Modifier;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 import org.lwjgl.input.Mouse;
@@ -17,6 +16,7 @@ import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.element.TextBoxElement;
 import net.gegy1000.slyther.util.Log;
+import net.gegy1000.slyther.util.TimeUtils;
 
 public class GuiMainMenu extends Gui {
     private float backgroundX;
@@ -32,7 +32,6 @@ public class GuiMainMenu extends Gui {
 
     private final int logoWidth = 900, logoHeight = 270;
     private String killAndTimeMessage = null;
-    private final DecimalFormat df2 = new DecimalFormat("00");
     
     public GuiMainMenu() {
         try (Reader reader = new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/data/logo.json"))) {
@@ -208,20 +207,8 @@ public class GuiMainMenu extends Gui {
         	fl = "Your rank: " + client.rank + " of " + client.snakeCount;
         	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F -  95.0F, 0.38F, 0xFFFFFF);
         	if (killAndTimeMessage == null) {
-        		int secs;
-        		int mins;
-        		int hrs = 0;
-        		secs = client.gameRunTime % 60;
-        		mins = client.gameRunTime / 60;
-        		if (mins > 60) {
-        			hrs = mins / 60;
-        			mins = mins % 60;
-        		}
-        		if (hrs == 0)
-        			fl = "" + mins + ":" + df2.format(secs);
-        		else
-        			fl = "" + hrs + ":" + df2.format(mins) + ":" + df2.format(secs);
-        		killAndTimeMessage = "Kills: " + client.killCount + " Time: " + fl;
+        		fl = TimeUtils.toString(client.gamePlayTime);
+         		killAndTimeMessage = "Kills: " + client.killCount + " Time: " + fl;
         	}
         	drawCenteredString(killAndTimeMessage, renderResolution.getWidth() / 2.0F, 
         			renderResolution.getHeight() / 2.0F -  83.0F, 0.38F, 0xFFFFFF);

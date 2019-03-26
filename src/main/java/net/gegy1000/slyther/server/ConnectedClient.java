@@ -20,7 +20,7 @@ public class ConnectedClient {
     public WebSocket socket;
     public long lastPacketTime = System.currentTimeMillis();
     public SlytherServer server;
-    public float scale = 0.9F;
+    public float scale = 0.8F;
     public int protocolVersion;
     public int rank;
     public float viewDistance;

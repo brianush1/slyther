@@ -2,12 +2,14 @@ package net.gegy1000.slyther.client.gui;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import net.gegy1000.slyther.client.ClientConfig;
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.game.Color;
@@ -17,13 +19,13 @@ import net.gegy1000.slyther.game.entity.Prey;
 import net.gegy1000.slyther.game.entity.Sector;
 import net.gegy1000.slyther.game.entity.Snake;
 import net.gegy1000.slyther.game.entity.SnakePoint;
+import net.gegy1000.slyther.util.TimeUtils;
 
 public class GuiGame extends Gui {
     private int		backgroundX;
     private float	zoomVelocity;
     private	int		leaderboardAlpha;
     private int		playerNameAlpha;
-    private boolean	showDebug = false;
     private final DecimalFormat df3 = new DecimalFormat("0.000");
     
     @Override
@@ -479,9 +481,19 @@ public class GuiGame extends Gui {
 
             GL11.glPopMatrix();
 
-            drawString("Your length: " + player.getLength(), 3.0F, renderResolution.getHeight() - 35.0F, 0.5F, 0xFFFFFF);
-            drawString("Rank " + client.rank + "/" + client.snakeCount, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
-            drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);
+            if (client.configuration.scoreDisplayMode > 0) {
+            	float ofs = 0F;
+            	if (client.configuration.scoreDisplayMode == ClientConfig.ScoreTypeExtended)
+            		ofs = 17F;
+            	drawString("Your length: " + player.getLength(), 3.0F, 
+            			renderResolution.getHeight() - (35.0F + ofs), 0.5F, 0xFFFFFF);
+            	drawString("Rank " + client.rank + "/" + client.snakeCount, 3.0F,
+            			renderResolution.getHeight() - (18.0F + ofs), 0.5F, 0xAAAAAA);
+            	if (client.configuration.scoreDisplayMode == ClientConfig.ScoreTypeExtended) {
+            		String fl = "Kills: " + client.killCount + " Time: " + TimeUtils.toString(client.gamePlayTime);
+            		drawString(fl, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
+            	}
+            }
 
             if (!client.leaderboard.isEmpty()) {
 	            if (leaderboardAlpha < 255)
@@ -533,16 +545,26 @@ public class GuiGame extends Gui {
             if (client.lagging) {
                 drawCenteredLargeString("Warning: Experiencing Network Lag", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 8.0F, 0.5F, 0xFF0000);
             }
-            if (showDebug) {
+            if (client.configuration.showDebug) {
+                drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);	// who cares.
+                int yinc = (int)(font.getHeight() / 2.0F + 2);
+
+            	String s;
             	int debugY = (int)(font.getHeight() / 2.0F + 2);
-            	String s = "Pos: X=" + df3.format(client.player.posX) + " Y=" + df3.format(client.player.posY);
+            	
+            	drawString(client.fpsMessage, 10, debugY, 0.5F, 0xFFFFFF);
+            	debugY += yinc;
+
+            	s = "Pos: X=" + df3.format(client.player.posX) + " Y=" + df3.format(client.player.posY);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-            	debugY += (int)(font.getHeight() / 2.0F + 2);
+            	debugY += yinc;
+            	
             	s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+            	debugY += yinc;
+            	
                 s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
                 	+ " zoomOffset=" + df3.format(client.zoomOffset);
-            	debugY += (int)(font.getHeight() / 2.0F + 2);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
                 
             }
@@ -563,7 +585,12 @@ public class GuiGame extends Gui {
             closeGui();
         }
         if (key == Keyboard.KEY_F3) {
-        	showDebug = !showDebug;
+        	client.configuration.showDebug = !client.configuration.showDebug;
+        }
+        if (key == Keyboard.KEY_F12) {
+        	client.configuration.scoreDisplayMode++;
+        	if (client.configuration.scoreDisplayMode >= ClientConfig.ScoreTypeCOUNT)
+        		client.configuration.scoreDisplayMode = 0;
         }
     }
 

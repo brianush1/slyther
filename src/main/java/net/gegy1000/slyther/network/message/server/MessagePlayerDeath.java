@@ -21,8 +21,9 @@ public class MessagePlayerDeath extends SlytherServerMessageBase {
         //int type = buffer.readUInt8();
         Snake player = client.player;
         client.finalLength = player.getLength();
-        client.gameRunTime = (int)((new Date().getTime() - client.gameStartTime.getTime()) / 1000);
-        Log.info("Final length: {}", client.finalLength);
+        //client.gameRunTime = (int)((new Date().getTime() - client.gameStartTime.getTime()) / 1000);
+        client.saveConfig();
+        Log.debug("Final length: {}", client.finalLength);
     }
 
     @Override
