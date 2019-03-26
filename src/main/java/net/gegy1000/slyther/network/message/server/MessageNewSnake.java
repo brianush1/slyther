@@ -144,8 +144,11 @@ public class MessageNewSnake extends SlytherServerMessageBase {
                 snake.wantedSeperation = max;
             }
             snake.partSeparation = snake.wantedSeperation;
-
-            Log.debug("Added snake \"{}\" with skin {}", snake.name, snake.skin);
+            
+            Log.debug("Added snake \"{}\" with skin {} remaining {}", snake.name, snake.skin, buffer.remaining());
+            if (buffer.remaining() != 0) {
+            	Log.info("****************** remaining: {}", buffer.remaining());
+            }
             client.addEntity(snake);
 
             snake.updateLength();
