@@ -90,7 +90,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         }
     }
 
-    public void update() {
+	public void update() {
         runTasks();
         long time = System.currentTimeMillis();
         float lastDelta, lastDelta2;
@@ -135,7 +135,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     }
 
     public ServerSnake createSnake(ConnectedClient client) {
-        int spawnFuzz = configuration.gameRadius / 4;
+        //int spawnFuzz = configuration.gameRadius / 4;
         int posX = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
         int posY = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
         List<SnakePoint> points = new ArrayList<>();
