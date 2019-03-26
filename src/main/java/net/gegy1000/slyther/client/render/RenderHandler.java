@@ -108,7 +108,7 @@ public class RenderHandler {
             if (Keyboard.getEventKeyState()) {
                 int key = Keyboard.getEventKey();
                 char character = Keyboard.getEventCharacter();
-                if (client.handleKeyboard(key, character))
+                if (client.handleKeyboard(key, character))		// check for global key handling (F11)
                 	continue;
                 for (Gui gui : getGuis()) {
                     gui.keyPressedBase(key, character);
