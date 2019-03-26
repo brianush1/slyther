@@ -13,3 +13,5 @@ bin/
 dev/
 lib/
 libs/
+debian/
+target/
