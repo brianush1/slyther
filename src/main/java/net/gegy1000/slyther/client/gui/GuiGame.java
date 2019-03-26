@@ -38,7 +38,7 @@ public class GuiGame extends Gui {
     public void render(float mouseX, float mouseY) {
         backgroundX++;
         if (client.player != null) {
-            zoomVelocity += Mouse.getDWheel() * 0.0001F;
+            zoomVelocity += Mouse.getDWheel() * 0.00005F;
             zoomVelocity *= 0.9F;
             client.zoomOffset += zoomVelocity;
             if (client.zoomOffset > 1.0F) {
@@ -540,6 +540,11 @@ public class GuiGame extends Gui {
             	debugY += (int)(font.getHeight() / 2.0F + 2);
             	s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+                s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
+                	+ " zoomOffset=" + df3.format(client.zoomOffset);
+            	debugY += (int)(font.getHeight() / 2.0F + 2);
+            	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+                
             }
         } else {
             GL11.glPopMatrix();
