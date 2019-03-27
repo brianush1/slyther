@@ -29,6 +29,7 @@ public class ClientMain {
         loadNatives();
         SlytherClient client = new SlytherClient();
         client.database = new DatabaseImpl();
+        client.gameStatistic = client.database.getMostRecentGame();
         if (args.length >= 1)
         	Log.showDebug = true;
         client.run();

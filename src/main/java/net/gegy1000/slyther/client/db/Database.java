@@ -5,4 +5,5 @@ import java.util.List;
 public interface Database {
 	void	addGame(GameStatistic game);
 	List<GameStatistic>	getGames();
+	GameStatistic getMostRecentGame();
 }
