@@ -3,7 +3,6 @@ package net.gegy1000.slyther.client;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +17,8 @@ import org.reflections.Reflections;
 import net.gegy1000.slyther.client.controller.Controller;
 import net.gegy1000.slyther.client.controller.DefaultController;
 import net.gegy1000.slyther.client.controller.IController;
+import net.gegy1000.slyther.client.db.Database;
+import net.gegy1000.slyther.client.db.GameStatistic;
 import net.gegy1000.slyther.client.game.entity.ClientFood;
 import net.gegy1000.slyther.client.game.entity.ClientPrey;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
@@ -72,6 +73,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	private RenderHandler renderHandler;
 	private ClientNetworkManager networkManager;
+	public Database	database;
 
 	public ClientSnake player;
 
@@ -114,15 +116,16 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private float[] fpsls;
 	private float[] fmlts;
 
-	public int rank;
-	public int bestRank;
-	public int snakeCount;
-	public int finalLength = -1;
-	public int finalRank;
-	public int finalSnakeCount;
-    public int killCount = 0;
-    public Date gameStartTime;
-    public int	gamePlayTime = 0;
+	//public int rank;
+	//public int bestRank;
+	//public int snakeCount;
+	//public int finalLength = -1;
+	//public int finalRank;
+	//public int finalSnakeCount;
+    //public int killCount = 0;
+    //public Date gameStartTime;
+    //public int	gamePlayTime = 0;
+    public GameStatistic gameStatistic = new GameStatistic();
     
 
 	public String longestPlayerName;
@@ -274,7 +277,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 				fps = 0;
 
 				timer += 1000;
-				gamePlayTime++;
+				//gamePlayTime++;
+				gameStatistic.incDuration();
 				ups = 0;
 			}
 
@@ -345,7 +349,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	 * @return true if we ate the key
 	 */
 	public boolean handleKeyboard(int key, char character) {
-		Log.debug("Key = {} char = {}", key, character);
+		//Log.debug("Key = {} char = {}", key, character);
 		if (key == Keyboard.KEY_F11) {
 			toggleFullscreen();
 			setupDisplay();
@@ -674,5 +678,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public String getServer() {
 		return server;
+	}
+	
+	public void gameOver() {
+        gameStatistic.setLength(player.getLength());
+        saveConfig();
+        database.addGame(gameStatistic);
 	}
 }

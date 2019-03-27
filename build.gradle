@@ -33,6 +33,8 @@ dependencies {
     natives "net.java.jinput:jinput-platform:2.0.5:natives-osx"
     natives "net.java.jinput:jinput-platform:2.0.5:natives-linux"
     compile "org.reflections:reflections:0.9.10"
+	compile group: 'com.h2database', name: 'h2', version: '1.4.199'
+	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
 }
 
 jar {

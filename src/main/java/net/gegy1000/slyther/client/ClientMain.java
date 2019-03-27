@@ -13,12 +13,13 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.apache.commons.io.IOUtils;
+
+import net.gegy1000.slyther.client.db.DatabaseImpl;
 import net.gegy1000.slyther.util.Log;
 import net.gegy1000.slyther.util.OperatingSystem;
 import net.gegy1000.slyther.util.SystemUtils;
 import net.gegy1000.slyther.util.UIUtils;
-
-import org.apache.commons.io.IOUtils;
 
 public class ClientMain {
     private static final String NATIVES_DIR = "natives";
@@ -27,6 +28,7 @@ public class ClientMain {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         loadNatives();
         SlytherClient client = new SlytherClient();
+        client.database = new DatabaseImpl();
         if (args.length >= 1)
         	Log.showDebug = true;
         client.run();

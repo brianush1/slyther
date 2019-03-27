@@ -2,7 +2,6 @@ package net.gegy1000.slyther.client.gui;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -487,10 +486,10 @@ public class GuiGame extends Gui {
             		ofs = 17F;
             	drawString("Your length: " + player.getLength(), 3.0F, 
             			renderResolution.getHeight() - (35.0F + ofs), 0.5F, 0xFFFFFF);
-            	drawString("Rank " + client.rank + "/" + client.snakeCount, 3.0F,
+            	drawString("Rank " + client.gameStatistic.getRank() + "/" + client.gameStatistic.getSnakeCount(), 3.0F,
             			renderResolution.getHeight() - (18.0F + ofs), 0.5F, 0xAAAAAA);
             	if (client.configuration.scoreDisplayMode == ClientConfig.ScoreTypeExtended) {
-            		String fl = "Kills: " + client.killCount + " Time: " + TimeUtils.toString(client.gamePlayTime);
+            		String fl = "Kills: " + client.gameStatistic.getKills() + " Time: " + TimeUtils.toString(client.gameStatistic.getDuration());
             		drawString(fl, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
             	}
             }

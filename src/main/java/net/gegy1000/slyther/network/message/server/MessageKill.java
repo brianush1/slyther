@@ -19,8 +19,8 @@ public class MessageKill extends SlytherServerMessageBase {
 	@Override
 	public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
 		int me = buffer.readUInt16();
-		client.killCount = buffer.readUInt24();
-		Log.debug("Kill: me={} count={}", me, client.killCount);
+		client.gameStatistic.setKills(buffer.readUInt24());
+		Log.debug("Kill: me={} count={}", me, client.gameStatistic.getKills());
 	}
 
 	@Override

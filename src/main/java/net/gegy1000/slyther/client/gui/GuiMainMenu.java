@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Modifier;
-import java.util.Date;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -55,8 +54,7 @@ public class GuiMainMenu extends Gui {
         		renderResolution.getHeight() / 2.0F, 150.0F, 40.0F, (button) -> {
         			closeGui();
         			client.connect();
-        			client.gameStartTime = new Date();
-        			client.killCount = 0;
+        			client.gameStatistic.reset();
         			renderHandler.openGui(new GuiGame());
         			return true;
         		}));
@@ -201,14 +199,14 @@ public class GuiMainMenu extends Gui {
             }
         }
         GL11.glPopMatrix();
-        if (client.finalLength != -1) {
-        	String fl = "Your final length was " + client.finalLength;
+        if (client.gameStatistic.isValid()) {
+        	String fl = "Your final length was " + client.gameStatistic.getLength();
         	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F - 110.0F, 0.45F, 0xFFFFFF);
-        	fl = "Your rank: " + client.rank + " of " + client.snakeCount;
+        	fl = "Your rank: " + client.gameStatistic.getRank() + " of " + client.gameStatistic.getSnakeCount();
         	drawCenteredString(fl, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F -  95.0F, 0.38F, 0xFFFFFF);
         	if (killAndTimeMessage == null) {
-        		fl = TimeUtils.toString(client.gamePlayTime);
-         		killAndTimeMessage = "Kills: " + client.killCount + " Time: " + fl;
+        		fl = TimeUtils.toString(client.gameStatistic.getDuration());
+         		killAndTimeMessage = "Kills: " + client.gameStatistic.getKills() + " Time: " + fl;
         	}
         	drawCenteredString(killAndTimeMessage, renderResolution.getWidth() / 2.0F, 
         			renderResolution.getHeight() / 2.0F -  83.0F, 0.38F, 0xFFFFFF);

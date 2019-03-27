@@ -38,11 +38,11 @@ public class MessageUpdateLeaderboard extends SlytherServerMessageBase {
     @Override
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
         int playerIndex = buffer.readUInt8();
-        client.rank = buffer.readUInt16();
-        if (client.rank < client.bestRank) {
-            client.bestRank = client.rank;
-        }
-        client.snakeCount = buffer.readUInt16();
+        client.gameStatistic.setRank(buffer.readUInt16());
+//        if (client.rank < client.bestRank) {
+//            client.bestRank = client.rank;
+//       }
+        client.gameStatistic.setSnakeCount(buffer.readUInt16());
         client.leaderboard.clear();
         int index = 1;
         while (buffer.hasRemaining()) {
