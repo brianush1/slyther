@@ -537,10 +537,14 @@ public class GuiGame extends Gui {
             }
             //float locationMarkerX = (renderResolution.getWidth()  - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
             //float locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
-            float locationMarkerX = (renderResolution.getWidth()  - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
-            float locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
-            drawCircle(locationMarkerX, locationMarkerY, 3.0F, 0x202020);
-            drawCircle(locationMarkerX, locationMarkerY, 2.0F, 0xFFFFFF);
+            float locationMarkerX = 0;
+            float locationMarkerY = 0;
+            if (client.player != null) {
+	            locationMarkerX = (renderResolution.getWidth()  - 100.0F) + ((client.player.posX - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+	            locationMarkerY = (renderResolution.getHeight() - 100.0F) + ((client.player.posY - client.GAME_RADIUS) * 40.0F / client.GAME_RADIUS + 52.0F - 8.0F);
+	            drawCircle(locationMarkerX, locationMarkerY, 3.0F, 0x202020);
+	            drawCircle(locationMarkerX, locationMarkerY, 2.0F, 0xFFFFFF);
+            }
             if (client.lagging) {
                 drawCenteredLargeString("Warning: Experiencing Network Lag", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 8.0F, 0.5F, 0xFF0000);
             }
