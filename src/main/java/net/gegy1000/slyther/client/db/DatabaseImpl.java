@@ -22,8 +22,20 @@ public class DatabaseImpl implements Database {
 
 	@Override
 	public List<GameStatistic> getGames() {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<GameStatistic> gsl = null;
+		try {
+			Query query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			query.setMaxResults(50);
+			gsl = (List<GameStatistic>)query.getResultList();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return(null);
+		}
+		t.commit();
+		return(gsl);
 	}
 
 	/* (non-Javadoc)

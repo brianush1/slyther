@@ -32,4 +32,8 @@ public class TextureManager {
             texture.bind();
         }
     }
+    
+    public void cacheChart(Texture texture) {
+    	textures.put("chart", texture);
+    }
 }

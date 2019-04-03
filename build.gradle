@@ -22,19 +22,23 @@ configurations {
 dependencies {
 	compile "org.slick2d:slick2d-core:1.0.1"
     compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
-    compile "commons-io:commons-io:2.4"
+    compile "commons-io:commons-io:2.5"
     compile "com.google.code.gson:gson:1.7.2"
     compile "org.apache.logging.log4j:log4j-api:2.11.2"
     compile "org.apache.logging.log4j:log4j-core:2.11.2"
     natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows"
     natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx"
     natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux"
-    natives "net.java.jinput:jinput-platform:2.0.5:natives-windows"
-    natives "net.java.jinput:jinput-platform:2.0.5:natives-osx"
-    natives "net.java.jinput:jinput-platform:2.0.5:natives-linux"
+    natives "net.java.jinput:jinput-platform:2.0.7:natives-windows"
+    natives "net.java.jinput:jinput-platform:2.0.7:natives-osx"
+    natives "net.java.jinput:jinput-platform:2.0.7:natives-linux"
     compile "org.reflections:reflections:0.9.10"
 	compile group: 'com.h2database', name: 'h2', version: '1.4.199'
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
+	compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
+	compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
+
+
 }
 
 jar {

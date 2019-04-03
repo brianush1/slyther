@@ -18,6 +18,7 @@ import net.gegy1000.slyther.game.entity.Prey;
 import net.gegy1000.slyther.game.entity.Sector;
 import net.gegy1000.slyther.game.entity.Snake;
 import net.gegy1000.slyther.game.entity.SnakePoint;
+import net.gegy1000.slyther.util.Log;
 import net.gegy1000.slyther.util.TimeUtils;
 
 public class GuiGame extends Gui {
@@ -37,6 +38,7 @@ public class GuiGame extends Gui {
 
     @Override
     public void render(float mouseX, float mouseY) {
+    	try {
         backgroundX++;
         if (client.player != null) {
             zoomVelocity += Mouse.getDWheel() * 0.00005F;
@@ -569,12 +571,17 @@ public class GuiGame extends Gui {
                 s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
                 	+ " zoomOffset=" + df3.format(client.zoomOffset);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-                
             }
         } else {
             GL11.glPopMatrix();
             drawCenteredLargeString("Connecting to server...", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F, 1.0F, 0xFFFFFF);
         }
+    	} catch (Exception ex) {
+            Log.error("Error while rendering game");
+            Log.catching(ex);
+            client.close();
+            closeGui();
+    	}
     }
 
     @Override

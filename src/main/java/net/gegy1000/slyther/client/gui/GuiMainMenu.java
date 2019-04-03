@@ -31,6 +31,24 @@ public class GuiMainMenu extends Gui {
 
     private final int logoWidth = 900, logoHeight = 270;
     private String killAndTimeMessage = null;
+    private float PlayY1			= 0F;
+    private float ChangeSkinY1 		= 50F;
+    private float SelectServerY1	= 100F;
+    private float ShowStatsY1		= 150F;
+    private float ReplayGameY1		= 200F;
+    private float QuitY1			= 200F;
+    private float PlayY2			= 0F;
+    private float ChangeSkinY2 		= 50F;
+    private float SelectServerY2	= 100F;
+    private float ShowStatsY2		= 150F;
+    private float QuitY2			= 200F;
+    
+    private float playY;
+    private float changeSkinY;
+    private float selectServerY;
+    private float showStatsY;
+    private float replayGameY;
+    private float quitY;
     
     public GuiMainMenu() {
         try (Reader reader = new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/data/logo.json"))) {
@@ -42,8 +60,17 @@ public class GuiMainMenu extends Gui {
         }
     }
 
+	void calcElementPos() {
+		playY = PlayY1;
+		changeSkinY = ChangeSkinY1;
+		selectServerY = SelectServerY1;
+		showStatsY = ShowStatsY1;
+		quitY = QuitY1;
+	}
+
     @Override
     public void init() {
+    	calcElementPos();
         elements.clear();
         elements.add(new TextBoxElement(this, client.configuration.nickname, renderResolution.getWidth() / 2.0F,
         		renderResolution.getHeight() / 2.0F - 50.0F, 200.0F, 40.0F, (textbox) -> {
@@ -51,7 +78,7 @@ public class GuiMainMenu extends Gui {
         			return null;
         		}));
         elements.add(new ButtonElement(this, "Play", renderResolution.getWidth() / 2.0F, 
-        		renderResolution.getHeight() / 2.0F, 150.0F, 40.0F, (button) -> {
+        		renderResolution.getHeight() / 2.0F + playY, 150.0F, 40.0F, (button) -> {
         			closeGui();
         			client.connect();
         			client.gameStatistic.reset();
@@ -59,36 +86,43 @@ public class GuiMainMenu extends Gui {
         			return true;
         		}));
         elements.add(new ButtonElement(this, "Change Skin", renderResolution.getWidth() / 2.0F,
-        		renderResolution.getHeight() / 2.0F + 50.0F, 150.0F, 40.0F, (button) -> {
+        		renderResolution.getHeight() / 2.0F + changeSkinY, 150.0F, 40.0F, (button) -> {
             closeGui();
             renderHandler.openGui(new GuiSelectSkin(this));
             return true;
         }));
         elements.add(new ButtonElement(this, "Select Server", renderResolution.getWidth() / 2.0F,
-        		renderResolution.getHeight() / 2.0F + 100.0F, 150.0F, 40.0F, (button) -> {
+        		renderResolution.getHeight() / 2.0F + selectServerY, 150.0F, 40.0F, (button) -> {
             closeGui();
             renderHandler.openGui(new GuiSelectServer(this));
             return true;
         }));
-        float quitY=150.0F;
+        elements.add(new ButtonElement(this, "Show Stats", renderResolution.getWidth() / 2.0F,
+        		renderResolution.getHeight() / 2.0F + showStatsY, 150.0F, 40.0F, (button) -> {
+            closeGui();
+            renderHandler.openGui(new GuiStatistics(this));
+            return true;
+        }));
         if (SlytherClient.RECORD_FILE.exists()) {
-        	quitY = 200.0F;
-            elements.add(new ButtonElement(this, "Replay Last Game", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + 150.0F, 150.0F, 40.0F, (button) -> {
+            elements.add(new ButtonElement(this, "Replay Last Game", renderResolution.getWidth() / 2.0F,
+            		renderResolution.getHeight() / 2.0F + replayGameY, 150.0F, 40.0F, (button) -> {
                 closeGui();
                 client.replay();
                 renderHandler.openGui(new GuiGame());
                 return true;
             }));
         }
-        elements.add(new ButtonElement(this, "Exit", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 2.0F + quitY, 150.0F, 40.0F, (button) -> {
+        elements.add(new ButtonElement(this, "Exit", renderResolution.getWidth() / 2.0F, 
+        		renderResolution.getHeight() / 2.0F + quitY, 150.0F, 40.0F, (button) -> {
         	System.exit(0);
             return true;
         }));
     }
 
-    @Override
-    public void update() {
-    }
+	@Override
+	public void update() {
+		
+	}
 
     @Override
     public void keyPressed(int key, char character) {
