@@ -30,10 +30,9 @@
 		"thicknessMultiplier": 1,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "y-right side",
 		"parts": [
-			267, 96,
-			250, 140, 197, 204
+			207, 96,
+			207, 140, 207, 184
 		],
 		"resolution": 46,
 		"wiggleAmount": 4,
@@ -44,25 +43,23 @@
 		"thicknessMultiplier": 1,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "y-left side",
 		"parts": [
-			207, 96,
-			207, 110.5, 217, 160
+			207, 47,
+			207, 48.5, 207, 50
 		],
 		"resolution": 11,
 		"wiggleAmount": 2,
 		"wiggleAmountStep": 0.06,
 		"wiggleStep": 0.05,
 		"wiggleSpeed": 0.06,
-		"thickness": 11,
+		"thickness": 15,
 		"thicknessMultiplier": 0.5,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "t-vertical",
 		"parts": [
-			327,  65,
-			327, 114.5, 327, 164,
-			327, 194  , 357, 186
+			267,  65,
+			267, 114.5, 267, 164,
+			267, 194  , 297, 186
 		],
 		"resolution": 66,
 		"wiggleAmount": 6,
@@ -73,10 +70,9 @@
 		"thicknessMultiplier": 1.5,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "t-horizontal",
 		"parts": [
-			303, 94,
-			328, 94, 353, 94
+			243, 94,
+			268, 94, 293, 94
 		],
 		"resolution": 66,
 		"wiggleAmount": 4,
@@ -87,15 +83,14 @@
 		"thicknessMultiplier": 1.2,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "h",
 		"parts": [
-			398,  30,
-			398,  68.5, 398, 107,
-			398, 145.5, 398, 184,
-			398, 164  , 398, 144,
-			398, 104  , 438, 104,
-			478, 104  , 478, 144,
-			478, 164  , 478, 184
+			338,  30,
+			338,  68.5, 338, 107,
+			338, 145.5, 338, 184,
+			338, 164  , 338, 144,
+			338, 104  , 378, 104,
+			418, 104  , 418, 144,
+			418, 164  , 418, 184
 		],
 		"resolution": 46,
 		"wiggleAmount": 4,
@@ -106,14 +101,13 @@
 		"thicknessMultiplier": 2.1,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "e",
 		"parts": [
-			595, 175,
-			560, 201, 532, 175,
-			502, 138, 532, 105,
-			562,  84, 592, 105,
-			606, 118, 604, 139,
-			564, 139, 534, 139
+			535, 175,
+			500, 201, 472, 175,
+			442, 138, 472, 105,
+			502,  84, 532, 105,
+			546, 118, 544, 139,
+			504, 139, 464, 139
 		],
 		"resolution": 35,
 		"wiggleAmount": 6,
@@ -124,12 +118,11 @@
 		"thicknessMultiplier": 1.3,
 		"offsetWiggleMultiplier": 5
 	}, {
-		"_comment" : "r",
 		"parts": [
-			651, 96,
-			651, 140, 651, 184,
-			651, 155, 651, 126,
-			673,  82, 712, 109
+			591, 96,
+			591, 140, 591, 184,
+			591, 155, 591, 126,
+			613, 82, 652, 109
 		],
 		"resolution": 38,
 		"wiggleAmount": 4,
@@ -138,6 +131,61 @@
 		"wiggleSpeed": 0.06,
 		"thickness": 11,
 		"thicknessMultiplier": 1,
+		"offsetWiggleMultiplier": 5
+	}, {
+		"parts": [
+			663, 177,
+			663, 178.5, 663, 180
+		],
+		"resolution": 11,
+		"wiggleAmount": 2,
+		"wiggleAmountStep": 0.06,
+		"wiggleStep": 0.05,
+		"wiggleSpeed": 0.06,
+		"thickness": 15,
+		"thicknessMultiplier": 1,
+		"offsetWiggleMultiplier": 5
+	}, {
+		"parts": [
+			717,  96,
+			717, 140, 717, 184
+		],
+		"resolution": 33,
+		"wiggleAmount": 4,
+		"wiggleAmountStep": 0.06,
+		"wiggleStep": 0.05,
+		"wiggleSpeed": 0.06,
+		"thickness": 11,
+		"thicknessMultiplier": 1,
+		"offsetWiggleMultiplier": 5
+	}, {
+		"parts": [
+			717, 47,
+			717, 48.5, 717, 50
+		],
+		"resolution": 11,
+		"wiggleAmount": 2,
+		"wiggleAmountStep": 0.06,
+		"wiggleStep": 0.05,
+		"wiggleSpeed": 0.06,
+		"thickness": 15,
+		"thicknessMultiplier": 1,
+		"offsetWiggleMultiplier": 5
+	}, {
+		"parts": [
+			814, 186,
+			860, 188, 858, 136,
+			854,  96, 814,  96,
+			770,  96, 770, 136,
+			770, 186, 814, 186
+		],
+		"resolution": 43,
+		"wiggleAmount": 4,
+		"wiggleAmountStep": 0,
+		"wiggleStep": 0.0274,
+		"wiggleSpeed": 0.073,
+		"thickness": 11,
+		"thicknessMultiplier": 1.5,
 		"offsetWiggleMultiplier": 5
 	}
 ]
