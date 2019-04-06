@@ -13,14 +13,13 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSelectSkin extends Gui {
-    private GuiMainMenu menu;
+public class GuiSelectSkin extends GuiWithBanner {
+    private Gui parentMenu;
     private ClientSnake snake;
 
-    private int backgroundX;
 
-    public GuiSelectSkin(GuiMainMenu menu) {
-        this.menu = menu;
+    public GuiSelectSkin(Gui menu) {
+        this.parentMenu = menu;
     }
 
     private void createSnake() {
@@ -71,14 +70,15 @@ public class GuiSelectSkin extends Gui {
 
     @Override
     public void render(float mouseX, float mouseY) {
-        backgroundX++;
+//        backgroundX++;
+//        textureManager.bindTexture("/textures/background.png");
+//        drawTexture(0.0F, 0.0F, backgroundX * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
+    	renderBackground();
         int snakePointIndex = 0;
         for (SnakePoint point : snake.points) {
             point.posY = (float) (15.0F * Math.cos(snakePointIndex / 4.0F + (client.frameTicks) / 4.0F) * (1.0F - ((float) snakePointIndex / snake.points.size())));
             snakePointIndex++;
         }
-        textureManager.bindTexture("/textures/background.png");
-        drawTexture(0.0F, 0.0F, backgroundX * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
         drawCenteredLargeString("Select Skin", renderResolution.getWidth() / 2.0F, 25.0F, 0.5F, 0xFFFFFF);
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
@@ -351,7 +351,7 @@ public class GuiSelectSkin extends Gui {
 
     private void exit() {
         closeGui();
-        renderHandler.openGui(menu);
+        renderHandler.openGui(parentMenu);
     }
 
     @Override

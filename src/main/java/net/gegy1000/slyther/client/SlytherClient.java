@@ -116,18 +116,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private float[] fpsls;
 	private float[] fmlts;
 
-	//public int rank;
-	//public int bestRank;
-	//public int snakeCount;
-	//public int finalLength = -1;
-	//public int finalRank;
-	//public int finalSnakeCount;
-    //public int killCount = 0;
-    //public Date gameStartTime;
-    //public int	gamePlayTime = 0;
     public GameStatistic gameStatistic = new GameStatistic();
     
-
+    public float menuBackgroundX = 0;
+    public float menuBackgroundY = 0;
+    
 	public String longestPlayerName;
 	public int longestPlayerScore;
 	public String longestPlayerMessage;

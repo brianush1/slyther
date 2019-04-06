@@ -10,16 +10,16 @@ import org.lwjgl.opengl.GL11;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiSelectServer extends Gui {
+public class GuiSelectServer extends GuiWithBanner {
     private static final int ENTRIES_PER_PAGE = 10;
 
-    private GuiMainMenu menu;
+    private Gui parentMenu;
     private int page;
 
     private TextBoxElement serverTextBox;
 
-    public GuiSelectServer(GuiMainMenu menu) {
-        this.menu = menu;
+    public GuiSelectServer(Gui parentMenu) {
+        this.parentMenu = parentMenu;
     }
 
     @Override
@@ -59,10 +59,13 @@ public class GuiSelectServer extends Gui {
 
     @Override
     public void render(float mouseX, float mouseY) {
-        textureManager.bindTexture("/textures/background.png");
-        GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
-        drawTexture(0.0F, 0.0F, client.frameTicks * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        textureManager.bindTexture("/textures/background.png");
+//        GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+//        drawTexture(0.0F, 0.0F, client.frameTicks * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
+    	
+    	GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+    	renderBackground();
+    	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         List<ServerHandler.Server> pingedServers = ServerHandler.INSTANCE.getPingedServers();
         Collections.sort(pingedServers);
         float centerX = renderResolution.getWidth() / 2.0F;
@@ -156,6 +159,6 @@ public class GuiSelectServer extends Gui {
 
     private void exit() {
         closeGui();
-        renderHandler.openGui(menu);
+        renderHandler.openGui(parentMenu);
     }
 }

@@ -26,14 +26,14 @@ import net.gegy1000.slyther.util.Log;
  */
 public class GuiStatistics extends Gui {
 
-	private GuiMainMenu menu;
+	private Gui parentMenu;
 	private	boolean graphicsPrepared = false;
 	private	StatisticsThread	statisticsThread;
 	//private	int			drawnWidth;
 	//private int			drawnHeight;
 	
-    public GuiStatistics(GuiMainMenu menu) {
-        this.menu = menu;
+    public GuiStatistics(Gui parentMenu) {
+        this.parentMenu = parentMenu;
     }
 
 	@Override
@@ -83,8 +83,10 @@ public class GuiStatistics extends Gui {
 				int h = Display.getHeight();
 				if (w > 1024)
 					w = 1024;
+				if (h > 1024)
+					h = 1024;
 				//w = 1024;
-				h = 1024;
+				//h = 1024;
 				BufferedImage bi = chart.createBufferedImage(w, h);
 				ByteArrayOutputStream os = new ByteArrayOutputStream();
 				try {
@@ -115,7 +117,7 @@ public class GuiStatistics extends Gui {
 
 	private void exit() {
 		closeGui();
-		renderHandler.openGui(menu);
+		renderHandler.openGui(parentMenu);
 	}
 	
 }
