@@ -9,7 +9,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_17;
+import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.handshake.ServerHandshake;
 
 import net.gegy1000.slyther.util.Log;
@@ -87,7 +87,7 @@ public class ServerPingerDispatcher implements Runnable {
         private long pingSendTime;
 
         public ServerPinger(ServerHandler.Server server, BlockingQueue<Pinger> finishedPingers) throws URISyntaxException {
-            super(new URI("ws://" + server.getClusterIp() + ":80/ptc"), new Draft_17(), ServerHandler.INSTANCE.getHeaders(), 0);
+            super(new URI("ws://" + server.getClusterIp() + ":80/ptc"), new Draft_6455(), ServerHandler.INSTANCE.getHeaders(), 0);
             this.server = server;
             this.finishedPingers = finishedPingers;
         }

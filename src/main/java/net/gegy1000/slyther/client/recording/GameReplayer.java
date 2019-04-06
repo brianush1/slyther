@@ -72,6 +72,12 @@ public class GameReplayer implements Runnable {
                     Log.catching(ex);
                 }
             }
+
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				
+			}
         };
         server.start();
     }
@@ -112,7 +118,7 @@ public class GameReplayer implements Runnable {
                 }
                 while (System.currentTimeMillis() - (lastTime + delta) < 0);
                 lastTime = System.currentTimeMillis();
-                server.connections().forEach(conn -> conn.send(messageBuffer));
+                server.getConnections().forEach(conn -> conn.send(messageBuffer));
             }
         } catch (EOFException | InterruptedException e) {
             // Graceful finish

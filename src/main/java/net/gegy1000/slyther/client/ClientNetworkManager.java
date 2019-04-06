@@ -1,5 +1,16 @@
 package net.gegy1000.slyther.client;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.handshake.ServerHandshake;
+
 import net.gegy1000.slyther.client.recording.GameRecorder;
 import net.gegy1000.slyther.client.recording.GameReplayer;
 import net.gegy1000.slyther.network.MessageByteBuffer;
@@ -10,16 +21,6 @@ import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
 import net.gegy1000.slyther.network.message.SlytherServerMessageBase;
 import net.gegy1000.slyther.network.message.client.MessageStartLogin;
 import net.gegy1000.slyther.util.Log;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_17;
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ClientNetworkManager extends WebSocketClient implements NetworkManager {
     public static final int SHUTDOWN_CODE = 1;
@@ -43,7 +44,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
     public long currentPacketTime;
 
     public ClientNetworkManager(URI uri, SlytherClient client, String ip, Map<String, String> headers, boolean shouldRecord, boolean isReplaying) throws IOException {
-        super(uri, new Draft_17(), headers, 0);
+        super(uri, new Draft_6455(), headers, 0);
         this.ip = ip;
         this.client = client;
         this.isReplaying = isReplaying;

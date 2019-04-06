@@ -78,4 +78,10 @@ public class ServerNetworkManager extends WebSocketServer implements NetworkMana
     public void onError(WebSocket connection, Exception e) {
         server.removeClient(connection);
     }
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		
+	}
 }
