@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.gson.GsonBuilder;
 
+import net.gegy1000.slyther.Version;
 import net.gegy1000.slyther.util.Log;
 
 /** Subclass {@link Gui} and provide some common services, like draw the logo and background. 
@@ -30,20 +31,26 @@ public abstract class GuiWithBanner extends Gui {
 
     private final double lgsc = 1;
 
-    private final int logoWidth = 900, logoHeight = 270;
+    private int logoWidth = 900, logoHeight = 270;
     protected float backgroundColor = 1.0F;
 
-    public GuiWithBanner() {
-    	
-        try (Reader reader = new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/data/logo.json"))) {
-            logoLetterParts = new GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-                .create().fromJson(reader, LetterPart[].class);
-        } catch (IOException e) {
-            Log.catching(e);
-        }
+	public GuiWithBanner() {
+		String s = "/data/logo.json";
+		if (Version.SlytherEdition.equals("db")) {
+			s = "/data/logo_db.json";
+			logoWidth = 1050;
+		} 
+		try (Reader reader = new InputStreamReader(GuiMainMenu.class.getResourceAsStream(s))) {
+			logoLetterParts = new GsonBuilder()
+					.excludeFieldsWithModifiers(Modifier.TRANSIENT)
+					.create().fromJson(reader, LetterPart[].class);
+		} catch (IOException e) {
+			Log.catching(e);
+		} catch ( IllegalArgumentException e1) {
+			Log.catching(e1);        	
+		}
 
-    }
+	}
     /* (non-Javadoc)
 	 * @see net.gegy1000.slyther.client.gui.Gui#init()
 	 */
@@ -84,7 +91,8 @@ public abstract class GuiWithBanner extends Gui {
 					wiggleStep = part.wiggleStep,
 					wiggleSpeed = part.wiggleSpeed,
 					thicknessMultiplier = part.thicknessMultiplier,
-					offsetWiggleMultiplier = part.offsetWiggleMultiplier;
+					offsetWiggleMultiplier = part.offsetWiggleMultiplier,
+					letterOffset = part.letterOffset;
 			int resolution = part.resolution,
 					wiggleAmount = part.wiggleAmount,
 					thickness = part.thickness;
@@ -100,13 +108,13 @@ public abstract class GuiWithBanner extends Gui {
 			double travelAngle = 0;
 			boolean hasTravelAngle = false;
 			int totalSteps = 0;
-			double prevX = parts[0], lastPartToX = prevX;
+			double prevX = parts[0]+ letterOffset, lastPartToX = prevX;
 			double prevY = parts[1], lastPartToY = prevY;
 			double wiggle = logoFrame * wiggleSpeed;
 			for (int n = 2; n < parts.length; n += 4) {
-				double partFromX = parts[n];
+				double partFromX = parts[n]		+ letterOffset;
 				double partFromY = parts[n + 1];
-				double partToX = parts[n + 2];
+				double partToX = parts[n + 2]	+ letterOffset;
 				double partToY = parts[n + 3];
 				for (int step = 1; step <= resolution; step++) {
 					totalSteps++;
@@ -170,14 +178,15 @@ public abstract class GuiWithBanner extends Gui {
 
 	private class LetterPart {
 		double[] parts;
-		int resolution;
-		int wiggleAmount;
-		double wiggleAmountStep;
-		double wiggleStep;
-		double wiggleSpeed;
-		int thickness;
-		double thicknessMultiplier;
-		double offsetWiggleMultiplier;
+		int		resolution;
+		int		wiggleAmount;
+		double	wiggleAmountStep;
+		double	wiggleStep;
+		double	wiggleSpeed;
+		int		thickness;
+		double	thicknessMultiplier;
+		double	offsetWiggleMultiplier;
+		double	letterOffset;
 		transient boolean wch;
 	}
 	
