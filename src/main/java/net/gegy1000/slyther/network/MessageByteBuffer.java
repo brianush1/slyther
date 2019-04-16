@@ -58,7 +58,8 @@ public class MessageByteBuffer {
         buf.put(src);
     }
 
-    public void writeASCIIBytes(String str) {
+    @SuppressWarnings("deprecation")
+	public void writeASCIIBytes(String str) {
         buf.put(str.getBytes(Charsets.US_ASCII));
     }
 
@@ -84,7 +85,8 @@ public class MessageByteBuffer {
         return dst;
     }
 
-    public String readASCIIBytes() {
+    @SuppressWarnings("deprecation")
+	public String readASCIIBytes() {
         return new String(readBytes(buf.limit() - buf.position()), Charsets.US_ASCII);
     }
 
