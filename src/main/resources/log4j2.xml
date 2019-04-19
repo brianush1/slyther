@@ -9,6 +9,9 @@
 	</Appenders>
 	<Loggers>
 		<Logger name="org.hibernate" level="error" />
+		<Logger name="org.reflections" level="warn" />
+		<Logger name="org.jboss" level="warn" />
+		<Logger name="org.newdawn" level="warn" />
 		<Root level="debug">
 			<AppenderRef ref="Console" />
 		</Root>
