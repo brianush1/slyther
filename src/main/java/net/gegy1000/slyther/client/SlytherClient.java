@@ -182,7 +182,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			Log.catching(e);
 		}
 		temporaryServerSelection = configuration.server;
-		Reflections reflections = new Reflections("");
+		Reflections reflections = new Reflections("net.gegy1000.slyther");
 		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
 		for (Class<?> controller : annotated) {
 			if (IController.class.isAssignableFrom(controller)) {
