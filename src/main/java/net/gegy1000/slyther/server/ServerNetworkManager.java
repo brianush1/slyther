@@ -1,21 +1,25 @@
 package net.gegy1000.slyther.server;
 
-import net.gegy1000.slyther.network.MessageByteBuffer;
-import net.gegy1000.slyther.network.MessageHandler;
-import net.gegy1000.slyther.network.NetworkManager;
-import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
-import net.gegy1000.slyther.util.Log;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
-
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+
+import net.gegy1000.slyther.network.MessageByteBuffer;
+import net.gegy1000.slyther.network.MessageHandler;
+import net.gegy1000.slyther.network.NetworkManager;
+import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
+import net.gegy1000.slyther.network.message.server.MessageRiddle;
+import net.gegy1000.slyther.util.Log;
+
 public class ServerNetworkManager extends WebSocketServer implements NetworkManager {
-    private SlytherServer server;
+	private static boolean LOG_NETWORK = false;
+
+	private SlytherServer server;
     private int port;
 
     private int currentClientId;
@@ -36,13 +40,15 @@ public class ServerNetworkManager extends WebSocketServer implements NetworkMana
 
     @Override
     public void onOpen(WebSocket connection, ClientHandshake handshake) {
+    	Log.debug("onOpen");
         server.scheduleTask(() -> {
-            Log.debug("Initiating a new connection.");
+            Log.info("Initiating a new connection.");
             ConnectedClient client = new ConnectedClient(server, connection, currentClientId);
             if (!server.clients.contains(client)) {
                 currentClientId++;
                 server.clients.add(client);
-                client.lastPacketTime = System.currentTimeMillis();
+                client.lastPacketTime = System.currentTimeMillis();		// DIK: redundant. Set in the constructor
+                client.send(new MessageRiddle());
             }
             return null;
         });
@@ -62,6 +68,8 @@ public class ServerNetworkManager extends WebSocketServer implements NetworkMana
         server.scheduleTask(() -> {
             ConnectedClient client = server.getConnectedClient(connection);
             if (client != null) {
+            	if (LOG_NETWORK)
+            		Log.info("onMessage {}", byteBuffer.get(0));
                 MessageByteBuffer buffer = new MessageByteBuffer(byteBuffer);
                 SlytherClientMessageBase message = MessageHandler.INSTANCE.getClientMessage(buffer);
                 if (message == null) {

@@ -128,7 +128,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public ClientConfig configuration;
 
-	public String temporaryServerSelection;
+	public String userServerSelection;
 
 	public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
 
@@ -181,7 +181,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			UIUtils.displayException("Unable to read config", e);
 			Log.catching(e);
 		}
-		temporaryServerSelection = configuration.server;
+		userServerSelection = configuration.server;
 		Reflections reflections = new Reflections("net.gegy1000.slyther");
 		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
 		for (Class<?> controller : annotated) {
@@ -359,11 +359,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		allowUserInput = true;
 		new Thread(() -> {
 			try {
-				if (temporaryServerSelection == null) {
+				if (userServerSelection == null) {
 					ServerHandler.Server server = ServerHandler.INSTANCE.getServerForPlay();
 					networkManager = ClientNetworkManager.create(SlytherClient.this, server, configuration.shouldRecord);
 				} else {
-					networkManager = ClientNetworkManager.create(SlytherClient.this, temporaryServerSelection, configuration.shouldRecord);
+					networkManager = ClientNetworkManager.create(SlytherClient.this, userServerSelection, configuration.shouldRecord);
 				}
 				server = networkManager.getIp();
 			} catch (Exception e) {

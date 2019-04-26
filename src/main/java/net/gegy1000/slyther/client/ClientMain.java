@@ -24,16 +24,23 @@ import net.gegy1000.slyther.util.UIUtils;
 public class ClientMain {
     private static final String NATIVES_DIR = "natives";
 
-    public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        loadNatives();
-        SlytherClient client = new SlytherClient();
-        client.database = new DatabaseImpl();
-        client.gameStatistic = client.database.getMostRecentGame();
-        if (args.length >= 1)
-        	Log.showDebug = true;
-        client.run();
-    }
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		loadNatives();
+		SlytherClient client = new SlytherClient();
+		client.database = new DatabaseImpl();
+		try {
+			client.gameStatistic = client.database.getMostRecentGame();
+		} catch (ExceptionInInitializerError e) {
+			JOptionPane.showMessageDialog(null, "Failed to initialize database.\nIs another copy of Slyther running?",
+					"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e1) {
+
+		}
+		if (args.length >= 1)
+			Log.showDebug = true;
+		client.run();
+	}
 
     public static void loadNatives(){
         File folder = new File(SystemUtils.getGameFolder(), NATIVES_DIR);

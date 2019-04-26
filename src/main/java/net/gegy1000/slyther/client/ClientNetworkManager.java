@@ -23,6 +23,7 @@ import net.gegy1000.slyther.network.message.client.MessageStartLogin;
 import net.gegy1000.slyther.util.Log;
 
 public class ClientNetworkManager extends WebSocketClient implements NetworkManager {
+	private static boolean LOG_NETWORK = false;
     public static final int SHUTDOWN_CODE = 1;
 
     public static final byte[] PING_DATA = new byte[] { (byte) 251 };
@@ -125,6 +126,11 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
                 try {
                     SlytherServerMessageBase message = messageType.getConstructor().newInstance();
                     message.messageId = messageId;
+                	byte[] bd = new byte[1];
+                	bd[0] = messageId;
+                	String s = new String(bd);
+                	if (LOG_NETWORK)
+                		Log.debug("Recv: {} \"{}\"", bd[0], s);
                     message.serverTimeDelta = serverTimeDelta;
                     client.scheduleTask(() -> {
                         if (isOpen()) {
@@ -161,7 +167,17 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
             try {
                 MessageByteBuffer buffer = new MessageByteBuffer();
                 message.write(buffer, client);
-                send(buffer.bytes());
+                final boolean DEBUG = true;
+                if (DEBUG) {
+                	byte[] bb = buffer.bytes();
+                	byte[] bd = new byte[1];
+                	bd[0] = bb[0];
+                	String s = new String(bd);
+                	if (LOG_NETWORK)
+                		Log.debug("Sendm {} \"{}\"", bd[0], s);
+                	send(bb);
+                } else
+                	send(buffer.bytes());
             } catch (Exception e) {
                 Log.error("An error occurred while sending message {}", message.getClass().getName());
                 Log.catching(e);

@@ -36,11 +36,11 @@ public class GuiSelectServer extends GuiWithBanner {
             exit();
             return true;
         }));
-        elements.add(serverTextBox = new TextBoxElement(this, client.temporaryServerSelection != null ? client.temporaryServerSelection : "", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() - 100.0F, 200.0F, 40.0F, (textBox) -> {
+        elements.add(serverTextBox = new TextBoxElement(this, client.userServerSelection != null ? client.userServerSelection : "", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() - 100.0F, 200.0F, 40.0F, (textBox) -> {
             if (textBox.getText().length() == 0) {
-                client.temporaryServerSelection = null;
+                client.userServerSelection = null;
             } else {
-                client.temporaryServerSelection = textBox.getText();
+                client.userServerSelection = textBox.getText();
             }
             return null;
         }));
@@ -59,10 +59,6 @@ public class GuiSelectServer extends GuiWithBanner {
 
     @Override
     public void render(float mouseX, float mouseY) {
-//        textureManager.bindTexture("/textures/background.png");
-//        GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
-//        drawTexture(0.0F, 0.0F, client.frameTicks * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
-    	
     	GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
     	renderBackground();
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

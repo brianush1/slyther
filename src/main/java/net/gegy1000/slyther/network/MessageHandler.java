@@ -19,6 +19,7 @@ import net.gegy1000.slyther.network.message.server.MessageNewSnake;
 import net.gegy1000.slyther.network.message.server.MessagePing;
 import net.gegy1000.slyther.network.message.server.MessagePlayerDeath;
 import net.gegy1000.slyther.network.message.server.MessagePopulateSector;
+import net.gegy1000.slyther.network.message.server.MessagePreLogin;
 import net.gegy1000.slyther.network.message.server.MessagePreyPositionUpdate;
 import net.gegy1000.slyther.network.message.server.MessageRemoveFood;
 import net.gegy1000.slyther.network.message.server.MessageRemoveSector;
@@ -35,9 +36,11 @@ import net.gegy1000.slyther.util.Log;
 public enum MessageHandler {
     INSTANCE;
 
+	private static boolean LOG_NETWORK = false;
     private final Map<Byte, Class<? extends SlytherServerMessageBase>> SERVER_MESSAGES = new HashMap<>();
 
     MessageHandler() {
+    	registerServer(MessagePreLogin.class);
         registerServer(MessagePing.class);
         registerServer(MessageSetup.class);
         registerServer(MessageNewSnake.class);
@@ -75,6 +78,8 @@ public enum MessageHandler {
     public SlytherClientMessageBase getClientMessage(MessageByteBuffer buffer) {
         if (buffer.limit() == 1) {
             int type = buffer.readUInt8();
+            if (LOG_NETWORK)
+            	Log.debug("Recv1: {}", type);
             if (type == 251) {
                 return new MessageClientPing();
             } else if (type == 253 || type == 254) {
@@ -85,6 +90,7 @@ public enum MessageHandler {
             }
         } else if (buffer.limit() > 1) {
             int type = buffer.readUInt8();
+            Log.debug("Recvm: {}", type);
             if (type == 's') {
                 return new MessageClientSetup();
             } else if (type == 252) {

@@ -8,9 +8,11 @@ public class GuiMore extends GuiWithBanner {
  //   private float backgroundY;
 	private float changeSkinY;
 	private float selectServerY;
+	private float localServerY;
 	private float showStatsY;
 	private float doneY;
 	private	GuiMainMenu	guiMainMenu;
+    private boolean localServerAvailable = true;
 
     public GuiMore(GuiMainMenu menu) {
         this.guiMainMenu = menu;
@@ -34,6 +36,14 @@ public class GuiMore extends GuiWithBanner {
 					renderHandler.openGui(new GuiSelectServer(guiMainMenu));
 					return true;
 				}));
+		if (localServerAvailable) {
+		elements.add(new ButtonElement(this, "Local Server", renderResolution.getWidth() / 2.0F,
+				renderResolution.getHeight() / 2.0F + localServerY, 150.0F, 40.0F, (button) -> {
+					setLocalServer();
+					exit();
+					return true;
+				}));
+		}
 		elements.add(new ButtonElement(this, "Show Stats", renderResolution.getWidth() / 2.0F,
 				renderResolution.getHeight() / 2.0F + showStatsY, 150.0F, 40.0F, (button) -> {
 					closeGui();
@@ -51,8 +61,16 @@ public class GuiMore extends GuiWithBanner {
 	void calcElementPos() {
 		changeSkinY		= -50F;
 		selectServerY	=   0F;
-		showStatsY		=  50F;
-		doneY			= 100F;
+		localServerY	=  50F;
+		showStatsY		= 100F;
+		doneY			= 150F;
+		if (!localServerAvailable) {
+			showStatsY -= 50F;
+			doneY -= 50F;
+		}
+	}
+	void setLocalServer() {
+		client.userServerSelection = "127.0.0.1:1444";
 	}
 
 	@Override
