@@ -46,17 +46,6 @@ public class ClientMain {
         File folder = new File(SystemUtils.getGameFolder(), NATIVES_DIR);
         createNativesFolder(folder);
         OperatingSystem os = SystemUtils.getOS();
-        /*String[] natives;
-        switch (os) {
-            case WINDOWS:
-                break;
-            case SOLARIS:
-            case LINUX:
-                break;
-            case MACOSX:
-                break;
-            default:
-        }*/
         if (os == OperatingSystem.WINDOWS) {
             if (!new File(folder.getPath() + "/jinput-dx8_64.dll").exists()) {
                 extractFromClasspath("jinput-dx8_64.dll", folder);
