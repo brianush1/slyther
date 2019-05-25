@@ -1,8 +1,10 @@
 package net.gegy1000.slyther.client.gui.element;
 
 import net.gegy1000.slyther.client.gui.Gui;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
 
 import java.util.function.Function;
 
@@ -24,7 +26,7 @@ public class TextBoxElement extends Element {
     public void keyPressed(int key, char character) {
         if (selected) {
             boolean modified = false;
-            if (key == Keyboard.KEY_BACK) {
+            if (key == GLFW_KEY_BACKSPACE) {
                 if (text.length() > 0 && selectionIndex > 0) {
                     text = text.substring(0, Math.max(0, selectionIndex - 1)) + text.substring(selectionIndex);
                     selectionIndex--;
@@ -34,9 +36,9 @@ public class TextBoxElement extends Element {
                 text = text.substring(0, selectionIndex) + character + text.substring(selectionIndex);
                 selectionIndex++;
                 modified = true;
-            } else if (key == Keyboard.KEY_LEFT && selectionIndex > 0) {
+            } else if (key == GLFW_KEY_LEFT && selectionIndex > 0) {
                 selectionIndex--;
-            } else if (key == Keyboard.KEY_RIGHT && selectionIndex < text.length()) {
+            } else if (key == GLFW_KEY_RIGHT && selectionIndex < text.length()) {
                 selectionIndex++;
             }
             if (modified) {

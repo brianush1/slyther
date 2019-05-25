@@ -3,9 +3,11 @@ package net.gegy1000.slyther.client.gui;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F12;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.gegy1000.slyther.client.ClientConfig;
@@ -41,7 +43,8 @@ public class GuiGame extends Gui {
     	try {
         backgroundX++;
         if (client.player != null) {
-            zoomVelocity += Mouse.getDWheel() * 0.00005F;
+            //zoomVelocity += Mouse.getDWheel() * 0.00005F;
+            zoomVelocity += client.mouseWheelY * 0.00005F;
             zoomVelocity *= 0.9F;
             client.zoomOffset += zoomVelocity;
             if (client.zoomOffset > 1.0F) {
@@ -120,7 +123,7 @@ public class GuiGame extends Gui {
             }
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
             if (client.configuration.debugMode) {
                 GL11.glColor4f(0, 1, 0, 0.1F);
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -590,14 +593,14 @@ public class GuiGame extends Gui {
 
     @Override
     public void keyPressed(int key, char character) {
-        if (key == Keyboard.KEY_BACK || key == Keyboard.KEY_ESCAPE) {
+        if (key == GLFW_KEY_BACKSPACE || key == GLFW_KEY_ESCAPE) {
             client.close();
             closeGui();
         }
-        if (key == Keyboard.KEY_F3) {
+        if (key == GLFW_KEY_F3) {
         	client.configuration.showDebug = !client.configuration.showDebug;
         }
-        if (key == Keyboard.KEY_F12) {
+        if (key == GLFW_KEY_F12) {
         	client.configuration.scoreDisplayMode++;
         	if (client.configuration.scoreDisplayMode >= ClientConfig.ScoreTypeCOUNT)
         		client.configuration.scoreDisplayMode = 0;

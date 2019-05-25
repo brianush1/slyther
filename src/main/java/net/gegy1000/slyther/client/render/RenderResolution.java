@@ -1,7 +1,8 @@
 package net.gegy1000.slyther.client.render;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+
+import net.gegy1000.slyther.client.SlytherClient;
 
 public class RenderResolution {
     private int width;
@@ -12,9 +13,9 @@ public class RenderResolution {
     private static final int BASE_WIDTH = 854;
     private static final int BASE_HEIGHT = 480;
 
-    public RenderResolution() {
-        int displayWidth = Display.getWidth();
-        int displayHeight = Display.getHeight();
+    public RenderResolution(SlytherClient client) {
+        int displayWidth = client.frameBufferWidth;
+        int displayHeight = client.frameBufferHeight;
 
         while (displayWidth / (scale + 1.0F) >= BASE_WIDTH && displayHeight / (scale + 1.0F) >= BASE_HEIGHT) {
             scale++;

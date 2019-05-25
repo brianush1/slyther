@@ -8,8 +8,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Modifier;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.GsonBuilder;
@@ -165,9 +163,9 @@ public abstract class GuiWithBanner extends Gui {
 	 * background's position.
 	 */
 	protected void renderBackground() {
-        float backgroundMoveX = Mouse.getX() - (Display.getWidth() / 2.0F);
-        float backgroundMoveY = (Display.getHeight() / 2.0F) - Mouse.getY();
-        float angle = (float) Math.atan2(backgroundMoveY, backgroundMoveX);
+        double backgroundMoveX = client.mouseX - (client.frameBufferWidth / 2.0F);
+        double backgroundMoveY = (client.frameBufferHeight / 2.0F) - client.mouseY;
+        double angle = Math.atan2(backgroundMoveY, backgroundMoveX);
         client.menuBackgroundX += Math.cos(angle) * 1.5F;
         client.menuBackgroundY += Math.sin(angle) * 1.5F;
 

@@ -7,8 +7,12 @@ import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.game.Color;
 import net.gegy1000.slyther.game.Skin;
 import net.gegy1000.slyther.game.entity.SnakePoint;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -342,9 +346,9 @@ public class GuiSelectSkin extends GuiWithBanner {
 
     @Override
     public void keyPressed(int key, char character) {
-        if (key == Keyboard.KEY_RIGHT || key == Keyboard.KEY_LEFT) {
-            updateSkin(key == Keyboard.KEY_RIGHT);
-        } else if (key == Keyboard.KEY_ESCAPE || key == Keyboard.KEY_BACK) {
+        if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT) {
+            updateSkin(key == GLFW_KEY_RIGHT);
+        } else if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_BACKSPACE) {
             exit();
         }
     }

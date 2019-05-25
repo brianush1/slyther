@@ -1,20 +1,56 @@
 package net.gegy1000.slyther.client;
 
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
+import static org.lwjgl.glfw.GLFW.GLFW_SAMPLES;
+import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.*;
+
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
+import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.reflections.Reflections;
 
-import net.gegy1000.slyther.client.controller.Controller;
 import net.gegy1000.slyther.client.controller.DefaultController;
 import net.gegy1000.slyther.client.controller.IController;
 import net.gegy1000.slyther.client.db.Database;
@@ -85,6 +121,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public float ticks;
 	public float lastTicks2;
 	public float ticks2;
+    private boolean remainOpen = true;
 
 	public float frameTicks;
 
@@ -118,6 +155,17 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
     public GameStatistic gameStatistic = new GameStatistic();
     
+	private int displayWidth = 640;
+	private int displayHeight = 480;
+	private long windowId;
+    
+    public double	mouseX;
+    public double	mouseY;
+    public double	mouseWheelX;
+    public double	mouseWheelY;
+    public int		frameBufferWidth = displayWidth;
+    public int		frameBufferHeight = displayHeight;
+    
     public float menuBackgroundX = 0;
     public float menuBackgroundY = 0;
     
@@ -129,6 +177,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public ClientConfig configuration;
 
 	public String userServerSelection;
+
+	private final int WINDOW_WIDTH  = 800;
+	private final int WINDOW_HEIGHT = 600;
+	private static final boolean START_FULLSCREEN = false;
+	private boolean accelerating = false;
 
 	public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
 
@@ -170,8 +223,18 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private static final File CONFIGURATION_FILE = new File(SystemUtils.getGameFolder(), "config.json");
 	private String server;
 
-	private int displayWidth;
-	private int displayHeight;
+	GLFWErrorCallback errorCallback;
+    /**
+     * A reference to the cursor pos callback.
+     */
+    private GLFWCursorPosCallback cursorPosCallback;
+    /**
+     * A reference to the mouse buttom callback.
+     */
+    private GLFWMouseButtonCallback mouseButtonCallback;
+    
+    private GLFWScrollCallback mouseWheelCallback;
+    private GLFWFramebufferSizeCallback	framebufferSizeCallback;
 
 	public SlytherClient() {
 		try {
@@ -182,32 +245,79 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			Log.catching(e);
 		}
 		userServerSelection = configuration.server;
-		Reflections reflections = new Reflections("net.gegy1000.slyther");
-		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
-		for (Class<?> controller : annotated) {
-			if (IController.class.isAssignableFrom(controller)) {
-				try {
-					Controller annotation = controller.getAnnotation(Controller.class);
-					setController((IController) controller.getDeclaredConstructor().newInstance());
-					Log.info("Using controller \"{}\" ({})", annotation.name(), controller.getSimpleName());
-					break;
-				} catch (Exception e) {
-				}
-			}
-		}
-		renderHandler = new RenderHandler(this);
-		renderHandler.setup();
+		setController(new DefaultController());
+//		Reflections reflections = new Reflections("net.gegy1000.slyther");
+//		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
+//		for (Class<?> controller : annotated) {
+//			if (IController.class.isAssignableFrom(controller)) {
+//				try {
+//					Controller annotation = controller.getAnnotation(Controller.class);
+//					setController((IController) controller.getDeclaredConstructor().newInstance());
+//					Log.info("Using controller \"{}\" ({})", annotation.name(), controller.getSimpleName());
+//					break;
+//				} catch (Exception e) {
+//				}
+//			}
+//		}
 		setup();
-	}
 
+	}
+	
 	@Override
 	public void run() {
-		double delta = 0;
-		long previousTime = System.nanoTime();
-		long timer = System.currentTimeMillis();
-		int ups = 0;
-		double nanoUpdates = 1000000000.0 / 30.0;
 
+		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createThrow());
+		if (!glfwInit())
+		{
+			System.err.println("Error initializing GLFW");
+			System.exit(1);
+		}
+
+		// Window Hints for OpenGL context
+		glfwWindowHint(GLFW_SAMPLES, 4);
+//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+//		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
+		windowId = glfwCreateWindow(displayWidth, displayHeight, "Slyther", NULL, NULL);
+
+		if (windowId == NULL) {
+			System.err.println("Error creating a window");
+			System.exit(1);
+		}
+
+		glfwDefaultWindowHints(); // optional, the current window hints are already the default
+		//Set resizable
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		//Request an OpenGL 3.3 Core context.
+//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
+		int windowWidth = WINDOW_WIDTH;
+		int windowHeight = WINDOW_HEIGHT;
+		long monitor = 0;
+		if(START_FULLSCREEN) {
+			//Get the primary monitor.
+			monitor = glfwGetPrimaryMonitor();
+			//Retrieve the desktop resolution
+			GLFWVidMode vidMode = glfwGetVideoMode(monitor);
+			windowWidth = vidMode.width();
+			windowHeight = vidMode.height();
+		}
+		//Create the window with the specified title.
+		//        window = glfwCreateWindow(windowWidth, windowHeight, "Pong - LWJGL3", monitor, 0);       
+		//
+		//        if(window == 0) {
+		//            throw new RuntimeException("Failed to create window");
+		//        }
+		//        //Make this window's context the current on this thread.
+		//        glfwMakeContextCurrent(window);
+		//        //Let LWJGL know to use this current context.
+
+		//        initGL();
+		/*		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -219,20 +329,125 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
+		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "slyther", 0, 0);
 
 		setupDisplay();
 		if (this.configuration.showFullScreen) {
 			this.toggleFullscreen();
 			setupDisplay();
 		}
+		 */
+		//Setup the cursor pos callback.
+		glfwSetMouseButtonCallback(windowId,  (mouseButtonCallback = new GLFWMouseButtonCallback() {
 
-		boolean doResize = false;
-
-		while (!Display.isCloseRequested()) {
-			if (Display.wasResized() && doResize) {
-				setupDisplay();
+			@Override
+			public void invoke(long window, int button, int action, int mods) {
+				if(button == 0) {
+					//If this event is down event and no current to-add-ball.
+					//Else If this event is up event and there is a current to-add-ball.
+					if(action == GLFW_PRESS) {
+						accelerating = true;
+					} else if(action == GLFW_RELEASE) {
+						accelerating = false;
+					}
+				}
 			}
-			doResize = true;
+		}));
+		glfwSetCursorPosCallback(windowId, (cursorPosCallback = new GLFWCursorPosCallback() {
+
+		    @Override
+		    public void invoke(long window, double xpos, double ypos) {
+		        mouseX = xpos;
+		        mouseY = ypos;
+		        //cursorPos.y = framebuffer.height - ypos;
+		    }
+
+		}));
+		glfwSetScrollCallback(windowId, (mouseWheelCallback = new GLFWScrollCallback() {
+
+		    @Override
+		    public void invoke(long window, double xpos, double ypos) {
+		        mouseWheelX = xpos;
+		        mouseWheelY = ypos;
+		        //cursorPos.y = framebuffer.height - ypos;
+		    }
+
+		}));
+		glfwSetFramebufferSizeCallback(windowId, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+		    @Override
+		    public void invoke(long window, int width, int height) {
+		        onResize(width, height);
+		    }
+		}));
+		onResize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		//boolean doResize = false;
+		// Make the OpenGL context current
+		glfwMakeContextCurrent(windowId);
+		// Enable v-sync
+		glfwSwapInterval(1);
+		glfwShowWindow(windowId);
+		renderHandler = new RenderHandler(this);
+		renderHandler.setup();
+		mainLoop();
+		if (networkManager != null && networkManager.isOpen()) {
+			networkManager.closeConnection(ClientNetworkManager.SHUTDOWN_CODE, "");
+		}
+		try {
+			ConfigHandler.INSTANCE.saveConfig(CONFIGURATION_FILE, configuration);
+		} catch (IOException e) {
+			Log.error("Failed to save config");
+			Log.catching(e);
+		}
+		glfwDestroyWindow(windowId);
+	}
+/*
+	private void setupDisplay() {
+		int height = Display.getHeight();
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glScissor(0, 0, width, height);
+		GL11.glViewport(0, 0, width, height);
+		renderHandler.init();
+	}
+*/
+	private void onResize(int width, int height) {
+		frameBufferWidth = width;
+		frameBufferHeight = height;
+	}
+	
+	private void setup() {
+		clearEntities();
+		delta = 0;
+		ticks = 0;
+		lastTicks = 0;
+		player = null;
+		lagging = false;
+		globalScale = INITIAL_SCALE;
+		lagMultiplier = 1.0F;
+		zoomOffset = 0.0F;
+		globalAlpha = 0.0F;
+		ServerHandler.INSTANCE.pingServers();
+	}
+
+	private void mainLoop() {
+		double delta = 0;
+		long previousTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		int ups = 0;
+		double nanoUpdates = 1000000000.0 / 30.0;
+
+		GL.createCapabilities();
+		while(!glfwWindowShouldClose(windowId) && remainOpen) {
+			//if (Display.wasResized() && doResize) {
+			//	setupDisplay();
+			//}
+			//doResize = true;
 
 			long currentTime = System.nanoTime();
 			double currentTickDelta = (currentTime - previousTime) / nanoUpdates;
@@ -266,7 +481,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 					networkManager.packetsPerSecond = 0;
 				}
 				fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
-				Display.setTitle("Slyther - " + fpsMessage);
+				//Display.setTitle("Slyther - " + fpsMessage);
 				fps = 0;
 
 				timer += 1000;
@@ -276,47 +491,14 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			}
 
 			GL11.glPopMatrix();
-			Display.sync(60);
-			Display.update();
+			//Display.sync(60);
+			//Display.update();
+			glfwPollEvents();
+			glfwSwapBuffers(windowId);
 		}
-		if (networkManager != null && networkManager.isOpen()) {
-			networkManager.closeConnection(ClientNetworkManager.SHUTDOWN_CODE, "");
-		}
-		try {
-			ConfigHandler.INSTANCE.saveConfig(CONFIGURATION_FILE, configuration);
-		} catch (IOException e) {
-			Log.error("Failed to save config");
-			Log.catching(e);
-		}
-		Display.destroy();
-	}
 
-	private void setupDisplay() {
-		int width = Display.getWidth();
-		int height = Display.getHeight();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glScissor(0, 0, width, height);
-		GL11.glViewport(0, 0, width, height);
-		renderHandler.init();
 	}
-
-	private void setup() {
-		clearEntities();
-		delta = 0;
-		ticks = 0;
-		lastTicks = 0;
-		player = null;
-		lagging = false;
-		globalScale = INITIAL_SCALE;
-		lagMultiplier = 1.0F;
-		zoomOffset = 0.0F;
-		globalAlpha = 0.0F;
-		ServerHandler.INSTANCE.pingServers();
-	}
-
+/*
 	public void toggleFullscreen() {
 		try {
 			if (Display.isFullscreen()) {
@@ -334,7 +516,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			Log.warn("Can't set fullscreen mode");
 		}
 	}
-
+*/
 	/** Check and handle if this key is a global client key.
 	 * Currently only F11=Fullscreen toggle is handled
 	 * @param key
@@ -343,18 +525,22 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	 */
 	public boolean handleKeyboard(int key, char character) {
 		//Log.debug("Key = {} char = {}", key, character);
-		if (key == Keyboard.KEY_F11) {
-			toggleFullscreen();
-			setupDisplay();
-			return(true);
-		}
-		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
-			return(true);
-		if (key == Keyboard.KEY_LMENU)
-			return(true);
+//		if (key == Keyboard.KEY_F11) {
+//			toggleFullscreen();
+//			setupDisplay();
+//			return(true);
+//		}
+//		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
+//			return(true);
+//		if (key == Keyboard.KEY_LMENU)
+//			return(true);
 		return(false);
 	}
 
+	void scrollCallback(long windowId, double xoffset, double yoffset) {
+		
+	}
+	
 	public void connect() {
 		allowUserInput = true;
 		new Thread(() -> {
@@ -503,7 +689,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 							networkManager.send(new MessageSetAngle(targetAngle));
 						}
 					}
-					player.accelerating = controller.shouldAccelerate();
+					player.accelerating = accelerating;
 					if (time - lastAccelerateUpdateTime > 150) {
 						if (player.accelerating != player.wasAccelerating) {
 							lastAccelerateUpdateTime = time;
@@ -512,8 +698,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 						}
 					}
 				}
+				@SuppressWarnings("rawtypes")
 				Iterator<Entity> entityIter = entityIterator();
 				while (entityIter.hasNext()) {
+					@SuppressWarnings("rawtypes")
 					Entity entity = entityIter.next();
 					if (entity.updateBase(delta, lastDelta, lastDelta2)) {
 						entityIter.remove();
@@ -530,7 +718,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientSnake getSnake(int id) {
-		for (Snake snake : getSnakes()) {
+		for (@SuppressWarnings("rawtypes") Snake snake : getSnakes()) {
 			if (snake.id == id) {
 				return (ClientSnake) snake;
 			}
@@ -539,7 +727,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientPrey getPrey(int id) {
-		for (Prey prey : getPreys()) {
+		for (@SuppressWarnings("rawtypes") Prey prey : getPreys()) {
 			if (prey.id == id) {
 				return (ClientPrey) prey;
 			}
@@ -548,7 +736,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientFood getFood(int id) {
-		for (Food food : getFoods()) {
+		for (@SuppressWarnings("rawtypes") Food food : getFoods()) {
 			if (food.id == id) {
 				return (ClientFood) food;
 			}
@@ -642,6 +830,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void removeSector(Sector sector) {
 		super.removeSector(sector);

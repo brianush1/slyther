@@ -4,8 +4,10 @@ import net.gegy1000.slyther.client.gui.element.ArrowElement;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.element.TextBoxElement;
 import net.gegy1000.slyther.network.ServerHandler;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import java.util.Collections;
 import java.util.List;
@@ -117,9 +119,9 @@ public class GuiSelectServer extends GuiWithBanner {
 
     @Override
     public void keyPressed(int key, char character) {
-        if (key == Keyboard.KEY_RIGHT || key == Keyboard.KEY_LEFT) {
-            updateSelection(key == Keyboard.KEY_RIGHT ? 1 : -1);
-        } else if (key == Keyboard.KEY_ESCAPE) {
+        if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT) {
+            updateSelection(key == GLFW_KEY_RIGHT ? 1 : -1);
+        } else if (key == GLFW_KEY_ESCAPE) {
             exit();
         }
     }

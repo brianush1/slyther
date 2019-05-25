@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.jfree.chart.JFreeChart;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -55,8 +54,8 @@ public class GuiStatistics extends Gui {
 			GL11.glScalef(1.0F, 1.0F, 1.0F);
 			float x = 10F;
 			float y = 10F;
-			float width = Display.getWidth()-20F;
-			float height = Display.getHeight()-150F;
+			float width = client.frameBufferWidth-20F;
+			float height = client.frameBufferHeight-150F;
 			if (width > 1024)		// XXX: This hack shows a lack of understanding on my part about how
 				width /= 2;			// XXX: opengl works.  Because this makes the graph work, but it makes no sense.
 			if (height > 1024)
@@ -78,9 +77,9 @@ public class GuiStatistics extends Gui {
 		if (!graphicsPrepared) {
 			if (statisticsThread.isChartReady()) {
 				JFreeChart chart = statisticsThread.getChart();
-				Log.debug("Width/height= {} / {}", Display.getWidth(), Display.getHeight());
-				int w = Display.getWidth();
-				int h = Display.getHeight();
+				Log.debug("Width/height= {} / {}", client.frameBufferWidth, client.frameBufferHeight);
+				int w = client.frameBufferWidth;
+				int h = client.frameBufferHeight;
 				if (w > 1024)
 					w = 1024;
 				if (h > 1024)
