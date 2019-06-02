@@ -7,7 +7,8 @@ import net.gegy1000.slyther.client.render.RenderResolution;
 import net.gegy1000.slyther.client.render.TextureManager;
 import net.gegy1000.slyther.util.Log;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.TrueTypeFont;
+
+import com.buckosoft.glelements.TrueTypeFont;
 
 import java.util.ArrayList;
 import java.util.Collections;

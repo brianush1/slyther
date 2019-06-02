@@ -8,7 +8,7 @@ import net.gegy1000.slyther.server.ConnectedClient;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implements Comparable<Snake> {
+public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implements Comparable<Snake<?>> {
     public String name;
     public int id;
     public Skin skin;
@@ -231,7 +231,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
     }
 
     @Override
-    public boolean shouldTrack(Sector sector) {
+    public boolean shouldTrack(Sector<?> sector) {
         for (SnakePoint point : points) {
             if (point.shouldTrack(sector)) {
                 return true;
@@ -241,7 +241,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
     }
 
     @Override
-    public int compareTo(Snake snake) {
+    public int compareTo(Snake<?> snake) {
         return Integer.compare(snake.getLength(), getLength());
     }
 
@@ -257,7 +257,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
 
     @Override
     public boolean equals(Object object) {
-        return object instanceof Snake && id == ((Snake) object).id;
+        return object instanceof Snake && id == ((Snake<?>) object).id;
     }
 
     @Override

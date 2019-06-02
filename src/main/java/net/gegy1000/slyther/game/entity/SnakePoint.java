@@ -53,7 +53,7 @@ public class SnakePoint {
         return (float) (prevFy + frameDelta * (fy - prevFy));
     }
 
-    public boolean shouldTrack(Sector sector) {
+    public boolean shouldTrack(Sector<?> sector) {
         int sectorSize = game.getSectorSize();
         return (int) (posX / sectorSize) == sector.posX && (int) (posY / sectorSize) == sector.posY;
     }

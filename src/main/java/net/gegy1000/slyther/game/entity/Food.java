@@ -12,7 +12,7 @@ public abstract class Food<GME extends Game<?, ?>> extends Entity<GME> {
     public int sectorX;
     public int sectorY;
     public boolean isNatural;
-    public Snake eater;
+    public Snake<?> eater;
 
     public float lrrad;
     public float fade;
@@ -48,7 +48,7 @@ public abstract class Food<GME extends Game<?, ?>> extends Entity<GME> {
 
     @Override
     public boolean equals(Object object) {
-        return object instanceof Food && id == ((Food) object).id;
+        return object instanceof Food && id == ((Food<?>) object).id;
     }
 
     @Override

@@ -12,8 +12,8 @@ import javax.imageio.ImageIO;
 
 import org.jfree.chart.JFreeChart;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+
+import com.buckosoft.glelements.Texture;
 
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.stats.StatisticsThread;
@@ -90,7 +90,7 @@ public class GuiStatistics extends Gui {
 				ByteArrayOutputStream os = new ByteArrayOutputStream();
 				try {
 					ImageIO.write(bi, "png", os);
-					Texture t = TextureLoader.getTexture("png", new ByteArrayInputStream(os.toByteArray()));
+					Texture t = Texture.getTexture(new ByteArrayInputStream(os.toByteArray()));
 					renderHandler.textureManager.cacheChart(t);
 					graphicsPrepared = true;
 				} catch (IOException e) {

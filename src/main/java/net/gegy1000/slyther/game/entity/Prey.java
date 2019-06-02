@@ -15,7 +15,7 @@ public abstract class Prey<GME extends Game<?, ?>> extends Entity<GME> {
     public float angle;
     public float speed;
     public boolean eaten;
-    public Snake eater;
+    public Snake<?> eater;
 
     public float gr;
     public float fr;

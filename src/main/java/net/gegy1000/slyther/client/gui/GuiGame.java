@@ -508,7 +508,7 @@ public class GuiGame extends Gui {
             			renderResolution.getWidth() - largeFont.getWidth("Leaderboard:") / 2.0F - 10.0F,
             			2.0F, 0.5F, 0xFFFFFF | titleAlpha<<24);
 
-	            int leaderboardY = (largeFont.getHeight() / 2) + 4;
+	            int leaderboardY = (int)((largeFont.getHeight() / 2) + 4);
 	
 	            List<LeaderboardEntry> leaderboard = new ArrayList<>(client.leaderboard);
 	            int alpha = 255;

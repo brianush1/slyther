@@ -24,7 +24,7 @@ public abstract class Entity<GME extends Game<?, ?>> {
         return update(delta, lastDelta, lastDelta2);
     }
 
-    public boolean shouldTrack(Sector sector) {
+    public boolean shouldTrack(Sector<?> sector) {
         return getSector().equals(sector);
     }
 

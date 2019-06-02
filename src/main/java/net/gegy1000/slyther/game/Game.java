@@ -64,9 +64,9 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
         return null;
     }
 
-    public List<Entity> getMovingEntitiesInSector(Sector sector) {
-        List<Entity> entities = new ArrayList<>();
-        for (Entity entity : this.entities) {
+    public List<Entity<?>> getMovingEntitiesInSector(Sector<?> sector) {
+        List<Entity<?>> entities = new ArrayList<>();
+        for (Entity<?> entity : this.entities) {
             if (entity.canMove() && entity.shouldTrack(sector)) {
                 entities.add(entity);
             }
@@ -78,11 +78,11 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
         if (!entities.contains(entity)) {
             entities.add(entity);
             if (entity instanceof Snake) {
-                snakes.add((Snake) entity);
+                snakes.add((Snake<?>) entity);
             } else if (entity instanceof Food) {
-                foods.add((Food) entity);
+                foods.add((Food<?>) entity);
             } else if (entity instanceof Prey) {
-                preys.add((Prey) entity);
+                preys.add((Prey<?>) entity);
             }
         }
     }
@@ -107,11 +107,11 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
         sectors.clear();
     }
 
-    public Iterator<Entity> entityIterator() {
-        return new Iterator<Entity>() {
+    public Iterator<Entity<?>> entityIterator() {
+        return new Iterator<Entity<?>>() {
             private int index;
 
-            private Entity lastEntity;
+            private Entity<?> lastEntity;
 
             @Override
             public boolean hasNext() {
@@ -119,7 +119,7 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
             }
 
             @Override
-            public Entity next() {
+            public Entity<?> next() {
                 return lastEntity = entities.get(index++);
             }
 

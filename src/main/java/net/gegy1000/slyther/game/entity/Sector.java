@@ -30,7 +30,7 @@ public abstract class Sector<GME extends Game<?, ?>> {
     public void startTracking(ConnectedClient tracker) {
         tracker.send(new MessageAddSector(this));
         tracker.send(new MessagePopulateSector(this));
-        for (Entity entity : game.getEntities()) {
+        for (Entity<?> entity : game.getEntities()) {
             int sectorX = (int) (entity.posX / game.getSectorSize());
             int sectorY = (int) (entity.posY / game.getSectorSize());
             if (sectorX == posX && sectorY == posY) {
@@ -45,7 +45,7 @@ public abstract class Sector<GME extends Game<?, ?>> {
 
     public void stopTracking(ConnectedClient tracker) {
         tracker.send(new MessageRemoveSector(this));
-        for (Entity entity : game.getEntities()) {
+        for (Entity<?> entity : game.getEntities()) {
             int sectorX = (int) (entity.posX / game.getSectorSize());
             int sectorY = (int) (entity.posY / game.getSectorSize());
             if (sectorX == posX && sectorY == posY) {
@@ -60,6 +60,6 @@ public abstract class Sector<GME extends Game<?, ?>> {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Sector && ((Sector) o).posX == posX && ((Sector) o).posY == posY;
+        return o instanceof Sector && ((Sector<?>) o).posX == posX && ((Sector<?>) o).posY == posY;
     }
 }

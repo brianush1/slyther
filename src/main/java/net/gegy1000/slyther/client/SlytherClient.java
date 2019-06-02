@@ -698,8 +698,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 						}
 					}
 				}
-				@SuppressWarnings("rawtypes")
-				Iterator<Entity> entityIter = entityIterator();
+				Iterator<Entity<?>> entityIter = entityIterator();
 				while (entityIter.hasNext()) {
 					@SuppressWarnings("rawtypes")
 					Entity entity = entityIter.next();
