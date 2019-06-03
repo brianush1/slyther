@@ -5,16 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.reflections.Reflections;
 
-import net.gegy1000.slyther.client.controller.Controller;
 import net.gegy1000.slyther.client.controller.DefaultController;
 import net.gegy1000.slyther.client.controller.IController;
 import net.gegy1000.slyther.client.db.Database;
@@ -182,19 +179,20 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			Log.catching(e);
 		}
 		userServerSelection = configuration.server;
-		Reflections reflections = new Reflections("net.gegy1000.slyther");
-		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
-		for (Class<?> controller : annotated) {
-			if (IController.class.isAssignableFrom(controller)) {
-				try {
-					Controller annotation = controller.getAnnotation(Controller.class);
-					setController((IController) controller.getDeclaredConstructor().newInstance());
-					Log.info("Using controller \"{}\" ({})", annotation.name(), controller.getSimpleName());
-					break;
-				} catch (Exception e) {
-				}
-			}
-		}
+		setController(new DefaultController());
+//		Reflections reflections = new Reflections("net.gegy1000.slyther");
+//		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
+//		for (Class<?> controller : annotated) {
+//			if (IController.class.isAssignableFrom(controller)) {
+//				try {
+//					Controller annotation = controller.getAnnotation(Controller.class);
+//					setController((IController) controller.getDeclaredConstructor().newInstance());
+//					Log.info("Using controller \"{}\" ({})", annotation.name(), controller.getSimpleName());
+//					break;
+//				} catch (Exception e) {
+//				}
+//			}
+//		}
 		renderHandler = new RenderHandler(this);
 		renderHandler.setup();
 		setup();
