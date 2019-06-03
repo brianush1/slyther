@@ -76,7 +76,8 @@ public class RenderHandler {
             for (Color color : Color.values()) {
                 String name = color.name().toLowerCase();
                 for (int i = 0; i < 6; i++) {
-                    textureManager.bindTexture("/textures/colors/snake_" + name + "_" + i + ".png");
+                    //textureManager.bindTexture("/textures/colors/snake_" + name + "_" + i + ".png");
+                    textureManager.getTexture("/textures/colors/snake_" + name + "_" + i + ".png");
                 }
                 Log.debug("Load " + color.name() + " textures.");
             }

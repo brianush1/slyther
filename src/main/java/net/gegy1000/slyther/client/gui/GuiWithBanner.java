@@ -163,6 +163,7 @@ public abstract class GuiWithBanner extends Gui {
 	 * background's position.
 	 */
 	protected void renderBackground() {
+
         double backgroundMoveX = client.mouseX - (client.frameBufferWidth / 2.0F);
         double backgroundMoveY = (client.frameBufferHeight / 2.0F) - client.mouseY;
         double angle = Math.atan2(backgroundMoveY, backgroundMoveX);
@@ -170,7 +171,9 @@ public abstract class GuiWithBanner extends Gui {
         client.menuBackgroundY += Math.sin(angle) * 1.5F;
 
         textureManager.bindTexture("/textures/background.png");
+        //Log.warn("mbX/Y = {}/{} rW/H = {}/{}", client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale);
         drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 599, 519);
+//        drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 98, 98);
 		
 	}
 

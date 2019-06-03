@@ -1,11 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-<Configuration status="warn" name="Slyther" packages="net.gegy1000.slyther">
+<Configuration status="warn" name="Slyther"	packages="net.gegy1000.slyther">
+	<Properties>
+		<Property name="filename">slyther.log</Property>
+		<Property name="basePath">.</Property>
+	</Properties>
 	<Appenders>
-		<Console name="Console" target="SYSTEM_OUT">
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
 			<PatternLayout
 				pattern="[%d{HH:mm:ss} %-5level] [%t]: %msg%n" />
 		</Console>
+       <RollingFile name="fileLogger" fileName="${basePath}/slyther.log" filePattern="${basePath}/slyther-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+ 
 	</Appenders>
 	<Loggers>
 		<Logger name="org.hibernate" level="error" />
@@ -14,6 +27,7 @@
 		<Logger name="org.newdawn" level="warn" />
 		<Root level="debug">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="fileLogger" />
 		</Root>
 	</Loggers>
 </Configuration>

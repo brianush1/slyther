@@ -16,3 +16,4 @@ libs/
 debian/
 target/
 /pom.xml
+*.log

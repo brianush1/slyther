@@ -155,8 +155,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
     public GameStatistic gameStatistic = new GameStatistic();
     
-	private int displayWidth = 640;
-	private int displayHeight = 480;
+	private final int WINDOW_WIDTH  = 640;
+	private final int WINDOW_HEIGHT = 480;
+	private int displayWidth = WINDOW_WIDTH;
+	private int displayHeight = WINDOW_HEIGHT;
 	private long windowId;
     
     public double	mouseX;
@@ -178,8 +180,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public String userServerSelection;
 
-	private final int WINDOW_WIDTH  = 800;
-	private final int WINDOW_HEIGHT = 600;
 	private static final boolean START_FULLSCREEN = false;
 	private boolean accelerating = false;
 
@@ -279,7 +279,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 //		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 //		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		windowId = glfwCreateWindow(displayWidth, displayHeight, "Slyther", NULL, NULL);
 
@@ -295,16 +299,16 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 //		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
-		int windowWidth = WINDOW_WIDTH;
-		int windowHeight = WINDOW_HEIGHT;
+		displayWidth = WINDOW_WIDTH;
+		displayHeight = WINDOW_HEIGHT;
 		long monitor = 0;
 		if(START_FULLSCREEN) {
 			//Get the primary monitor.
 			monitor = glfwGetPrimaryMonitor();
 			//Retrieve the desktop resolution
 			GLFWVidMode vidMode = glfwGetVideoMode(monitor);
-			windowWidth = vidMode.width();
-			windowHeight = vidMode.height();
+			displayWidth = vidMode.width();
+			displayHeight = vidMode.height();
 		}
 		//Create the window with the specified title.
 		//        window = glfwCreateWindow(windowWidth, windowHeight, "Pong - LWJGL3", monitor, 0);       
@@ -383,7 +387,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		        onResize(width, height);
 		    }
 		}));
-		onResize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		onResize(displayWidth, displayHeight);
 		//boolean doResize = false;
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(windowId);
@@ -443,6 +447,18 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		double nanoUpdates = 1000000000.0 / 30.0;
 
 		GL.createCapabilities();
+
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_LIGHTING);
+
+		GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+		GL11.glClearDepth(1);
+		glfwMakeContextCurrent(windowId);
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		while(!glfwWindowShouldClose(windowId) && remainOpen) {
 			//if (Display.wasResized() && doResize) {
 			//	setupDisplay();
@@ -463,6 +479,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			}
 
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			GL11.glMatrixMode(GL11.GL_PROJECTION);
+			GL11.glLoadIdentity();
+			//GL11.glOrtho(0, 600, 0, 600, 1, -1);
+			GL11.glOrtho(0, frameBufferWidth, frameBufferHeight, 0, 1, -1);
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glPushMatrix();
 
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);

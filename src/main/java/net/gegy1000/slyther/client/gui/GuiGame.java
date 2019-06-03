@@ -127,7 +127,7 @@ public class GuiGame extends Gui {
             if (client.configuration.debugMode) {
                 GL11.glColor4f(0, 1, 0, 0.1F);
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
-                for (Sector sector : client.getSectors()) {
+                for (Sector<?> sector : client.getSectors()) {
                     GL11.glRectf(
                             sector.posX * client.SECTOR_SIZE,
                             sector.posY * client.SECTOR_SIZE,
@@ -141,7 +141,7 @@ public class GuiGame extends Gui {
             if (client.globalAlpha != 1.0F) {
                 globalAlpha = 1.75F * client.globalAlpha;
             }
-            for (Food food : client.getFoods()) {
+            for (Food<?> food : client.getFoods()) {
                 float renderX = food.getRenderX(frameDelta);
                 float renderY = food.getRenderY(frameDelta);
                 if (renderX >= renderHandler.foodMinX && renderX <= renderHandler.foodMaxX && renderY >= renderHandler.foodMinY && renderY <= renderHandler.foodMaxY) {
@@ -156,7 +156,7 @@ public class GuiGame extends Gui {
                     GL11.glPopMatrix();
                 }
             }
-            for (Prey prey : client.getPreys()) {
+            for (Prey<?> prey : client.getPreys()) {
                 float posX = prey.getRenderX(frameDelta) + prey.getRenderFX(frameDelta);
                 float posY = prey.getRenderY(frameDelta) + prey.getRenderFY(frameDelta);
                 if (posX >= renderHandler.foodMinX && posX <= renderHandler.foodMaxX && posY >= renderHandler.foodMinY && posY <= renderHandler.foodMaxY) {
