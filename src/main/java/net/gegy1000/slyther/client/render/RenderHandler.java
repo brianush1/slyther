@@ -15,7 +15,7 @@ import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.Gui;
 import net.gegy1000.slyther.client.gui.GuiMainMenu;
 import net.gegy1000.slyther.game.Color;
-import net.gegy1000.slyther.util.Log;
+//import net.gegy1000.slyther.util.Log;
 
 public class RenderHandler {
     public SlytherClient client;
@@ -63,8 +63,6 @@ public class RenderHandler {
 //            Display.create();
 //            Keyboard.create();
 //            Mouse.create();
-		font = new TrueTypeFont();
-		largeFont = new TrueTypeFont();
 //		try {
 //			Font awtFont = new Font("Arial Rounded MT Bold", Font.PLAIN, 0);
 //			font = new TrueTypeFont(awtFont.deriveFont(28.0F), true);
@@ -73,18 +71,18 @@ public class RenderHandler {
 //			Log.catching(e);
 //		}
 		init();
-            for (Color color : Color.values()) {
-                String name = color.name().toLowerCase();
-                for (int i = 0; i < 6; i++) {
-                    //textureManager.bindTexture("/textures/colors/snake_" + name + "_" + i + ".png");
-                    textureManager.getTexture("/textures/colors/snake_" + name + "_" + i + ".png");
-                }
-                Log.debug("Load " + color.name() + " textures.");
-            }
+		font = new TrueTypeFont();
+		font.load("FreeSans.ttf", 28);
+		largeFont = new TrueTypeFont();
+		largeFont.load("FreeSans.ttf", 55);
+		for (Color color : Color.values()) {
+			String name = color.name().toLowerCase();
+			for (int i = 0; i < 6; i++) {
+				textureManager.getTexture("/textures/colors/snake_" + name + "_" + i + ".png");
+			}
+			//Log.debug("Load " + color.name() + " textures.");
+		}
 		openGui(new GuiMainMenu());
-//        } catch (LWJGLException e) {
-//            Log.catching(e);
-//        }
     }
 
 //    private ByteBuffer toBuffer(String directory) throws IOException {
