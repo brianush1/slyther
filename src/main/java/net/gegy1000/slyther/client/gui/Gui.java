@@ -139,7 +139,7 @@ public abstract class Gui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glScalef(scale, scale, 1.0F);
-        font.drawString(x / scale, y / scale, text, new org.newdawn.slick.Color(color));
+        font.drawString(x / scale, y / scale, text, color);
         GL11.glPopMatrix();
     }
 
@@ -147,7 +147,7 @@ public abstract class Gui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glScalef(scale, scale, 1.0F);
-        font.drawString(x / scale - font.getWidth(text) / 2.0F, y / scale - font.getHeight() / 2.0F, text, new org.newdawn.slick.Color(color));
+        font.drawString(x / scale - font.getWidth(text) / 2.0F, y / scale - font.getHeight() / 2.0F, text, color);
         GL11.glPopMatrix();
     }
 
@@ -155,7 +155,7 @@ public abstract class Gui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glScalef(scale, scale, 1.0F);
-        largeFont.drawString(x / scale, y / scale, text, new org.newdawn.slick.Color(color));
+        largeFont.drawString(x / scale, y / scale, text, color);
         GL11.glPopMatrix();
     }
 
@@ -163,7 +163,7 @@ public abstract class Gui {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glScalef(scale, scale, 1.0F);
-        largeFont.drawString(x / scale - largeFont.getWidth(text) / 2.0F, y / scale - largeFont.getHeight() / 2.0F, text, new org.newdawn.slick.Color(color));
+        largeFont.drawString(x / scale - largeFont.getWidth(text) / 2.0F, y / scale - largeFont.getHeight() / 2.0F, text, color);
         GL11.glPopMatrix();
     }
 
