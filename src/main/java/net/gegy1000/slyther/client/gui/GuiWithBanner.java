@@ -171,10 +171,7 @@ public abstract class GuiWithBanner extends Gui {
         client.menuBackgroundY += Math.sin(angle) * 1.5F;
 
         textureManager.bindTexture("/textures/background.png");
-        //Log.warn("mbX/Y = {}/{} rW/H = {}/{}", client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale);
-        drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 599, 519);
-//        drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 98, 98);
-		
+        drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 599, 519);		
 	}
 
 	private class LetterPart {

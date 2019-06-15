@@ -20,13 +20,14 @@ public class DatabaseImpl implements Database {
         session.getTransaction().commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<GameStatistic> getGames() {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction t = session.beginTransaction();
 		List<GameStatistic> gsl = null;
 		try {
-			Query query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			Query<?> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
 			query.setMaxResults(50);
 			gsl = (List<GameStatistic>)query.getResultList();
 			
@@ -47,10 +48,11 @@ public class DatabaseImpl implements Database {
 		Transaction t = session.beginTransaction();
 		GameStatistic gs = null;
 		try {
-			Query query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			@SuppressWarnings("unchecked")
+			Query<GameStatistic> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
 			query.setFirstResult(0);
 			query.setMaxResults(1);
-			gs = (GameStatistic)query.uniqueResult();
+			gs = query.uniqueResult();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
