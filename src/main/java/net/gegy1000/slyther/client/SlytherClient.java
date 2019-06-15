@@ -1,37 +1,7 @@
 package net.gegy1000.slyther.client;
 
-import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
-import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
-import static org.lwjgl.glfw.GLFW.GLFW_SAMPLES;
-import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
-import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
-import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.*;
 
-import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
-import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
-import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
-import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
-import static org.lwjgl.glfw.GLFW.glfwWindowHint;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -161,8 +131,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private int displayHeight = WINDOW_HEIGHT;
 	private long windowId;
     
-    public double	mouseX;
-    public double	mouseY;
+    public float	mouseX;
+    public float	mouseY;
     public double	mouseWheelX;
     public double	mouseWheelY;
     public int		frameBufferWidth = displayWidth;
@@ -182,6 +152,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	private static final boolean START_FULLSCREEN = false;
 	private boolean accelerating = false;
+	private boolean isMouseDown = false;
 
 	public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
 
@@ -227,13 +198,17 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
     /**
      * A reference to the cursor pos callback.
      */
-    private GLFWCursorPosCallback cursorPosCallback;
+    @SuppressWarnings("unused")
+	private GLFWCursorPosCallback cursorPosCallback;
     /**
      * A reference to the mouse buttom callback.
      */
+    @SuppressWarnings("unused")
     private GLFWMouseButtonCallback mouseButtonCallback;
     
+    @SuppressWarnings("unused")
     private GLFWScrollCallback mouseWheelCallback;
+    @SuppressWarnings("unused")
     private GLFWFramebufferSizeCallback	framebufferSizeCallback;
 
 	public SlytherClient() {
@@ -285,6 +260,19 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
+		displayWidth = WINDOW_WIDTH;
+		displayHeight = WINDOW_HEIGHT;
+		long monitor = 0;
+		if(START_FULLSCREEN) {
+			//Get the primary monitor.
+			monitor = glfwGetPrimaryMonitor();
+			//Retrieve the desktop resolution
+			GLFWVidMode vidMode = glfwGetVideoMode(monitor);
+			displayWidth = vidMode.width();
+			displayHeight = vidMode.height();
+			glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
+			
+		}
 		windowId = glfwCreateWindow(displayWidth, displayHeight, "Slyther", NULL, NULL);
 
 		if (windowId == NULL) {
@@ -299,17 +287,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 //		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
-		displayWidth = WINDOW_WIDTH;
-		displayHeight = WINDOW_HEIGHT;
-		long monitor = 0;
-		if(START_FULLSCREEN) {
-			//Get the primary monitor.
-			monitor = glfwGetPrimaryMonitor();
-			//Retrieve the desktop resolution
-			GLFWVidMode vidMode = glfwGetVideoMode(monitor);
-			displayWidth = vidMode.width();
-			displayHeight = vidMode.height();
-		}
 		//Create the window with the specified title.
 		//        window = glfwCreateWindow(windowWidth, windowHeight, "Pong - LWJGL3", monitor, 0);       
 		//
@@ -351,6 +328,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
 				if(button == 0) {
+					Log.debug("mouse action = {} mods = {}", action, mods);
 					//If this event is down event and no current to-add-ball.
 					//Else If this event is up event and there is a current to-add-ball.
 					if(action == GLFW_PRESS) {
@@ -358,6 +336,15 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 					} else if(action == GLFW_RELEASE) {
 						accelerating = false;
 					}
+					if (action == GLFW_PRESS && !isMouseDown) {
+						isMouseDown = true;
+						for (Gui gui : renderHandler.getGuis()) {
+							gui.mouseClickedBase(mouseX, mouseY, button);
+						}
+					}
+					if (action == GLFW_RELEASE)
+						isMouseDown = false;
+
 				}
 			}
 		}));
@@ -365,8 +352,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 		    @Override
 		    public void invoke(long window, double xpos, double ypos) {
-		        mouseX = xpos;
-		        mouseY = ypos;
+		        mouseX = (float)xpos;
+		        mouseY = (float)ypos;
 		        //cursorPos.y = framebuffer.height - ypos;
 		    }
 
@@ -384,6 +371,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		glfwSetFramebufferSizeCallback(windowId, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 		    @Override
 		    public void invoke(long window, int width, int height) {
+		    	Log.debug("onResize");
 		        onResize(width, height);
 		    }
 		}));
@@ -395,7 +383,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		glfwSwapInterval(1);
 		glfwShowWindow(windowId);
 		renderHandler = new RenderHandler(this);
-		renderHandler.setup();
 		mainLoop();
 		if (networkManager != null && networkManager.isOpen()) {
 			networkManager.closeConnection(ClientNetworkManager.SHUTDOWN_CODE, "");
@@ -436,7 +423,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		lagMultiplier = 1.0F;
 		zoomOffset = 0.0F;
 		globalAlpha = 0.0F;
-		ServerHandler.INSTANCE.pingServers();
+//		ServerHandler.INSTANCE.pingServers();
 	}
 
 	private void mainLoop() {
@@ -459,6 +446,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		renderHandler.setup();
 		while(!glfwWindowShouldClose(windowId) && remainOpen) {
 			//if (Display.wasResized() && doResize) {
 			//	setupDisplay();
