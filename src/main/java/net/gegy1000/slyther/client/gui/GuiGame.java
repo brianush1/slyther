@@ -592,7 +592,7 @@ public class GuiGame extends Gui {
     }
 
     @Override
-    public void keyPressed(int key, char character) {
+    public void keyPressed(int key) {
         if (key == GLFW_KEY_BACKSPACE || key == GLFW_KEY_ESCAPE) {
             client.close();
             closeGui();

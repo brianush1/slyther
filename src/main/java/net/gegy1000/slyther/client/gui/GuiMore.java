@@ -86,7 +86,7 @@ public class GuiMore extends GuiWithBanner {
 	}
 
 	@Override
-	public void keyPressed(int key, char character) {
+	public void keyPressed(int key) {
 		// TODO Auto-generated method stub
 
 	}

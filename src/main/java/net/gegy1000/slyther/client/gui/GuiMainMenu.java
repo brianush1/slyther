@@ -75,7 +75,7 @@ public class GuiMainMenu extends GuiWithBanner {
 	}
 
     @Override
-    public void keyPressed(int key, char character) {
+    public void keyPressed(int key) {
 
     }
 

@@ -103,15 +103,11 @@ public class GuiStatistics extends Gui {
 	}
 
 	@Override
-	public void keyPressed(int key, char character) {
-		// TODO Auto-generated method stub
-		
+	public void keyPressed(int key) {
 	}
 
 	@Override
 	public void mouseClicked(float mouseX, float mouseY, int button) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void exit() {

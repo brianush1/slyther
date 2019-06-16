@@ -345,7 +345,7 @@ public class GuiSelectSkin extends GuiWithBanner {
     }
 
     @Override
-    public void keyPressed(int key, char character) {
+    public void keyPressed(int key) {
         if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT) {
             updateSkin(key == GLFW_KEY_RIGHT);
         } else if (key == GLFW_KEY_ESCAPE || key == GLFW_KEY_BACKSPACE) {

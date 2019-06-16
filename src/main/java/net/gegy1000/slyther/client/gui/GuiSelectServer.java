@@ -118,7 +118,7 @@ public class GuiSelectServer extends GuiWithBanner {
     }
 
     @Override
-    public void keyPressed(int key, char character) {
+    public void keyPressed(int key) {
         if (key == GLFW_KEY_RIGHT || key == GLFW_KEY_LEFT) {
             updateSelection(key == GLFW_KEY_RIGHT ? 1 : -1);
         } else if (key == GLFW_KEY_ESCAPE) {

@@ -60,16 +60,25 @@ public abstract class Gui {
 
     public abstract void update();
 
-    public final void keyPressedBase(int key, char character) {
-        for (Element element : elements) {
-            element.keyPressed(key, character);
-        }
-        keyPressed(key, character);
-    }
+	public final void keyPressedBase(int key) {
+		for (Element element : elements) {		// elemeents don't char about keyPressed. Only TextElement wants 
+			element.keyPressed(key);
+		}
+		keyPressed(key);
+	}
 
-    public abstract void keyPressed(int key, char character);
+	public boolean keyCharPressed(int character) {
+		for (Element element : elements) {		// elemeents don't char about keyPressed. Only TextElement wants 
+			element.charPressed(character);
+		}
+		return(false);
+	}
+	
+    protected abstract void keyPressed(int key);
 
     public final void mouseClickedBase(float mouseX, float mouseY, int button) {
+    	mouseX /= renderResolution.getScale();
+    	mouseY /= renderResolution.getScale();
         List<Element> elements = new ArrayList<>(this.elements);
         Collections.reverse(elements);
         for (Element element : elements) {

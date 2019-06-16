@@ -18,10 +18,6 @@ public class ArrowElement extends Element {
     }
 
     @Override
-    public void keyPressed(int key, char character) {
-    }
-
-    @Override
     public void update() {
     }
 
@@ -42,4 +38,16 @@ public class ArrowElement extends Element {
         }
         return false;
     }
+
+	@Override
+	public void keyPressed(int key) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void charPressed(int character) {
+		// TODO Auto-generated method stub
+		
+	}
 }

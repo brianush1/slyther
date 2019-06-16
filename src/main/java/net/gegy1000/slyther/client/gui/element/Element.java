@@ -19,7 +19,9 @@ public abstract class Element {
         this.height = height;
     }
 
-    public abstract void keyPressed(int key, char character);
+    public abstract void keyPressed(int key);
+    
+    public abstract void charPressed(int character);
 
     public abstract void update();
 

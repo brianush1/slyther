@@ -322,7 +322,22 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			setupDisplay();
 		}
 		 */
-		//Setup the cursor pos callback.
+		glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
+			Log.debug("keyCallback key= {} scancode= {}", key, scancode);
+//			ctrlDown = (mods & GLFW_MOD_CONTROL) != 0;
+			if (action == GLFW_RELEASE) {
+				return;
+			}
+			for (Gui gui : renderHandler.getGuis()) {
+				gui.keyPressedBase(key);
+			}
+		});
+		glfwSetCharCallback(windowId, (window, codePoint) -> {
+			Log.debug("charCallback {}", codePoint);
+			for (Gui gui : renderHandler.getGuis()) {
+				gui.keyCharPressed(codePoint);
+			}
+		});
 		glfwSetMouseButtonCallback(windowId,  (mouseButtonCallback = new GLFWMouseButtonCallback() {
 
 			@Override
@@ -339,7 +354,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 					if (action == GLFW_PRESS && !isMouseDown) {
 						isMouseDown = true;
 						for (Gui gui : renderHandler.getGuis()) {
-							gui.mouseClickedBase(mouseX, mouseY, button);
+							gui.mouseClickedBase(mouseX, displayHeight - mouseY, button);
 						}
 					}
 					if (action == GLFW_RELEASE)
@@ -353,7 +368,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		    @Override
 		    public void invoke(long window, double xpos, double ypos) {
 		        mouseX = (float)xpos;
-		        mouseY = (float)ypos;
+		        mouseY = displayHeight - (float)ypos;
 		        //cursorPos.y = framebuffer.height - ypos;
 		    }
 
@@ -423,7 +438,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		lagMultiplier = 1.0F;
 		zoomOffset = 0.0F;
 		globalAlpha = 0.0F;
-//		ServerHandler.INSTANCE.pingServers();
+		ServerHandler.INSTANCE.pingServers();
 	}
 
 	private void mainLoop() {
@@ -469,7 +484,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			GL11.glMatrixMode(GL11.GL_PROJECTION);
 			GL11.glLoadIdentity();
-			//GL11.glOrtho(0, 600, 0, 600, 1, -1);
 			GL11.glOrtho(0, frameBufferWidth, frameBufferHeight, 0, 1, -1);
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glPushMatrix();
@@ -500,8 +514,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			}
 
 			GL11.glPopMatrix();
-			//Display.sync(60);
-			//Display.update();
 			glfwPollEvents();
 			glfwSwapBuffers(windowId);
 		}
@@ -532,7 +544,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	 * @param character
 	 * @return true if we ate the key
 	 */
-	public boolean handleKeyboard(int key, char character) {
+	public boolean handleKeyboard(int key) {
 		//Log.debug("Key = {} char = {}", key, character);
 //		if (key == Keyboard.KEY_F11) {
 //			toggleFullscreen();
@@ -543,6 +555,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //			return(true);
 //		if (key == Keyboard.KEY_LMENU)
 //			return(true);
+		for (Gui gui : renderHandler.getGuis()) {
+			gui.keyPressedBase(key);
+		}
 		return(false);
 	}
 

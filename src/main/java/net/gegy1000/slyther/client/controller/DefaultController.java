@@ -11,24 +11,26 @@ public class DefaultController implements IController {
     private int lastMouseX;
     private int lastMouseY;
 
-    @Override
-    public void update(SlytherClient client) {
-        ClientSnake player = client.player;
-        
+	@Override
+	public void update(SlytherClient client) {
+		ClientSnake player = client.player;
+
 //        accelerating = Mouse.isButtonDown(0) || Mouse.isButtonDown(1) || Keyboard.isKeyDown(Keyboard.KEY_UP);
-//        int mouseX = Mouse.getX() - (Display.getWidth() / 2);
-//        int mouseY = (Display.getHeight() - Mouse.getY()) - (Display.getHeight() / 2);
-//        if (mouseX != lastMouseX || mouseY != lastMouseY) {
-//            lastMouseX = mouseX;
-//            lastMouseY = mouseY;
-//            int dist = mouseX * mouseX + mouseY * mouseY;
-//            if (dist > 256) {
-//                targetAngle = (float) Math.atan2(mouseY, mouseX);
-//                player.eyeAngle = targetAngle;
-//            } else {
-//                targetAngle = player.wantedAngle;
-//            }
-//        }
+		//int mouseX = Mouse.getX() - (Display.getWidth() / 2);
+		//int mouseY = (Display.getHeight() - Mouse.getY()) - (Display.getHeight() / 2);
+		int mouseX = (int)client.mouseX;
+		int mouseY = client.frameBufferHeight - (int)client.mouseY - client.frameBufferHeight/2;
+		if (mouseX != lastMouseX || mouseY != lastMouseY) {
+			lastMouseX = mouseX;
+			lastMouseY = mouseY;
+			int dist = mouseX * mouseX + mouseY * mouseY;
+			if (dist > 256) {
+				targetAngle = (float) Math.atan2(mouseY, mouseX);
+				player.eyeAngle = targetAngle;
+			} else {
+				targetAngle = player.wantedAngle;
+			}
+		}
     }
 
     @Override
