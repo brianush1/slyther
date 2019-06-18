@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import net.gegy1000.slyther.client.db.DatabaseImpl;
+import net.gegy1000.slyther.client.db.GameStatistic;
 import net.gegy1000.slyther.util.Log;
 
 public class ClientMain {
@@ -15,6 +16,8 @@ public class ClientMain {
 		client.database = new DatabaseImpl();
 		try {
 			client.gameStatistic = client.database.getMostRecentGame();
+			if (client.gameStatistic == null)
+				client.gameStatistic = new GameStatistic();
 		} catch (ExceptionInInitializerError e) {
 			JOptionPane.showMessageDialog(null, "Failed to initialize database.\nIs another copy of Slyther running?",
 					"Error", JOptionPane.ERROR_MESSAGE);
