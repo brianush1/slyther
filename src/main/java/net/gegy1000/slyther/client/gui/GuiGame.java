@@ -579,6 +579,7 @@ public class GuiGame extends Gui {
     	} catch (Exception ex) {
             Log.error("Error while rendering game");
             Log.catching(ex);
+            GL11.glPopMatrix();
             client.close();
             closeGui();
     	}
