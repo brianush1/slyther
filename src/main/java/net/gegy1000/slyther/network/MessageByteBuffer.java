@@ -1,5 +1,6 @@
 package net.gegy1000.slyther.network;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import org.apache.commons.io.Charsets;
@@ -91,15 +92,15 @@ public class MessageByteBuffer {
     }
 
     public void skipBytes(int n) {
-        buf.position(buf.position() + n);
+        buf.position(((Buffer)buf).position() + n);
     }
 
     public boolean hasRemaining(int n) {
-        return buf.position() + n <= buf.limit();
+        return ((Buffer)buf).position() + n <= buf.limit();
     }
 
     public boolean hasExactlyRemaining(int n) {
-        return buf.position() + n == buf.limit();
+        return ((Buffer)buf).position() + n == buf.limit();
     }
 
     public boolean hasRemaining() {
@@ -115,7 +116,7 @@ public class MessageByteBuffer {
     }
 
     public int position() {
-        return buf.position();
+        return ((Buffer)buf).position();
     }
 
     public byte[] bytes() {
