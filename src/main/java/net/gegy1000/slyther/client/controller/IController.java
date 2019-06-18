@@ -6,5 +6,4 @@ public interface IController {
     void update(SlytherClient client);
 
     float getTargetAngle();
-    boolean shouldAccelerate();
 }

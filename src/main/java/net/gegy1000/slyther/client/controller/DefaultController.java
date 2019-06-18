@@ -6,7 +6,6 @@ import net.gegy1000.slyther.client.game.entity.ClientSnake;
 
 public class DefaultController implements IController {
     private float targetAngle;
-    private boolean accelerating;
 
     private int lastMouseX;
     private int lastMouseY;
@@ -15,10 +14,7 @@ public class DefaultController implements IController {
 	public void update(SlytherClient client) {
 		ClientSnake player = client.player;
 
-//        accelerating = Mouse.isButtonDown(0) || Mouse.isButtonDown(1) || Keyboard.isKeyDown(Keyboard.KEY_UP);
-		//int mouseX = Mouse.getX() - (Display.getWidth() / 2);
-		//int mouseY = (Display.getHeight() - Mouse.getY()) - (Display.getHeight() / 2);
-		int mouseX = (int)client.mouseX;
+		int mouseX = (int)client.mouseX - client.frameBufferWidth / 2;
 		int mouseY = client.frameBufferHeight - (int)client.mouseY - client.frameBufferHeight/2;
 		if (mouseX != lastMouseX || mouseY != lastMouseY) {
 			lastMouseX = mouseX;
@@ -33,13 +29,9 @@ public class DefaultController implements IController {
 		}
     }
 
-    @Override
-    public float getTargetAngle() {
-        return targetAngle;
-    }
+	@Override
+	public float getTargetAngle() {
+		return targetAngle;
+	}
 
-    @Override
-    public boolean shouldAccelerate() {
-        return accelerating;
-    }
 }
