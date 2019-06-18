@@ -141,6 +141,8 @@ public class GuiGame extends Gui {
             if (client.globalAlpha != 1.0F) {
                 globalAlpha = 1.75F * client.globalAlpha;
             }
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             for (Food<?> food : client.getFoods()) {
                 float renderX = food.getRenderX(frameDelta);
                 float renderY = food.getRenderY(frameDelta);
