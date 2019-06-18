@@ -1,17 +1,12 @@
 plugins {
     id "java"
-    id "idea"
-    id "eclipse"
     id "application"
 }
 
-
 version = "0.2"
-group = "net.gegy1000"
-archivesBaseName = "slyther"
-mainClassName = "net.gegy1000.slyther.client.ClientMain"
-sourceCompatibility = JavaVersion.VERSION_1_8
-
+archivesBaseName = "slyther-server"
+mainClassName = "net.gegy1000.slyther.server.ServerMain"
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -37,26 +32,22 @@ dependencies {
     natives "net.java.jinput:jinput-platform:2.0.7:natives-windows"
     natives "net.java.jinput:jinput-platform:2.0.7:natives-osx"
     natives "net.java.jinput:jinput-platform:2.0.7:natives-linux"
-    //compile "org.reflections:reflections:0.9.11"
+    compile "org.reflections:reflections:0.9.10"
 	compile group: 'com.h2database', name: 'h2', version: '1.4.199'
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
 	compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
 	compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
 	compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
-
-
-
 }
 
-/*
 sourceSets {
-	myJar {
+	main {
 		java {
-			srcDirs = ["src"]
+			srcDirs "../src/"
 		}
 	}
 }
-*/
+
 jar {
     manifest {
         attributes("Main-Class": project.mainClassName)
@@ -64,6 +55,7 @@ jar {
 }
 
 task uberjar(type: Jar) {
+	//inputs.files sourceSets.myJar.output
     manifest {
         attributes 'Implementation-Title': 'project',
         'Implementation-Version': project.version,
@@ -98,4 +90,3 @@ processResources {
         }
     }
 }
-
