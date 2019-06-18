@@ -40,13 +40,9 @@ public class ButtonElement extends Element {
 
 	@Override
 	public void keyPressed(int key) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void charPressed(int character) {
-		// TODO Auto-generated method stub
-		
 	}
 }
