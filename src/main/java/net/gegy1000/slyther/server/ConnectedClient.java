@@ -26,8 +26,8 @@ public class ConnectedClient {
     public float viewDistance;
     public int id;
 
-    public List<Entity> trackingEntities = new ArrayList<>();
-    public List<Sector> trackingSectors = new ArrayList<>();
+    public List<Entity<?>> trackingEntities = new ArrayList<>();
+    public List<Sector<?>> trackingSectors = new ArrayList<>();
 
     public ConnectedClient(SlytherServer server, WebSocket socket, int id) {
         this.server = server;
@@ -52,27 +52,27 @@ public class ConnectedClient {
         }
     }
 
-    public void track(Entity entity) {
+    public void track(Entity<?> entity) {
         if (!trackingEntities.contains(entity)) {
             trackingEntities.add(entity);
             entity.startTracking(this);
         }
     }
 
-    public void trackSector(Sector sector) {
+    public void trackSector(Sector<?> sector) {
         if (!trackingSectors.contains(sector)) {
             trackingSectors.add(sector);
             sector.startTracking(this);
         }
     }
 
-    public void untrack(Entity entity) {
+    public void untrack(Entity<?> entity) {
         if (trackingEntities.remove(entity)) {
             entity.stopTracking(this);
         }
     }
 
-    public void untrackSector(Sector sector) {
+    public void untrackSector(Sector<?> sector) {
         if (trackingSectors.remove(sector)) {
             sector.stopTracking(this);
         }
@@ -95,20 +95,20 @@ public class ConnectedClient {
                 }
             }
             viewDistance = 700.0F / scale;
-            for (Sector sector : server.getSectors()) {
+            for (Sector<?> sector : server.getSectors()) {
                 if (sector.shouldTrack(this)) {
                     trackSector(sector);
                 } else {
                     untrackSector(sector);
                 }
             }
-            List<Entity> entities = new ArrayList<>();
-            for (Sector sector : trackingSectors) {
+            List<Entity<?>> entities = new ArrayList<>();
+            for (Sector<?> sector : trackingSectors) {
                 entities.addAll(server.getMovingEntitiesInSector(sector));
             }
-            List<Entity> untrack = new ArrayList<>();
-            List<Entity> track = new ArrayList<>();
-            for (Entity tracking : trackingEntities) {
+            List<Entity<?>> untrack = new ArrayList<>();
+            List<Entity<?>> track = new ArrayList<>();
+            for (Entity<?> tracking : trackingEntities) {
                 if (tracking.canMove()) {
                     if (!entities.contains(tracking)) {
                         untrack.add(tracking);
@@ -117,10 +117,10 @@ public class ConnectedClient {
                     }
                 }
             }
-            for (Entity entity : untrack) {
+            for (Entity<?> entity : untrack) {
                 untrack(entity);
             }
-            for (Entity entity : track) {
+            for (Entity<?> entity : track) {
                 track(entity);
             }
         }

@@ -11,12 +11,12 @@ import net.gegy1000.slyther.server.ConnectedClient;
 import net.gegy1000.slyther.server.SlytherServer;
 
 public class MessageNewFood extends SlytherServerMessageBase {
-    private Food food;
+    private Food<?> food;
 
     public MessageNewFood() {
     }
 
-    public MessageNewFood(Food food) {
+    public MessageNewFood(Food<?> food) {
         this.food = food;
     }
 
