@@ -3,10 +3,8 @@ package net.gegy1000.slyther.client.gui;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F12;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,6 +33,7 @@ public class GuiGame extends Gui {
         client.leaderboard.clear();
         leaderboardAlpha = 1;
         playerNameAlpha = 512;
+		glfwSetInputMode(client.windowId, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         
     }
 
@@ -44,7 +43,9 @@ public class GuiGame extends Gui {
         backgroundX++;
         if (client.player != null) {
             //zoomVelocity += Mouse.getDWheel() * 0.00005F;
-            zoomVelocity += client.mouseWheelY * 0.00005F;
+            zoomVelocity += client.mouseWheelY * 0.00015F;
+            //client.mouseWheelY -= client.mouseWheelY < 0 ? 0.005 : -0.005;
+            client.mouseWheelY = 0;
             zoomVelocity *= 0.9F;
             client.zoomOffset += zoomVelocity;
             if (client.zoomOffset > 1.0F) {
@@ -574,7 +575,7 @@ public class GuiGame extends Gui {
             	debugY += yinc;
             	
                 s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
-                	+ " zoomOffset=" + df3.format(client.zoomOffset);
+                	+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(client.mouseWheelY);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
             }
         } else {

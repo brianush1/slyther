@@ -129,11 +129,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private final int WINDOW_HEIGHT = 480;
 	private int displayWidth = WINDOW_WIDTH;
 	private int displayHeight = WINDOW_HEIGHT;
-	private long windowId;
+	public long windowId;
     
     public float	mouseX;
     public float	mouseY;
-    public double	mouseWheelX;
+//    public double	mouseWheelX;
     public double	mouseWheelY;
     public int		frameBufferWidth = displayWidth;
     public int		frameBufferHeight = displayHeight;
@@ -150,7 +150,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public String userServerSelection;
 
-	private static final boolean START_FULLSCREEN = false;
+	//private static final boolean START_FULLSCREEN = false;
 	private boolean accelerating = false;
 	private boolean isMouseDown = false;
 
@@ -217,6 +217,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			saveConfig();
 		} catch (IOException e) {
 			UIUtils.displayException("Unable to read config", e);
+			configuration = new ClientConfig();
 			Log.catching(e);
 		}
 		userServerSelection = configuration.server;
@@ -263,7 +264,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		displayWidth = WINDOW_WIDTH;
 		displayHeight = WINDOW_HEIGHT;
 		long monitor = 0;
-		if(START_FULLSCREEN) {
+		if(configuration.showFullScreen) {
 			//Get the primary monitor.
 			monitor = glfwGetPrimaryMonitor();
 			//Retrieve the desktop resolution
@@ -328,9 +329,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			if (action == GLFW_RELEASE) {
 				return;
 			}
-			for (Gui gui : renderHandler.getGuis()) {
-				gui.keyPressedBase(key);
-			}
+			handleKeyboard(key);
+//			for (Gui gui : renderHandler.getGuis()) {
+//				gui.keyPressedBase(key);
+//			}
 		});
 		glfwSetCharCallback(windowId, (window, codePoint) -> {
 			Log.debug("charCallback {}", codePoint);
@@ -377,8 +379,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 		    @Override
 		    public void invoke(long window, double xpos, double ypos) {
-		        mouseWheelX = xpos;
-		        mouseWheelY = ypos;
+//		        mouseWheelX = xpos;
+		        mouseWheelY += ypos*20;
 		        //cursorPos.y = framebuffer.height - ypos;
 		    }
 
@@ -398,6 +400,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		glfwSwapInterval(1);
 		glfwShowWindow(windowId);
 		renderHandler = new RenderHandler(this);
+		if(configuration.showFullScreen) {
+			toggleFullscreen();
+		}
 		mainLoop();
 		if (networkManager != null && networkManager.isOpen()) {
 			networkManager.closeConnection(ClientNetworkManager.SHUTDOWN_CODE, "");
@@ -519,9 +524,17 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}
 
 	}
-/*
+
 	public void toggleFullscreen() {
-		try {
+		long 		monitor = glfwGetPrimaryMonitor();
+		GLFWVidMode mode =  glfwGetVideoMode(monitor);
+//		if (mode.width() == displayWidth && mode.height() == displayHeight) {
+//			
+//		} else {
+			glfwSetWindowMonitor(windowId, monitor, 0, 0, mode.width(), mode.height(), mode.refreshRate());
+			//		}
+		onResize(displayWidth, displayHeight);
+/*		try {
 			if (Display.isFullscreen()) {
 				Display.setFullscreen(false);
 				Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
@@ -536,8 +549,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			} catch (LWJGLException e) {
 			Log.warn("Can't set fullscreen mode");
 		}
-	}
-*/
+*/	}
+
 	/** Check and handle if this key is a global client key.
 	 * Currently only F11=Fullscreen toggle is handled
 	 * @param key
@@ -546,11 +559,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	 */
 	public boolean handleKeyboard(int key) {
 		//Log.debug("Key = {} char = {}", key, character);
-//		if (key == Keyboard.KEY_F11) {
-//			toggleFullscreen();
+		if (key == GLFW_KEY_F11) {
+			toggleFullscreen();
 //			setupDisplay();
-//			return(true);
-//		}
+			return(true);
+		}
 //		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
 //			return(true);
 //		if (key == Keyboard.KEY_LMENU)
@@ -877,6 +890,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		if (networkManager != null) {
 			networkManager.close(1000, "Forcefully closed by player");
 		}
+		glfwSetInputMode(windowId, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		player = null;
 		networkManager = null;
 	}
