@@ -577,6 +577,12 @@ public class GuiGame extends Gui {
                 s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
                 	+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(client.mouseWheelY);
             	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+            	debugY += yinc;
+            	
+            	s = "mouseX=" + df3.format(client.mouseX) + " mouseY=" + df3.format(client.mouseY) 
+            		+ " wangle=" + df3.format(client.player.wantedAngle) + " boxX/Y=" 
+            		+ df3.format(client.controller.getBoxX()) + " / " + df3.format(client.controller.getBoxY());
+            	drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
             }
         } else {
             GL11.glPopMatrix();

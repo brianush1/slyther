@@ -6,4 +6,7 @@ public interface IController {
     void update(SlytherClient client);
 
     float getTargetAngle();
+    
+    int getBoxX();	// for debugging only
+    int getBoxY();
 }
