@@ -150,7 +150,10 @@ public class TrueTypeFont {
 	        glEnable(GL_TEXTURE_2D);
 	        glBindTexture(GL_TEXTURE_2D, texID);
 			glBegin(GL_QUADS);
-			glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
+			int alpha = color >> 24 & 0xFF;
+			if (alpha == 0)
+				alpha = 0xFF;
+			glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, alpha / 255.0F);
 			for (int i = 0, to = text.length(); i < to; ) {
 				i += getCP(text, to, i, pCodePoint);
 
