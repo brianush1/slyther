@@ -189,7 +189,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public float zoomOffset;
 
-	private IController controller = new DefaultController();
+	public IController controller = new DefaultController();
 
 	private static final File CONFIGURATION_FILE = new File(SystemUtils.getGameFolder(), "config.json");
 	private String server;
@@ -255,7 +255,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 //		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 //		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
@@ -345,9 +345,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
 				if(button == 0) {
-					Log.debug("mouse action = {} mods = {}", action, mods);
-					//If this event is down event and no current to-add-ball.
-					//Else If this event is up event and there is a current to-add-ball.
+					//Log.debug("mouse action = {} mods = {}", action, mods);
 					if(action == GLFW_PRESS) {
 						accelerating = true;
 					} else if(action == GLFW_RELEASE) {
