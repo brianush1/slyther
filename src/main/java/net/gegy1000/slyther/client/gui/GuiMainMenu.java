@@ -1,5 +1,11 @@
 package net.gegy1000.slyther.client.gui;
 
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
+
+import org.lwjgl.opengl.GL11;
+
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.element.TextBoxElement;
@@ -32,6 +38,7 @@ public class GuiMainMenu extends GuiWithBanner {
 	@Override
 	public void init() {
 		super.init();
+		glfwSetInputMode(client.windowId, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		calcElementPos();
 		elements.clear();
 		elements.add(new TextBoxElement(this, client.configuration.nickname, renderResolution.getWidth() / 2.0F,
@@ -81,6 +88,7 @@ public class GuiMainMenu extends GuiWithBanner {
 
 	@Override
 	public void render(float mouseX, float mouseY) {
+		GL11.glScalef(1, 1, 1.0F);
 		renderBackground();
 		renderBanner();
 
