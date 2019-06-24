@@ -12,7 +12,8 @@ import net.gegy1000.slyther.server.ConnectedClient;
 import net.gegy1000.slyther.server.SlytherServer;
 
 public class MessageNewPrey extends SlytherServerMessageBase {
-    private Prey<?> prey;
+    @SuppressWarnings("unused")
+	private Prey<?> prey;
 
     public MessageNewPrey(Prey<?> prey) {
         this.prey = prey;
@@ -30,12 +31,12 @@ public class MessageNewPrey extends SlytherServerMessageBase {
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
         int id = buffer.readUInt16();
         if (!buffer.hasRemaining()) {
-            Prey prey = client.getPrey(id);
+            Prey<?> prey = client.getPrey(id);
             client.removeEntity(prey);
         } else if (buffer.hasExactlyRemaining(2)) {
             ClientPrey prey = client.getPrey(id);
             if (prey != null) {
-                Snake eater = client.getSnake(buffer.readUInt16());
+                Snake<?> eater = client.getSnake(buffer.readUInt16());
                 prey.eaten = true;
                 prey.eater = eater;
                 if (eater != null) {

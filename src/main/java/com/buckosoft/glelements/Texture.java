@@ -24,8 +24,9 @@ public class Texture {
 	public ByteBuffer imgData;
 	public int width;
 	public int height;
-	private String name;
 	int textureId;
+	@SuppressWarnings("unused")
+	private String name;
 
 	public Texture() {}
 
