@@ -16,10 +16,13 @@ public class DefaultController implements IController {
     
 	@Override
 	public void update(SlytherClient client) {
+		double sensitivity = 4.0;
 		ClientSnake player = client.player;
 
 		int mouseX = (int)client.mouseX - client.frameBufferWidth / 2;
 		int mouseY = client.frameBufferHeight - (int)client.mouseY - client.frameBufferHeight/2;
+		mouseX /= sensitivity;
+		mouseY /= sensitivity;
 		if (mouseX != lastMouseX || mouseY != lastMouseY) {
 			if (mouseX < lastMouseX) {
 				boxX--;
@@ -43,13 +46,13 @@ public class DefaultController implements IController {
 			lastMouseX = mouseX;
 			lastMouseY = mouseY;
 			int dist = mouseX * mouseX + mouseY * mouseY;
-			if (dist > 256) {
+			if (dist > 128) {
 				targetAngle = (float) Math.atan2(mouseY, mouseX);
 				player.eyeAngle = targetAngle;
 			} else {
 				targetAngle = player.wantedAngle;
 			}
-			targetAngle = (float) Math.atan2(boxY, boxX);
+			//targetAngle = (float) Math.atan2(boxY, boxX);
 		}
     }
 
@@ -66,6 +69,16 @@ public class DefaultController implements IController {
 	@Override
 	public int getBoxY() {
 		return(boxY);
+	}
+
+	@Override
+	public int getMouseX() {
+		return(lastMouseX);
+	}
+
+	@Override
+	public int getMouseY() {
+		return(lastMouseY);
 	}
 
 }
