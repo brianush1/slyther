@@ -7,6 +7,8 @@ public interface IController {
 
     float getTargetAngle();
     
+    int getMouseX();
+    int getMouseY();
     int getBoxX();	// for debugging only
     int getBoxY();
 }
