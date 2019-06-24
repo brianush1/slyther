@@ -77,6 +77,13 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         double nanoUpdates = 1000000000.0 / 30.0;
         lastTickTime = System.currentTimeMillis();
         while (true) {
+        	if (clients.isEmpty()) {
+        		try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+        	}
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / nanoUpdates;
             previousTime = currentTime;
@@ -135,9 +142,11 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     }
 
     public ServerSnake createSnake(ConnectedClient client) {
-        //int spawnFuzz = configuration.gameRadius / 4;
-        int posX = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
-        int posY = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        int spawnFuzz = configuration.gameRadius / 4;
+        int posX = (rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        int posY = (rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        posX = 0;	// XXX tmp
+        posY = 0;
         List<SnakePoint> points = new ArrayList<>();
         for (int i = 1; i >= 0; i--) {
             points.add(new SnakePoint(this, posX + i * 10, posY));
