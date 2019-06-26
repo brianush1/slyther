@@ -15,8 +15,11 @@ Slyther builds with Gradle, to build the standalone executable client and server
     gradle uberjar
 
 Run with
+
 	java -jar server/build/libs/slyther-server-0.2.jar
+
 and
+
 	java -jar build/libs/slyther-0.2.jar
 
 ## Branches
