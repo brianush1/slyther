@@ -13,3 +13,13 @@ Dick Balaska's fork of [gegy1000](https://github.com/gegy1000)'s [Slyther](https
 Slyther builds with Gradle, to build the standalone executable client and server jars run the following in the project root directory:
 
     gradle uberjar
+
+Run with
+	java -jar server/build/libs/slyther-server-0.2.jar
+and
+	java -jar build/libs/slyther-0.2.jar
+
+## Branches
+* master contains the LWJGL 2 client and the server
+* slyther3 contains the LWJGL 3 client
+* slythermon contains the monitoring tool
