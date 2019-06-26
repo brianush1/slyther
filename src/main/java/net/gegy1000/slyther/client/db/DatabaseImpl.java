@@ -26,9 +26,10 @@ public class DatabaseImpl implements Database {
 		Transaction t = session.beginTransaction();
 		List<GameStatistic> gsl = null;
 		try {
-			Query query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			@SuppressWarnings("unchecked")
+			Query<GameStatistic> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
 			query.setMaxResults(50);
-			gsl = (List<GameStatistic>)query.getResultList();
+			gsl = query.getResultList();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,10 +48,11 @@ public class DatabaseImpl implements Database {
 		Transaction t = session.beginTransaction();
 		GameStatistic gs = null;
 		try {
-			Query query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			@SuppressWarnings("unchecked")
+			Query<GameStatistic> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
 			query.setFirstResult(0);
 			query.setMaxResults(1);
-			gs = (GameStatistic)query.uniqueResult();
+			gs = query.uniqueResult();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
