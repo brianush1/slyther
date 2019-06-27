@@ -3,9 +3,9 @@ plugins {
     id "application"
 }
 
-version = "0.2"
-archivesBaseName = "slyther-server"
-mainClassName = "net.gegy1000.slyther.server.ServerMain"
+version = "0.1"
+archivesBaseName = "slyther-servermon"
+mainClassName = "com.buckosoft.slythermon.Main"
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -17,8 +17,6 @@ configurations {
 }
 
 dependencies {
-	compile "org.slick2d:slick2d-core:1.0.1"
-    compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
     compile "commons-io:commons-io:2.5"
     compile "com.google.code.gson:gson:1.7.2"
     compile "org.apache.logging.log4j:log4j-api:2.11.2"
@@ -26,28 +24,20 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.2'
 
     
-    natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-windows"
-    natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-osx"
-    natives "org.lwjgl.lwjgl:lwjgl-platform:2.9.3:natives-linux"
-    natives "net.java.jinput:jinput-platform:2.0.7:natives-windows"
-    natives "net.java.jinput:jinput-platform:2.0.7:natives-osx"
-    natives "net.java.jinput:jinput-platform:2.0.7:natives-linux"
-    compile "org.reflections:reflections:0.9.10"
 	compile group: 'com.h2database', name: 'h2', version: '1.4.199'
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
-	compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
-	compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
 	compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
 }
 
+/*
 sourceSets {
 	main {
 		java {
-			srcDirs "../"
+			srcDirs "."
 		}
 	}
 }
-
+*/
 jar {
     manifest {
         attributes("Main-Class": project.mainClassName)
