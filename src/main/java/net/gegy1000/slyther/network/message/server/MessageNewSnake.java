@@ -74,7 +74,8 @@ public class MessageNewSnake extends SlytherServerMessageBase {
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
         int id = buffer.readUInt16();
         if (buffer.hasRemaining(4)) {

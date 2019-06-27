@@ -114,7 +114,7 @@ public class GuiGame extends Gui {
 					}
 				}
 			}
-// DIK: I don't know what this does, but commenting it out seems to have no effect.
+// DIK: I don't know what this does, and commenting it out seems to have no effect.
 //			if (client.fvtg > 0) {
 //				client.fvtg--;
 //				client.fvx = client.fvxs[client.fvpos];
