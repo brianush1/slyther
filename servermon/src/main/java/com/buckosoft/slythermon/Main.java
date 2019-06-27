@@ -20,6 +20,7 @@ public class Main {
 	
 	private Main() {
 		frame = new MainFrame();
+		frame.setMain(this);
 		frame.setVisible(true);
 	}
 
