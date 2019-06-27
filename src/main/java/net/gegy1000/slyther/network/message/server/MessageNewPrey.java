@@ -12,7 +12,8 @@ import net.gegy1000.slyther.server.ConnectedClient;
 import net.gegy1000.slyther.server.SlytherServer;
 
 public class MessageNewPrey extends SlytherServerMessageBase {
-    private Prey<?> prey;
+    @SuppressWarnings("unused")
+	private Prey<?> prey;
 
     public MessageNewPrey(Prey<?> prey) {
         this.prey = prey;

@@ -41,6 +41,8 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     public float ticks;
     public float lastTicks2;
     public float ticks2;
+    
+    public ServerMonitorManager	serverMonitorManager;
 
     public SlytherServer() {
         try {
@@ -51,6 +53,11 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         }
         try {
             networkManager = new ServerNetworkManager(this, configuration.serverPort);
+        } catch (UnknownHostException e) {
+            Log.catching(e);
+        }
+        try {
+        	serverMonitorManager = new ServerMonitorManager(this, configuration.serverPort+1);
         } catch (UnknownHostException e) {
             Log.catching(e);
         }
@@ -97,6 +104,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         }
     }
 
+	@SuppressWarnings("unchecked")
 	public void update() {
         runTasks();
         long time = System.currentTimeMillis();
@@ -171,6 +179,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
                     removeEntity(client.snake);
                 }
             }
+            serverMonitorManager.sendInfo();
             return null;
         });
     }

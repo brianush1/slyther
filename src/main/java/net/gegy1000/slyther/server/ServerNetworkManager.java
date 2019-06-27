@@ -44,11 +44,12 @@ public class ServerNetworkManager extends WebSocketServer implements NetworkMana
         server.scheduleTask(() -> {
             Log.info("Initiating a new connection.");
             ConnectedClient client = new ConnectedClient(server, connection, currentClientId);
-            if (!server.clients.contains(client)) {
+            if (!server.clients.contains(client)) {					// DIK: How could this client ever be on the list if it was just created?
                 currentClientId++;
                 server.clients.add(client);
-                client.lastPacketTime = System.currentTimeMillis();		// DIK: redundant. Set in the constructor
+                client.lastPacketTime = System.currentTimeMillis();	// DIK: redundant. Set in the constructor
                 client.send(new MessageRiddle());
+                server.serverMonitorManager.sendInfo();
             }
             return null;
         });
