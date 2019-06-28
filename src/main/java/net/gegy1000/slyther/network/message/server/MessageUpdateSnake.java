@@ -15,7 +15,8 @@ public class MessageUpdateSnake extends SlytherServerMessageBase {
     private boolean turnDirection;
     private boolean angle;
     private boolean wantedAngle;
-    private boolean speed;
+    @SuppressWarnings("unused")
+	private boolean speed;
 
     public MessageUpdateSnake() {
     }

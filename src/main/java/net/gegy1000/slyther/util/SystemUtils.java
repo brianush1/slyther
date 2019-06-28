@@ -5,6 +5,7 @@ import java.io.File;
 public final class SystemUtils {
     private SystemUtils() {}
 
+    private static final String NAME = "slyther";
     private static final String HOME_NAME = ".slyther";
 
     private static File gameFolder;
@@ -30,7 +31,12 @@ public final class SystemUtils {
         if (gameFolder == null) {
             String appdata = System.getenv("APPDATA");
             if (appdata == null) {
-                gameFolder = new File(System.getProperty("user.home"), HOME_NAME);
+                File f = new File(System.getProperty("user.home"), ".config");
+                if (f.exists()) {
+                	gameFolder = new File(f, NAME);
+                } else {
+                	gameFolder = new File(System.getProperty("user.home"), HOME_NAME);
+                }
             } else {
                 gameFolder = new File(appdata, HOME_NAME);
             }

@@ -5,7 +5,9 @@ import javax.swing.UIManager;
 
 import net.gegy1000.slyther.client.db.DatabaseImpl;
 import net.gegy1000.slyther.client.db.GameStatistic;
+import net.gegy1000.slyther.client.db.HibernateUtil;
 import net.gegy1000.slyther.util.Log;
+import net.gegy1000.slyther.util.SystemUtils;
 
 public class ClientMain {
 
@@ -13,6 +15,7 @@ public class ClientMain {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		//loadNatives();
 		SlytherClient client = new SlytherClient();
+		HibernateUtil.buildSessionFactory(SystemUtils.getGameFolder());
 		client.database = new DatabaseImpl();
 		try {
 			client.gameStatistic = client.database.getMostRecentGame();
@@ -24,6 +27,8 @@ public class ClientMain {
 		} catch (Exception e1) {
 
 		}
+		if (client.gameStatistic == null)
+			client.gameStatistic = new GameStatistic();
 		if (args.length >= 1)
 			Log.showDebug = true;
 		client.run();

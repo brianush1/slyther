@@ -24,7 +24,8 @@ public class MessageUpdateSnakeLength extends SlytherServerMessageBase {
         buffer.writeUInt24((int) (snake.fam * 0xFFFFFF));
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
         int id = buffer.readUInt16();
         Snake snake = client.getSnake(id);

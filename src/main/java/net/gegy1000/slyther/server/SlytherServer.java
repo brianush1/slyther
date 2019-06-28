@@ -41,6 +41,8 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     public float ticks;
     public float lastTicks2;
     public float ticks2;
+    
+    public ServerMonitorManager	serverMonitorManager;
 
     public SlytherServer() {
         try {
@@ -51,6 +53,11 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         }
         try {
             networkManager = new ServerNetworkManager(this, configuration.serverPort);
+        } catch (UnknownHostException e) {
+            Log.catching(e);
+        }
+        try {
+        	serverMonitorManager = new ServerMonitorManager(this, configuration.serverPort+1);
         } catch (UnknownHostException e) {
             Log.catching(e);
         }
@@ -77,6 +84,13 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         double nanoUpdates = 1000000000.0 / 30.0;
         lastTickTime = System.currentTimeMillis();
         while (true) {
+        	if (clients.isEmpty()) {
+        		try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+        	}
             long currentTime = System.nanoTime();
             delta += (currentTime - previousTime) / nanoUpdates;
             previousTime = currentTime;
@@ -90,6 +104,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         }
     }
 
+	@SuppressWarnings("unchecked")
 	public void update() {
         runTasks();
         long time = System.currentTimeMillis();
@@ -135,9 +150,11 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     }
 
     public ServerSnake createSnake(ConnectedClient client) {
-        //int spawnFuzz = configuration.gameRadius / 4;
-        int posX = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
-        int posY = 0;//(rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        int spawnFuzz = configuration.gameRadius / 4;
+        int posX = (rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        int posY = (rng.nextInt(spawnFuzz) - spawnFuzz / 2);
+        posX = 0;	// XXX tmp
+        posY = 0;
         List<SnakePoint> points = new ArrayList<>();
         for (int i = 1; i >= 0; i--) {
             points.add(new SnakePoint(this, posX + i * 10, posY));
@@ -162,6 +179,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
                     removeEntity(client.snake);
                 }
             }
+            serverMonitorManager.sendInfo();
             return null;
         });
     }

@@ -9,7 +9,7 @@ package net.gegy1000.slyther;
  */
 public class Version {
 	/** This should match the version in gradle.build */
-	public static final String SlytherVersion = "0.1";
+	public static final String SlytherVersion = "0.2";
 	
 	/** "db" = run the Dick Balaska edition, any other value, run the gegy1000 edition.
 	 * (Affects logo display) */ 
