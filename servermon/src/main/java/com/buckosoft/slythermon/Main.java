@@ -17,10 +17,13 @@ public class Main {
 
 	private MainFrame frame;
 	private NetworkMan networkMan;
+	private SMProperties	smProperties;
 	
 	private Main() {
 		frame = new MainFrame();
+		smProperties = new SMProperties();
 		frame.setMain(this);
+		frame.setSMProperties(smProperties);
 		frame.setVisible(true);
 	}
 
@@ -47,8 +50,10 @@ public class Main {
 		if (b) {
 			String s = "Connected to " + networkMan.getURI().toString();
 			frame.getServerConnectedTo().setText(s);
+			frame.getConnectButton().setEnabled(false);
 		} else {
 			frame.getServerConnectedTo().setText("Not Connected to a server");
+			frame.getConnectButton().setEnabled(true);
 		}
 	}
 

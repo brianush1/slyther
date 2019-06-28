@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -17,18 +19,19 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.buckosoft.slythermon.Main;
+import com.buckosoft.slythermon.SMProperties;
 
 public class MainFrame extends JFrame {
-	private Main main;
 	private static final long serialVersionUID = 1L;
+	private Main main;
+	SMProperties properties;
+
 	private JPanel contentPane;
 	private JTextField connectedClients;
 	private JTextField txtConnectedTo;
-
+	private JButton btnConnect;
 	/**
 	 * Create the frame.
 	 */
@@ -113,13 +116,13 @@ public class MainFrame extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		contentPane.add(toolBar, BorderLayout.NORTH);
 		
-		JButton btnConnect = new JButton("Connect");
-		btnConnect.addChangeListener(new ChangeListener() {
+		btnConnect = new JButton("Connect");
+		btnConnect.addActionListener(new ActionListener() {
+
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				main.connectToServer();
-			}
-			
+			}		
 		});
 		toolBar.add(btnConnect);
 		
@@ -138,4 +141,31 @@ public class MainFrame extends JFrame {
 		return(connectedClients);
 	}
 	
+	public JButton getConnectButton() {
+		return(btnConnect);
+	}
+	
+	public void setSMProperties(SMProperties properties) {
+		this.properties = properties;
+		this.setSize(properties.getMainWidth(), properties.getMainHeight());
+		this.setLocation(properties.getMainX(), properties.getMainY());
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				mainFrameShuttingDown();
+			}
+		});
+	}
+	private void mainFrameShuttingDown() {
+		if (true) {
+			System.out.println("x=" + this.getX() + " y=" + this.getY());
+			System.out.println("h/w = " + this.getHeight() + " / " + this.getWidth());
+		}
+		properties.setMainX(getX());
+		properties.setMainY(getY());
+		properties.setMainWidth(getWidth());
+		properties.setMainHeight(getHeight());
+		
+		properties.shuttingDown();
+	}
+
 }
