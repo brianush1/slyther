@@ -31,12 +31,17 @@ public class ServerNetworkManager extends WebSocketServer implements NetworkMana
         start();
     }
 
-    @Override
-    public void run() {
-        Thread.currentThread().setName(getClass().getSimpleName());
-        Log.info("Server starting on port {}", port);
-        super.run();
-    }
+	@Override
+	public void run() {
+		Thread.currentThread().setName(getClass().getSimpleName());
+		Log.info("Server starting on port {}", port);
+		try {
+			super.run();
+		} catch (Exception ex) {
+			Log.catching(ex);
+			System.exit(1);
+		}
+	}
 
     @Override
     public void onOpen(WebSocket connection, ClientHandshake handshake) {
