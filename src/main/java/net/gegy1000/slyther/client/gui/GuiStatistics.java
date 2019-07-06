@@ -38,6 +38,7 @@ public class GuiStatistics extends Gui {
 
 	@Override
 	public void init() {
+		elements.clear();
         elements.add(new ButtonElement(this, "Done", renderResolution.getWidth() / 2.0F,
         		renderResolution.getHeight() - 40.0F, 100.0F, 40.0F, (button) -> {
             exit();
@@ -120,4 +121,11 @@ public class GuiStatistics extends Gui {
 		renderHandler.openGui(parentMenu);
 	}
 	
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
+
+
 }

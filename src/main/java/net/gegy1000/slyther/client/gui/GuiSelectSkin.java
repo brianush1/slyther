@@ -53,6 +53,7 @@ public class GuiSelectSkin extends GuiWithBanner {
 
     @Override
     public void init() {
+		elements.clear();
         createSnake();
         elements.add(new ArrowElement(this, renderResolution.getWidth() / 6.0F, renderResolution.getHeight() / 2.0F, false, (arrow) -> {
             updateSkin(false);
@@ -375,4 +376,10 @@ public class GuiSelectSkin extends GuiWithBanner {
         client.saveConfig();
         createSnake();
     }
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
+
 }

@@ -1,10 +1,11 @@
 package net.gegy1000.slyther.client.render;
 
-import net.gegy1000.slyther.client.SlytherClient;
-import net.gegy1000.slyther.client.gui.Gui;
-import net.gegy1000.slyther.client.gui.GuiMainMenu;
-import net.gegy1000.slyther.game.Color;
-import net.gegy1000.slyther.util.Log;
+import java.awt.Font;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+import javax.imageio.ImageIO;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -13,12 +14,10 @@ import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.ImageIOImageData;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import net.gegy1000.slyther.client.SlytherClient;
+import net.gegy1000.slyther.client.gui.Gui;
+import net.gegy1000.slyther.game.Color;
+import net.gegy1000.slyther.util.Log;
 
 public class RenderHandler {
     public SlytherClient client;
@@ -45,8 +44,10 @@ public class RenderHandler {
     public float apx2;
     public float apy2;
 
-    private List<Gui> guis = new ArrayList<>();
+    public Gui activeGui;
+    //private List<Gui> guis = new ArrayList<>();
 
+    
     public RenderHandler(SlytherClient client) {
         this.client = client;
         textureManager = new TextureManager();
@@ -81,12 +82,17 @@ public class RenderHandler {
                 }
                 Log.debug("Load " + color.name() + " textures.");
             }
-            openGui(new GuiMainMenu());
         } catch (LWJGLException e) {
             Log.catching(e);
         }
     }
 
+    public void resize() {
+    	Log.info("resize");
+    	init();
+    	if (activeGui != null)
+    		activeGui.resize();
+    }
     private ByteBuffer toBuffer(String directory) throws IOException {
         return new ImageIOImageData().imageToByteBuffer(ImageIO.read(RenderHandler.class.getResourceAsStream(directory)), false, false, null);
     }
@@ -95,24 +101,26 @@ public class RenderHandler {
         renderResolution = new RenderResolution();
         centerX = renderResolution.getWidth() / 2.0F;
         centerY = renderResolution.getHeight() / 2.0F;
-        for (Gui gui : getGuis()) {
-            gui.initBase(client, this);
-        }
+        //for (Gui gui : getGuis()) {
+        //    gui.initBase(client, this);
+        //}
     }
 
     public void update() {
-        for (Gui gui : getGuis()) {
-            gui.updateBase();
-        }
+//        for (Gui gui : getGuis()) {
+//            gui.updateBase();
+//        }
+    	activeGui.updateBase();
         while (Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
                 int key = Keyboard.getEventKey();
                 char character = Keyboard.getEventCharacter();
                 if (client.handleKeyboard(key, character))		// check for global key handling (F11)
                 	continue;
-                for (Gui gui : getGuis()) {
-                    gui.keyPressedBase(key, character);
-                }
+//                for (Gui gui : getGuis()) {
+//                    gui.keyPressedBase(key, character);
+//                }
+                activeGui.keyPressedBase(key, character);
             }
         }
     }
@@ -122,35 +130,43 @@ public class RenderHandler {
         renderResolution.applyScale();
         float mouseX = Mouse.getX() / renderResolution.getScale();
         float mouseY = (Display.getHeight() - Mouse.getY()) / renderResolution.getScale();
-        for (Gui gui : getGuis()) {
-            gui.renderBase(mouseX, mouseY);
-        }
+//        for (Gui gui : getGuis()) {
+//            gui.renderBase(mouseX, mouseY);
+//        }
+        activeGui.renderBase(mouseX, mouseY);
         while (Mouse.next()) {
             int button = Mouse.getEventButton();
             if (Mouse.getEventButtonState()) {
-                for (Gui gui : getGuis()) {
-                    gui.mouseClickedBase(mouseX, mouseY, button);
-                }
+//                for (Gui gui : getGuis()) {
+//                    gui.mouseClickedBase(mouseX, mouseY, button);
+//                }
+            	activeGui.mouseClickedBase(mouseX, mouseY, button);
             }
         }
     }
 
-    public void openGui(Gui gui) {
-        if (!guis.contains(gui)) {
-            guis.add(gui);
-            gui.initBase(client, this);
-        }
-    }
+	public void openGui(Gui gui) {
+//        if (!guis.contains(gui)) {
+//            guis.add(gui);
+//            gui.initBase(client, this);
+//        }
+		gui.initBase(client, this);
+		activeGui = gui;
+	}
 
     public void closeGui(Gui gui) {
-        guis.remove(gui);
+//        guis.remove(gui);
     }
 
-    public List<Gui> getGuis() {
-        return new ArrayList<>(guis);
+    public Gui	getGui() {
+    	return(activeGui);
     }
+//    public List<Gui> getGuis() {
+//        return new ArrayList<>(guis);
+//    }
 
     public void closeAllGuis() {
-        guis.clear();
+        //guis.clear();
+    	activeGui = null;
     }
 }

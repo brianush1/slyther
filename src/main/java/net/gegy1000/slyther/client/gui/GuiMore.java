@@ -4,12 +4,11 @@ import net.gegy1000.slyther.client.gui.element.ButtonElement;
 
 public class GuiMore extends GuiWithBanner {
 
- //   private float backgroundX;
- //   private float backgroundY;
 	private float changeSkinY;
 	private float selectServerY;
 	private float localServerY;
 	private float showStatsY;
+	private float aboutY;
 	private float doneY;
 	private	GuiMainMenu	guiMainMenu;
     private boolean localServerAvailable = true;
@@ -50,6 +49,12 @@ public class GuiMore extends GuiWithBanner {
 					renderHandler.openGui(new GuiStatistics(guiMainMenu));
 					return true;
 				}));
+		elements.add(new ButtonElement(this, "About", renderResolution.getWidth() / 2.0F,
+				renderResolution.getHeight() / 2.0F + aboutY, 150.0F, 40.0F, (button) -> {
+					closeGui();
+					renderHandler.openGui(new GuiAbout());
+					return true;
+				}));
 		elements.add(new ButtonElement(this, "Done", renderResolution.getWidth() / 2.0F,
 				renderResolution.getHeight() / 2.0F + doneY, 100.0F, 40.0F, (button) -> {
 					exit();
@@ -63,7 +68,8 @@ public class GuiMore extends GuiWithBanner {
 		selectServerY	=   0F;
 		localServerY	=  50F;
 		showStatsY		= 100F;
-		doneY			= 150F;
+		aboutY			= 150F;
+		doneY			= 200F;
 		if (!localServerAvailable) {
 			showStatsY -= 50F;
 			doneY -= 50F;
@@ -100,5 +106,11 @@ public class GuiMore extends GuiWithBanner {
         closeGui();
         renderHandler.openGui(guiMainMenu);
     }
+
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
 
 }

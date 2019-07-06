@@ -9,7 +9,7 @@ public class GuiMainMenu extends GuiWithBanner {
 
     final private float PlayY1			= 0F;
     final private float MoreY1	 		= 50F;
-    final private float ReplayGameY1		= 200F;
+    final private float ReplayGameY1	= 200F;
     final private float QuitY1			= 200F;
     
     private float playY;
@@ -20,6 +20,7 @@ public class GuiMainMenu extends GuiWithBanner {
     private String killAndTimeMessage = null;
     
     public GuiMainMenu() {
+    	
     }
 
 	void calcElementPos() {
@@ -102,5 +103,11 @@ public class GuiMainMenu extends GuiWithBanner {
     public void mouseClicked(float mouseX, float mouseY, int button) {
 
     }
+
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
 
 }

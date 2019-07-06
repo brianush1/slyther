@@ -24,6 +24,7 @@ public class GuiSelectServer extends GuiWithBanner {
 
     @Override
     public void init() {
+		elements.clear();
         elements.add(new ArrowElement(this, renderResolution.getWidth() / 6.0F, renderResolution.getHeight() / 2.0F, false, (arrow) -> {
             updateSelection(-1);
             return true;
@@ -157,4 +158,10 @@ public class GuiSelectServer extends GuiWithBanner {
         closeGui();
         renderHandler.openGui(parentMenu);
     }
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
+
 }

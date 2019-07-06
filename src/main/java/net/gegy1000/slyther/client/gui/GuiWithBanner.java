@@ -160,7 +160,7 @@ public abstract class GuiWithBanner extends Gui {
 
 	}
 
-	/** Draw the background.  
+	/** Draw the gui's background.  
 	 * Store the background's position in client so that we can seamlessly change screens without resetting the 
 	 * background's position.
 	 */

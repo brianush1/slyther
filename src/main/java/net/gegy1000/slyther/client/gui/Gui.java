@@ -35,6 +35,10 @@ public abstract class Gui {
     }
 
     public abstract void init();
+    
+    public void resize() {
+    	renderResolution = renderHandler.renderResolution;
+    };
 
     public final void renderBase(float mouseX, float mouseY) {
         try {
