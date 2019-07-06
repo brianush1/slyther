@@ -17,4 +17,5 @@ public class ClientConfig implements Configuration {
     public boolean showDebug = false;
     public int	scoreDisplayMode = ScoreTypeOriginal;
     public boolean showFullScreen = true;
+    public boolean virgin = true;
 }

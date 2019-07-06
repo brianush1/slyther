@@ -20,6 +20,7 @@ import net.gegy1000.slyther.client.game.entity.ClientFood;
 import net.gegy1000.slyther.client.game.entity.ClientPrey;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.Gui;
+import net.gegy1000.slyther.client.gui.GuiAbout;
 import net.gegy1000.slyther.client.gui.GuiMainMenu;
 import net.gegy1000.slyther.client.render.RenderHandler;
 import net.gegy1000.slyther.game.ConfigHandler;
@@ -224,6 +225,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			setupDisplay();
 		}
 
+		Gui firstGui = configuration.virgin ? new GuiAbout() : new GuiMainMenu();
+		configuration.virgin = false;	
+        openGui(firstGui);
 		boolean doResize = false;
 
 		while (!Display.isCloseRequested()) {
@@ -321,11 +325,13 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 				Display.setFullscreen(false);
 				Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
 				configuration.showFullScreen = false;
+				renderHandler.resize();
 			} else {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
 				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
 				configuration.showFullScreen = true;
+				renderHandler.resize();
 			}
 			saveConfig();
 			} catch (LWJGLException e) {
