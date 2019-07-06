@@ -564,16 +564,16 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		renderHandler.openGui(gui);
 	}
 
-	public void closeGui(Gui gui) {
-		renderHandler.closeGui(gui);
+	public void closeGui() {
+		renderHandler.closeGui();
 	}
 
-	public void closeAllGuis() {
-		renderHandler.closeAllGuis();
-	}
+//	public void closeAllGuis() {
+//		renderHandler.closeAllGuis();
+//	}
 
 	public void reset() {
-		closeAllGuis();
+		closeGui();
 		openGui(new GuiMainMenu());
 		networkManager = null;
 		setup();

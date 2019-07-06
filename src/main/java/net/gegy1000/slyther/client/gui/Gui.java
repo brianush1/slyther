@@ -238,7 +238,7 @@ public abstract class Gui {
     }
 
     public final void closeGui() {
-        renderHandler.closeGui(this);
+        renderHandler.closeGui();
     }
 
 }

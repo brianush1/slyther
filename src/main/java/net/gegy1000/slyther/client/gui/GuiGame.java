@@ -571,12 +571,15 @@ public class GuiGame extends Gui {
 				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
 				debugY += yinc;
 
-				s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
-				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-				debugY += yinc;
+//				s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
+//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+//				debugY += yinc;
 
-				s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
-				+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(mouseDWheel);
+//				s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
+//					+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(mouseDWheel);
+//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+
+				s = "angle=" + df3.format(client.player.angle) + " wangle=" + df3.format(client.player.wantedAngle);
 				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
 			}
 		} catch (Exception ex) {
