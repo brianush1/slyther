@@ -45,9 +45,7 @@ public class RenderHandler {
     public float apy2;
 
     public Gui activeGui;
-    //private List<Gui> guis = new ArrayList<>();
 
-    
     public RenderHandler(SlytherClient client) {
         this.client = client;
         textureManager = new TextureManager();
@@ -101,28 +99,21 @@ public class RenderHandler {
         renderResolution = new RenderResolution();
         centerX = renderResolution.getWidth() / 2.0F;
         centerY = renderResolution.getHeight() / 2.0F;
-        //for (Gui gui : getGuis()) {
-        //    gui.initBase(client, this);
-        //}
     }
 
     public void update() {
-//        for (Gui gui : getGuis()) {
-//            gui.updateBase();
-//        }
-    	activeGui.updateBase();
-        while (Keyboard.next()) {
-            if (Keyboard.getEventKeyState()) {
-                int key = Keyboard.getEventKey();
-                char character = Keyboard.getEventCharacter();
-                if (client.handleKeyboard(key, character))		// check for global key handling (F11)
-                	continue;
-//                for (Gui gui : getGuis()) {
-//                    gui.keyPressedBase(key, character);
-//                }
-                activeGui.keyPressedBase(key, character);
-            }
-        }
+    	if (activeGui != null) {
+    		activeGui.updateBase();
+	        while (Keyboard.next()) {
+	            if (Keyboard.getEventKeyState()) {
+	                int key = Keyboard.getEventKey();
+	                char character = Keyboard.getEventCharacter();
+	                if (client.handleKeyboard(key, character))		// check for global key handling (F11)
+	                	continue;
+	                activeGui.keyPressedBase(key, character);
+	            }
+	        }
+    	}
     }
 
     public void render() {
@@ -130,43 +121,27 @@ public class RenderHandler {
         renderResolution.applyScale();
         float mouseX = Mouse.getX() / renderResolution.getScale();
         float mouseY = (Display.getHeight() - Mouse.getY()) / renderResolution.getScale();
-//        for (Gui gui : getGuis()) {
-//            gui.renderBase(mouseX, mouseY);
-//        }
-        activeGui.renderBase(mouseX, mouseY);
-        while (Mouse.next()) {
-            int button = Mouse.getEventButton();
-            if (Mouse.getEventButtonState()) {
-//                for (Gui gui : getGuis()) {
-//                    gui.mouseClickedBase(mouseX, mouseY, button);
-//                }
-            	activeGui.mouseClickedBase(mouseX, mouseY, button);
-            }
+        if (activeGui != null) {
+	        activeGui.renderBase(mouseX, mouseY);
+	        while (Mouse.next()) {
+	            int button = Mouse.getEventButton();
+	            if (Mouse.getEventButtonState()) {
+	            	activeGui.mouseClickedBase(mouseX, mouseY, button);
+	            }
+	        }
         }
     }
 
 	public void openGui(Gui gui) {
-//        if (!guis.contains(gui)) {
-//            guis.add(gui);
-//            gui.initBase(client, this);
-//        }
 		gui.initBase(client, this);
 		activeGui = gui;
 	}
 
-    public void closeGui(Gui gui) {
-//        guis.remove(gui);
+    public void closeGui() {
+    	activeGui = null;
     }
 
     public Gui	getGui() {
     	return(activeGui);
-    }
-//    public List<Gui> getGuis() {
-//        return new ArrayList<>(guis);
-//    }
-
-    public void closeAllGuis() {
-        //guis.clear();
-    	activeGui = null;
     }
 }
