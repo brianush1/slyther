@@ -8,6 +8,7 @@ import net.gegy1000.slyther.network.message.SlytherMonitorMessageBase;
 import net.gegy1000.slyther.network.message.SlytherServerMessageBase;
 import net.gegy1000.slyther.network.message.client.MessageAccelerate;
 import net.gegy1000.slyther.network.message.client.MessageClientPing;
+import net.gegy1000.slyther.network.message.client.MessageClientRiddleAnswer;
 import net.gegy1000.slyther.network.message.client.MessageClientSetup;
 import net.gegy1000.slyther.network.message.client.MessageSetAngle;
 import net.gegy1000.slyther.network.message.client.MessageSetTurn;
@@ -112,6 +113,8 @@ public enum MessageHandler {
 				return new MessageClientSetup();
 			} else if (type == 252) {
 				return new MessageSetTurn();
+			} else if (type == 79) {
+				return(new MessageClientRiddleAnswer());
 			}
 		}
 		return null;

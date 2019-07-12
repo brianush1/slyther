@@ -24,13 +24,13 @@ public class MessageNewSnake extends SlytherServerMessageBase {
     public MessageNewSnake() {
     }
 
-    public MessageNewSnake(Snake snake, boolean dead) {
+    public MessageNewSnake(Snake<?> snake, boolean dead) {
         this(snake);
         this.dead = dead;
         removing = true;
     }
 
-    public MessageNewSnake(Snake snake) {
+    public MessageNewSnake(Snake<?> snake) {
         this.snake = snake;
     }
 
@@ -74,7 +74,6 @@ public class MessageNewSnake extends SlytherServerMessageBase {
         }
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
     public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
         int id = buffer.readUInt16();
@@ -155,7 +154,7 @@ public class MessageNewSnake extends SlytherServerMessageBase {
             snake.updateLength();
         } else {
             boolean dead = buffer.readUInt8() == 1;
-            Snake snake = client.getSnake(id);
+            Snake<?> snake = client.getSnake(id);
             if (snake != null) {
                 Log.debug("Remove snake \"{}\" with skin {}, dead {}", snake.name, snake.skin, dead);
                 if (dead) {

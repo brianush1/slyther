@@ -15,15 +15,18 @@ import net.gegy1000.slyther.server.SlytherServer;
  *
  */
 public class MessageRiddle extends SlytherServerMessageBase {
-	int[] riddle = new int[72];
+	String sriddle = "euLXuGxMJVOpvrgWOHWjDFlMtLDtkdTiCQJgReYrGSpMvxFdlbvIDuKEtjbwHaNjwVhYP"
+				   + "PYKBQjGWMdPmYPeBvGHOcWvhbmmUkCuKjvpZzHhpncxJdRGZMhtolXreDkLVhzcl"
+				   + "ztMbNkWpFZZHWPFvJgUjgvPzxIhuR";
+	byte[] riddle;
 
 	/* (non-Javadoc)
 	 * @see net.gegy1000.slyther.network.message.SlytherServerMessageBase#write(net.gegy1000.slyther.network.MessageByteBuffer, net.gegy1000.slyther.server.SlytherServer, net.gegy1000.slyther.server.ConnectedClient)
 	 */
 	@Override
 	public void write(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
-		for (int i : riddle) {
-			buffer.writeInt32(i);
+		for (char i : sriddle.toCharArray()) {
+			buffer.writeUInt8(i);
 		}
 
 	}
