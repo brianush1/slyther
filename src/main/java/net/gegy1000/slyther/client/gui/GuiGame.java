@@ -588,6 +588,7 @@ public class GuiGame extends Gui {
 			GL11.glPopMatrix();
 			client.close();
 			closeGui();
+			renderHandler.openGui(new GuiMainMenu());
 		}
 	}
 
