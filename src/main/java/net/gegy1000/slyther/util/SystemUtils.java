@@ -29,6 +29,11 @@ public final class SystemUtils {
 
     public static File getGameFolder() {
         if (gameFolder == null) {
+        	String testData = System.getenv("SLYTHERDATA");
+        	if (testData != null) {
+        		gameFolder = new File(testData);
+        		return(gameFolder);
+        	}
             String appdata = System.getenv("APPDATA");
             if (appdata == null) {
                 File f = new File(System.getProperty("user.home"), ".config");
