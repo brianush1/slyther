@@ -26,13 +26,13 @@ public class GuiMore extends GuiWithBanner {
 		elements.add(new ButtonElement(this, "Change Skin", renderResolution.getWidth() / 2.0F,
 				renderResolution.getHeight() / 2.0F + changeSkinY, 150.0F, 40.0F, (button) -> {
 					closeGui();
-					renderHandler.openGui(new GuiSelectSkin(guiMainMenu));
+					renderHandler.openGui(new GuiSelectSkin());
 					return true;
 				}));
 		elements.add(new ButtonElement(this, "Select Server", renderResolution.getWidth() / 2.0F,
 				renderResolution.getHeight() / 2.0F + selectServerY, 150.0F, 40.0F, (button) -> {
 					closeGui();
-					renderHandler.openGui(new GuiSelectServer(guiMainMenu));
+					renderHandler.openGui(new GuiSelectServer());
 					return true;
 				}));
 		if (localServerAvailable) {
