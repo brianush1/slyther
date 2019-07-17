@@ -1,7 +1,7 @@
 {
   "patterns": [
     {
-      "skin": "COLORFUL_STRIPES",
+      "skinEnum": "COLORFUL_STRIPES",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -38,7 +38,7 @@
       }
     },
     {
-      "skin": "LIGHT_BLUE_STARS",
+      "skinEnum": "LIGHT_BLUE_STARS",
       "details": {
         "pattern": [
           "LIGHT_BLUE_STARS",
@@ -59,7 +59,7 @@
       }
     },
     {
-      "skin": "WHITE",
+      "skinEnum": "WHITE",
       "details": {
         "pattern": [
           "WHITE"
@@ -79,7 +79,7 @@
       }
     },
     {
-      "skin": "SILVER_GOLD_OUTLINE",
+      "skinEnum": "SILVER_GOLD_OUTLINE",
       "details": {
         "pattern": [
           "SILVER_GOLD_OUTLINE"
@@ -99,7 +99,7 @@
       }
     },
     {
-      "skin": "WHITE_RED_STRIPE",
+      "skinEnum": "WHITE_RED_STRIPE",
       "details": {
         "pattern": [
           "WHITE",
@@ -132,7 +132,7 @@
       }
     },
     {
-      "skin": "GREEN_EYEBALL",
+      "skinEnum": "GREEN_EYEBALL",
       "details": {
         "pattern": [
           "GREEN"
@@ -153,7 +153,7 @@
       }
     },
     {
-      "skin": "BRIGHT_ORANGE",
+      "skinEnum": "BRIGHT_ORANGE",
       "details": {
         "pattern": [
           "ORANGE"
@@ -174,7 +174,7 @@
       }
     },
     {
-      "skin": "FRANCE",
+      "skinEnum": "FRANCE",
       "details": {
         "pattern": [
           "LIGHT_BLUE_3",
@@ -208,7 +208,7 @@
       }
     },
     {
-      "skin": "D_IVOIRE",
+      "skinEnum": "D_IVOIRE",
       "details": {
         "pattern": [
           "LIGHT_ORANGE",
@@ -248,7 +248,7 @@
       }
     },
     {
-      "skin": "BLUE_WHITE_RED_STRIPE",
+      "skinEnum": "BLUE_WHITE_RED_STRIPE",
       "details": {
         "pattern": [
           "WHITE",
@@ -282,7 +282,7 @@
       }
     },
     {
-      "skin": "RED_WHITE_STRIPE",
+      "skinEnum": "RED_WHITE_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -315,7 +315,7 @@
       }
     },
     {
-      "skin": "ARCADE_GO",
+      "skinEnum": "ARCADE_GO",
       "details": {
         "pattern": [
           "LIGHT_BLUE_6",
@@ -353,7 +353,7 @@
       }
     },
     {
-      "skin": "RED_GREEN_YELLOW",
+      "skinEnum": "RED_GREEN_YELLOW",
       "details": {
         "pattern": [
           "LIGHT_YELLOW_2",
@@ -393,7 +393,7 @@
       }
     },
     {
-      "skin": "LIGHT_BLUE_WHITE_BLUE_STRIPE",
+      "skinEnum": "LIGHT_BLUE_WHITE_BLUE_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_BLUE_5",
@@ -420,7 +420,7 @@
       }
     },
     {
-      "skin": "BLUE_WHITE_STRIPE",
+      "skinEnum": "BLUE_WHITE_STRIPE",
       "details": {
         "pattern": [
           "WHITE",
@@ -453,7 +453,7 @@
       }
     },
     {
-      "skin": "BRIGHT_YELLOW",
+      "skinEnum": "BRIGHT_YELLOW",
       "details": {
         "pattern": [
           "LIGHT_YELLOW_2"
@@ -473,7 +473,7 @@
       }
     },
     {
-      "skin": "PEWDIEPIE",
+      "skinEnum": "PEWDIEPIE",
       "details": {
         "pattern": [
           "LIGHT_BLUE_6"
@@ -494,7 +494,7 @@
       }
     },
     {
-      "skin": "ORANGE_PURPLE_STRIPE_ANTENNA",
+      "skinEnum": "ORANGE_PURPLE_STRIPE_ANTENNA",
       "details": {
         "pattern": [
           "DARK_PURPLE",
@@ -535,7 +535,7 @@
       }
     },
     {
-      "skin": "JELLY",
+      "skinEnum": "JELLY",
       "details": {
         "pattern": [
           "JELLY_GREEN"
@@ -556,7 +556,7 @@
       }
     },
     {
-      "skin": "RAINBOW",
+      "skinEnum": "RAINBOW",
       "details": {
         "pattern": [
           "LIGHT_PURPLE_1",
@@ -584,7 +584,7 @@
       }
     },
     {
-      "skin": "RED_YELLOW_BLUE_STRIPE",
+      "skinEnum": "RED_YELLOW_BLUE_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_BLUE_5",
@@ -624,7 +624,7 @@
       }
     },
     {
-      "skin": "BUMBLEBEE",
+      "skinEnum": "BUMBLEBEE",
       "details": {
         "pattern": [
           "YELLOW",
@@ -646,7 +646,7 @@
       }
     },
     {
-      "skin": "LIGHT_BLUE_BLUE_STRIPE_STARS",
+      "skinEnum": "LIGHT_BLUE_BLUE_STRIPE_STARS",
       "details": {
         "pattern": [
           "LIGHT_BLUE_STARS",
@@ -673,7 +673,7 @@
       }
     },
     {
-      "skin": "AMERICA",
+      "skinEnum": "AMERICA",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -712,7 +712,7 @@
       }
     },
     {
-      "skin": "BLUE_STARS",
+      "skinEnum": "BLUE_STARS",
       "details": {
         "pattern": [
           "BLUE_SMALL_STARS",
@@ -733,7 +733,7 @@
       }
     },
     {
-      "skin": "GERMANY",
+      "skinEnum": "GERMANY",
       "details": {
         "pattern": [
           "GRAY_1",
@@ -767,7 +767,7 @@
       }
     },
     {
-      "skin": "PINK_WHITE_RED_STRIPE",
+      "skinEnum": "PINK_WHITE_RED_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -794,7 +794,7 @@
       }
     },
     {
-      "skin": "BLACK_SMALL_YELLOW_STRIPE",
+      "skinEnum": "BLACK_SMALL_YELLOW_STRIPE",
       "details": {
         "pattern": [
           "GRAY_1",
@@ -823,7 +823,7 @@
       }
     },
     {
-      "skin": "SWEDEN",
+      "skinEnum": "SWEDEN",
       "details": {
         "pattern": [
           "LIGHT_BLUE_4",
@@ -856,7 +856,7 @@
       }
     },
     {
-      "skin": "BULGARIA",
+      "skinEnum": "BULGARIA",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -890,7 +890,7 @@
       }
     },
     {
-      "skin": "PURPLE_GREEN_STRIPE",
+      "skinEnum": "PURPLE_GREEN_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_GREEN",
@@ -919,7 +919,7 @@
       }
     },
     {
-      "skin": "YELLOW_GREEN_BLUE_STRIPE",
+      "skinEnum": "YELLOW_GREEN_BLUE_STRIPE",
       "details": {
         "pattern": [
           "LIGHT_GREEN",
@@ -964,7 +964,7 @@
       }
     },
     {
-      "skin": "SLUG",
+      "skinEnum": "SLUG",
       "details": {
         "pattern": [
           "SLUG_RED"
@@ -984,7 +984,7 @@
       }
     },
     {
-      "skin": "GOOGLE_PLAY",
+      "skinEnum": "GOOGLE_PLAY",
       "details": {
         "pattern": [
           "CYAN",
@@ -1036,7 +1036,7 @@
       }
     },
     {
-      "skin": "UNITED_KINGDOM",
+      "skinEnum": "UNITED_KINGDOM",
       "details": {
         "pattern": [
           "UK"
@@ -1052,7 +1052,7 @@
       }
     },
     {
-      "skin": "SHINY_SILVER",
+      "skinEnum": "SHINY_SILVER",
       "details": {
         "pattern": [
           "SHINY_SILVER"
@@ -1068,7 +1068,7 @@
       }
     },
     {
-      "skin": "CANADA",
+      "skinEnum": "CANADA",
       "details": {
         "pattern": [
           "LIGHT_RED",
@@ -1102,7 +1102,7 @@
       }
     },
     {
-      "skin": "SWITZERLAND",
+      "skinEnum": "SWITZERLAND",
       "details": {
         "pattern": [
           "LIGHT_RED"
@@ -1123,7 +1123,7 @@
       }
     },
     {
-      "skin": "MOLDOVA",
+      "skinEnum": "MOLDOVA",
       "details": {
         "pattern": [
           "LIGHT_BLUE_5",
@@ -1166,7 +1166,7 @@
       }
     },
     {
-      "skin": "VIETNAM",
+      "skinEnum": "VIETNAM",
       "details": {
         "pattern": [
           "LIGHT_RED"
@@ -1187,7 +1187,7 @@
       }
     },
     {
-      "skin": "ARGENTINA",
+      "skinEnum": "ARGENTINA",
       "details": {
         "pattern": [
           "LIGHT_BLUE_6",
@@ -1222,7 +1222,7 @@
       }
     },
     {
-      "skin": "SHINY_BLUE",
+      "skinEnum": "SHINY_BLUE",
       "details": {
         "pattern": [
           "SHINY_BLUE"
@@ -1238,7 +1238,7 @@
       }
     },
     {
-      "skin": "SHINY_RED",
+      "skinEnum": "SHINY_RED",
       "details": {
         "pattern": [
           "SHINY_RED"
@@ -1254,7 +1254,7 @@
       }
     },
     {
-      "skin": "SHINY_YELLOW",
+      "skinEnum": "SHINY_YELLOW",
       "details": {
         "pattern": [
           "SHINY_YELLOW"
@@ -1270,7 +1270,7 @@
       }
     },
     {
-      "skin": "SHINY_ORANGE",
+      "skinEnum": "SHINY_ORANGE",
       "details": {
         "pattern": [
           "SHINY_ORANGE"
@@ -1286,7 +1286,7 @@
       }
     },
     {
-      "skin": "SHINY_PURPLE",
+      "skinEnum": "SHINY_PURPLE",
       "details": {
         "pattern": [
           "SHINY_PURPLE"
@@ -1302,7 +1302,7 @@
       }
     },
     {
-      "skin": "SHINY_GREEN",
+      "skinEnum": "SHINY_GREEN",
       "details": {
         "pattern": [
           "SHINY_GREEN"

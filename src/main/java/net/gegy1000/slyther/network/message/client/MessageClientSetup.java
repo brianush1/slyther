@@ -3,6 +3,7 @@ package net.gegy1000.slyther.network.message.client;
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.game.ProfanityHandler;
 import net.gegy1000.slyther.game.Skin;
+import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.network.MessageByteBuffer;
 import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
 import net.gegy1000.slyther.server.ConnectedClient;
@@ -34,14 +35,14 @@ public class MessageClientSetup extends SlytherClientMessageBase {
         buffer.writeUInt8(skin.ordinal());
         buffer.writeUInt8(username.length());
         buffer.writeASCIIBytes(username);
-        buffer.writeUInt8(0);
+        buffer.writeUInt8(0);	// XXX protocol 11 custom snake values
     }
 
     @Override
     public void read(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
     	// apparantly unused?
         int protocolVersion = buffer.readUInt8() + 1;
-        Skin skin = Skin.values()[buffer.readUInt8() % Skin.values().length];
+        Skin skin = SkinEnum.values()[buffer.readUInt8() % SkinEnum.values().length];
         String name = buffer.readASCIIBytes();
         if (!ProfanityHandler.isClean(name)) {
             name = "";

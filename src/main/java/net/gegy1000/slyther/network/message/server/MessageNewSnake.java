@@ -1,10 +1,15 @@
 package net.gegy1000.slyther.network.message.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.gegy1000.slyther.client.ClientNetworkManager;
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.game.ProfanityHandler;
 import net.gegy1000.slyther.game.Skin;
+import net.gegy1000.slyther.game.SkinCustom;
+import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.game.entity.Snake;
 import net.gegy1000.slyther.game.entity.SnakePoint;
 import net.gegy1000.slyther.network.MessageByteBuffer;
@@ -12,9 +17,6 @@ import net.gegy1000.slyther.network.message.SlytherServerMessageBase;
 import net.gegy1000.slyther.server.ConnectedClient;
 import net.gegy1000.slyther.server.SlytherServer;
 import net.gegy1000.slyther.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MessageNewSnake extends SlytherServerMessageBase {
     private boolean removing;
@@ -101,7 +103,7 @@ public class MessageNewSnake extends SlytherServerMessageBase {
 		float speed = buffer.readUInt16() / 1000.0F;
 		double fam = (double) buffer.readUInt24() / 0xFFFFFF;
 		int ski = buffer.readUInt8();
-		Skin skin = Skin.values()[ski < Skin.values().length ? ski : 0];
+		Skin skin = SkinEnum.values()[ski < SkinEnum.values().length ? ski : 0];
 		float x = buffer.readUInt24() / 5.0F;
 		float y = buffer.readUInt24() / 5.0F;
 		String name = "";
@@ -112,16 +114,21 @@ public class MessageNewSnake extends SlytherServerMessageBase {
 		int skinLength = buffer.readUInt8();
 		Log.debug("Snake {} \"{}\" skinLength={}", id, name, skinLength);
 		if (skinLength > 0) {
-			int crap1 = buffer.readUInt24();
-			int crap0 = buffer.readUInt24();
-			int crapr = buffer.readUInt16();
-			skinLength -= 8;
-			Log.debug("Snake {} \"{}\" crap1={} crap0={} crapr={}", id, name, crap1, crap0, crapr);
-			for (int i = 0; i<skinLength; i+=2) {
-				int colorsize = buffer.readUInt8();
-				int colorid = buffer.readUInt8();
-				Log.debug("Snake {} \"{}\" colorsize={} colorid={}", id, name, colorsize, colorid);
-			}
+			byte[] sarray = buffer.readBytes(skinLength);
+			SkinCustom skinCustom = new SkinCustom();
+			skin = skinCustom;
+			skinCustom.setPackedColors(sarray);
+			
+//			int crap1 = buffer.readUInt24();
+//			int crap0 = buffer.readUInt24();
+//			int crapr = buffer.readUInt16();
+//			skinLength -= 8;
+//			Log.debug("Snake {} \"{}\" crap1={} crap0={} crapr={}", id, name, crap1, crap0, crapr);
+//			for (int i = 0; i<skinLength; i+=2) {
+//				int colorsize = buffer.readUInt8();
+//				int colorid = buffer.readUInt8();
+//				Log.debug("Snake {} \"{}\" colorsize={} colorid={}", id, name, colorsize, colorid);
+//			}
 		}
 		float prevPointX;
 		float prevPointY;

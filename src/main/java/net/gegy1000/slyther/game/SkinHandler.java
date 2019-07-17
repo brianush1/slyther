@@ -14,7 +14,7 @@ public enum SkinHandler {
 	private final Map<Skin, SkinDetails> PATTERNS = new HashMap<>();
 
 	SkinHandler() {
-		for (Skin skin : Skin.values()) {
+		for (SkinEnum skin : SkinEnum.values()) {
 			PATTERNS.put(skin, new SkinDetails(new Color[] { Color.values()[skin.ordinal() % Color.values().length] }));
 		}
 		try {

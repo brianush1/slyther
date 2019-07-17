@@ -1,7 +1,7 @@
 package net.gegy1000.slyther.client;
 
 import net.gegy1000.slyther.game.Configuration;
-import net.gegy1000.slyther.game.Skin;
+import net.gegy1000.slyther.game.SkinEnum;
 
 public class ClientConfig implements Configuration {
 	public final static int	ScoreTypeNone = 0;
@@ -10,7 +10,7 @@ public class ClientConfig implements Configuration {
 	public final static int ScoreTypeCOUNT = 3;
 	
     public String nickname = "Slyther";
-    public Skin skin = Skin.RAINBOW;
+    public SkinEnum skin = SkinEnum.RAINBOW;
     public String server;
     public boolean shouldRecord = true;
     public boolean debugMode = false;
