@@ -140,7 +140,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
         wehang = angle;
     }
 
-    public void setSkin(Skin skin) {
+    private void setSkin(Skin skin) {
         this.skin = skin;
         eyeRadius = 6;
         pupilRadius = 3.5F;
