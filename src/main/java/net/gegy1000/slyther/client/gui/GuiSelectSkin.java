@@ -1,55 +1,20 @@
 package net.gegy1000.slyther.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
 import net.gegy1000.slyther.client.SlytherClient;
-import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.element.ArrowElement;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.game.Color;
 import net.gegy1000.slyther.game.Skin;
+import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.game.entity.SnakePoint;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class GuiSelectSkin extends GuiWithBanner {
-    private Gui parentMenu;
-    private ClientSnake snake;
-
-
-    public GuiSelectSkin(Gui menu) {
-        this.parentMenu = menu;
-    }
-
-    private void createSnake() {
-        List<SnakePoint> points = new ArrayList<>();
-        for (int i = 0; i < 23; i++) {
-            SnakePoint point = new SnakePoint(client, i * 10.0F, 0.0F);
-            point.deltaX = i == 0 ? 0.0F : 10.0F;
-            points.add(point);
-        }
-        snake = new ClientSnake(client, "", 0, points.get(points.size() - 1).posX, 0.0F, client.configuration.skin, 0.0F, points);
-        snake.speed = 4.8F;
-        snake.speedTurnMultiplier = snake.speed / client.getSpangDv();
-        if (snake.speedTurnMultiplier > 1) {
-            snake.speedTurnMultiplier = 1;
-        }
-        snake.scale = 1.0F;
-        snake.scaleTurnMultiplier = 1.0F;
-        snake.moveSpeed = client.getNsp1() + client.getNsp2() * snake.scale;
-        snake.accelleratingSpeed = snake.moveSpeed + 0.1F;
-        snake.wantedSeperation = snake.scale * 6.0F;
-        float nsep = SlytherClient.NSEP;
-        if (snake.wantedSeperation < nsep) {
-            snake.wantedSeperation = nsep;
-        }
-        snake.partSeparation = snake.wantedSeperation;
-        snake.updateLength();
-        snake.aliveAmt = 1.0F;
-        snake.relativeEyeX = 1.66F;
-        update();
-    }
+public class GuiSelectSkin extends GuiWithSnakeEditor {
 
     @Override
     public void init() {
@@ -63,7 +28,15 @@ public class GuiSelectSkin extends GuiWithBanner {
             updateSkin(true);
             return true;
         }));
-        elements.add(new ButtonElement(this, "Done", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() - 40.0F, 100.0F, 40.0F, (button) -> {
+        elements.add(new ButtonElement(this, "Custom Skin", 
+        		renderResolution.getWidth() / 2.0F, 
+        		renderResolution.getHeight() - 90.0F, 100.0F, 40.0F, (button) -> {
+            renderHandler.openGui(new GuiCustomSkin());
+            return true;
+        }));
+        elements.add(new ButtonElement(this, "Done", 
+        		renderResolution.getWidth() / 2.0F, 
+        		renderResolution.getHeight() - 40.0F, 100.0F, 40.0F, (button) -> {
             exit();
             return true;
         }));
@@ -71,9 +44,6 @@ public class GuiSelectSkin extends GuiWithBanner {
 
     @Override
     public void render(float mouseX, float mouseY) {
-//        backgroundX++;
-//        textureManager.bindTexture("/textures/background.png");
-//        drawTexture(0.0F, 0.0F, backgroundX * 2.0F, 0, renderResolution.getWidth(), renderResolution.getHeight(), 599, 519);
     	renderBackground();
         int snakePointIndex = 0;
         for (SnakePoint point : snake.points) {
@@ -352,7 +322,7 @@ public class GuiSelectSkin extends GuiWithBanner {
 
     private void exit() {
         closeGui();
-        renderHandler.openGui(parentMenu);
+        renderHandler.openGui(new GuiMainMenu());
     }
 
     @Override
@@ -367,12 +337,12 @@ public class GuiSelectSkin extends GuiWithBanner {
         } else {
             skin--;
         }
-        Skin[] values = Skin.values();
+        Skin[] values = SkinEnum.values();
         skin %= values.length;
         if (skin < 0) {
             skin += values.length;
         }
-        client.configuration.skin = values[skin];
+        client.configuration.skin = (SkinEnum) values[skin];
         client.saveConfig();
         createSnake();
     }
