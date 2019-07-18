@@ -13,14 +13,14 @@ import java.util.List;
 public class GuiSelectServer extends GuiWithBanner {
     private static final int ENTRIES_PER_PAGE = 10;
 
-    private Gui parentMenu;
+//    private Gui parentMenu;
     private int page;
 
     private TextBoxElement serverTextBox;
 
-    public GuiSelectServer(Gui parentMenu) {
-        this.parentMenu = parentMenu;
-    }
+//    public GuiSelectServer(Gui parentMenu) {
+//        this.parentMenu = parentMenu;
+//    }
 
     @Override
     public void init() {
@@ -156,7 +156,7 @@ public class GuiSelectServer extends GuiWithBanner {
 
     private void exit() {
         closeGui();
-        renderHandler.openGui(parentMenu);
+        renderHandler.openGui(new GuiMainMenu());
     }
 	@Override
 	public void resize() {
