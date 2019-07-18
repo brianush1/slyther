@@ -86,7 +86,7 @@ public class RenderHandler {
     }
 
     public void resize() {
-    	Log.info("resize");
+    	Log.debug("resize");
     	init();
     	if (activeGui != null)
     		activeGui.resize();
