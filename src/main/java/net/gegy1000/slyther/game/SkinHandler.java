@@ -12,6 +12,7 @@ public enum SkinHandler {
 	INSTANCE;
 
 	private final Map<Skin, SkinDetails> PATTERNS = new HashMap<>();
+	private final Map<Integer, SkinDetails> CUSTOM_PATTERNS = new HashMap<>();
 
 	SkinHandler() {
 		for (SkinEnum skin : SkinEnum.values()) {
@@ -31,6 +32,18 @@ public enum SkinHandler {
 
 	public SkinDetails getDetails(Skin skin) {
 		return PATTERNS.get(skin);
+	}
+
+	public void putCustomDetails(Integer id, SkinDetails details) {
+		CUSTOM_PATTERNS.put(id,  details);
+	}
+
+	public SkinDetails getCustomDetails(Integer id) {
+		return(CUSTOM_PATTERNS.get(id));
+	}
+
+	public void removeCustomDetails(Integer id) {
+		CUSTOM_PATTERNS.remove(id);
 	}
 
 	private class SkinPatternsContainer {
