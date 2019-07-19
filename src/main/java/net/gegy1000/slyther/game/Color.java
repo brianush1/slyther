@@ -36,7 +36,12 @@ public enum Color {
     SHINY_YELLOW(224, 224, 80),
     SHINY_ORANGE(224, 128, 48),
     SHINY_PURPLE(224, 80, 224),
-    SHINY_GREEN(80, 224, 80);
+    SHINY_GREEN(80, 224, 80),
+    // Protocol 11 colors
+    BLACK(0,0,0),				// unused
+    LIGHT_blue_5(72,84,255),	// XXX Note: Duplicate placeholder
+    Black(0,0,0),				// unused
+    LIGHT_purple_2(160,80,255);	// XXX Note: Duplicate placeholder
 
     public float red, green, blue;
 
