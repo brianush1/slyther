@@ -12,6 +12,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
     public String name;
     public int id;
     public Skin skin;
+    public boolean editingSkin = false;
 
     public float chl;
     public float tsp;

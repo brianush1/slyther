@@ -2,6 +2,7 @@ package net.gegy1000.slyther.client.gui;
 
 import org.lwjgl.input.Keyboard;
 
+import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.element.ArrowElement;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.game.Skin;
@@ -9,11 +10,12 @@ import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.game.entity.SnakePoint;
 
 public class GuiSelectSkin extends GuiWithSnakeEditor {
+	ClientSnake snake;
 
     @Override
     public void init() {
 		elements.clear();
-        createSnake();
+        snake = createSnake();
         elements.add(new ArrowElement(this, renderResolution.getWidth() / 6.0F, renderResolution.getHeight() / 2.0F, false, (arrow) -> {
             updateSkin(false);
             return true;
@@ -45,7 +47,7 @@ public class GuiSelectSkin extends GuiWithSnakeEditor {
             snakePointIndex++;
         }
         drawCenteredLargeString("Select Skin", renderResolution.getWidth() / 2.0F, 25.0F, 0.5F, 0xFFFFFF);
-        drawSnake(renderHandler.centerX, renderHandler.centerY, 1.0F);
+        drawSnake(snake, renderHandler.centerX, renderHandler.centerY, 1.0F);
     }
 
     @Override
