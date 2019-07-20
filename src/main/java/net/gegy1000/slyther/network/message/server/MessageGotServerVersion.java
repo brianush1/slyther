@@ -10,29 +10,34 @@ import net.gegy1000.slyther.server.ConnectedClient;
 import net.gegy1000.slyther.server.SlytherServer;
 
 public class MessageGotServerVersion extends SlytherServerMessageBase {
-    private String version;
+	private String version;
 
-    public MessageGotServerVersion() {
-    }
+	public MessageGotServerVersion() {
+	}
 
-    public MessageGotServerVersion(String version) {
-        this.version = version;
-    }
+//    public MessageGotServerVersion(String version) {
+//        this.version = version;
+//    }
 
-    @Override
-    public void write(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
-        buffer.writeASCIIBytes(version);
-    }
+	@Override
+	public void write(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
+		buffer.writeASCIIBytes(version);
+	}
 
-    @Override
-    public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
-        version = buffer.readASCIIBytes();
-        networkManager.send(new MessageClientRiddleAnswer(this.version));
-        networkManager.send(new MessageClientSetup(client.configuration.nickname, client.configuration.skin));
-    }
+	@Override
+	public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
+		byte[] b = buffer.array();
+		int[] data = new int[b.length];
+		for (int i=0; i<b.length; i++)
+			data[i] = b[i] & 0xFF;
+//		version = buffer.readASCIIBytes();
+		networkManager.send(new MessageClientRiddleAnswer(data));
+		networkManager.send(new MessageClientSetup(client.configuration.nickname, 
+				client.configuration.customSkin != null ? client.configuration.customSkin : client.configuration.skin));
+	}
 
-    @Override
-    public int[] getMessageIds() {
-        return new int[] { '6' };
-    }
+	@Override
+	public int[] getMessageIds() {
+		return new int[] { '6' };
+	}
 }
