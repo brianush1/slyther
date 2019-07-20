@@ -51,7 +51,6 @@ public class GuiSelectSkin extends GuiWithSnakeEditor {
 		if (client.configuration.showDebug) {
 			int yinc = (int)(font.getHeight() / 2.0F + 2);
 
-			String s;
 			int debugY = (int)(font.getHeight() / 2.0F + 2);
 			drawString(client.configuration.skin.toString(), 10, debugY, 0.5F, 0xFFFFFF);
 			debugY += yinc;

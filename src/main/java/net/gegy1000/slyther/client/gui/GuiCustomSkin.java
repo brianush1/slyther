@@ -26,6 +26,8 @@ public class GuiCustomSkin extends GuiWithSnakeEditor {
 	@Override
 	public void init() {
 		elements.clear();
+		if (client.configuration.customSkin != null)
+			pattern = client.configuration.customSkin.getColorsUnpacked();
         esnake = createSnake();
         dsnake = createSnake();
         updateSkin();

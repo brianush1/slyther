@@ -74,16 +74,16 @@ public class SkinCustom implements Skin {
 				plength = 1;
 				cur = (byte)colors[i].ordinal();
 			} else if (cur != (byte)colors[i].ordinal()) {
-				colorsPacked[index] = cur;
-				colorsPacked[index+1] = (byte)plength;
+				colorsPacked[index] = (byte)plength;
+				colorsPacked[index+1] = (byte)cur;
 				plength = 1;
 				cur = (byte)colors[i].ordinal();
 				index += 2;
 			} else
 				plength++;
 		}
-		colorsPacked[index] = cur;
-		colorsPacked[index+1] = (byte)plength;
+		colorsPacked[index] = (byte)plength;
+		colorsPacked[index+1] = cur;
 	}
 
 }

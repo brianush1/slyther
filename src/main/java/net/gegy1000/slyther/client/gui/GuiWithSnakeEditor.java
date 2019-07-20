@@ -27,7 +27,9 @@ public abstract class GuiWithSnakeEditor extends GuiWithBanner {
 			point.deltaX = i == 0 ? 0.0F : 10.0F;
 			points.add(point);
 		}
-		snake = new ClientSnake(client, "", 0, points.get(points.size() - 1).posX, 0.0F, client.configuration.skin, 0.0F, points);
+		snake = new ClientSnake(client, "", 0, points.get(points.size() - 1).posX, 0.0F,
+				client.configuration.customSkin != null ? client.configuration.customSkin : client.configuration.skin, 
+				0.0F, points);
 		snake.speed = 4.8F;
 		snake.speedTurnMultiplier = snake.speed / client.getSpangDv();
 		if (snake.speedTurnMultiplier > 1) {
