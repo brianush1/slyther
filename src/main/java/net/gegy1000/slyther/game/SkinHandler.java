@@ -12,7 +12,7 @@ public enum SkinHandler {
 	INSTANCE;
 
 	private final Map<Skin, SkinDetails> PATTERNS = new HashMap<>();
-	private final Map<Integer, SkinDetails> CUSTOM_PATTERNS = new HashMap<>();
+	private final Map<Integer, SkinCustom> CUSTOM_PATTERNS = new HashMap<>();
 
 	SkinHandler() {
 		for (SkinEnum skin : SkinEnum.values()) {
@@ -22,7 +22,7 @@ public enum SkinHandler {
 			SkinPatternsContainer patterns = new Gson().fromJson(new InputStreamReader(SkinHandler.class.getResourceAsStream("/data/skin_patterns.json")), SkinPatternsContainer.class);
 			if (patterns != null) {
 				for (SkinJsonContainer container : patterns.patterns) {
-					PATTERNS.put(container.skin, container.details);
+					PATTERNS.put(container.skinEnum, container.details);
 				}
 			}
 		} catch (Exception e) {
@@ -34,11 +34,11 @@ public enum SkinHandler {
 		return PATTERNS.get(skin);
 	}
 
-	public void putCustomDetails(Integer id, SkinDetails details) {
+	public void putCustomSkin(Integer id, SkinCustom details) {
 		CUSTOM_PATTERNS.put(id,  details);
 	}
 
-	public SkinDetails getCustomDetails(Integer id) {
+	public SkinCustom getCustomSkin(Integer id) {
 		return(CUSTOM_PATTERNS.get(id));
 	}
 
@@ -51,7 +51,7 @@ public enum SkinHandler {
 	}
 
 	private class SkinJsonContainer {
-		public Skin skin;
+		public SkinEnum skinEnum;
 		public SkinDetails details;
 	}
 }

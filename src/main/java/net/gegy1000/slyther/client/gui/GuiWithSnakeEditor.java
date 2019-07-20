@@ -155,6 +155,8 @@ public abstract class GuiWithSnakeEditor extends GuiWithBanner {
 			Color color;
 			if (snake.editingSkin && pointIndex >= pattern.length)
 				color = null;
+			else if (pattern.length == 0)
+				color = null;
 			else
 				color = pattern[pointIndex % pattern.length];
 			int i = pointIndex % 12;

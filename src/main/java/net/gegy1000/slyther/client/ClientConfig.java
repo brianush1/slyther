@@ -1,6 +1,7 @@
 package net.gegy1000.slyther.client;
 
 import net.gegy1000.slyther.game.Configuration;
+import net.gegy1000.slyther.game.SkinCustom;
 import net.gegy1000.slyther.game.SkinEnum;
 
 public class ClientConfig implements Configuration {
@@ -11,6 +12,7 @@ public class ClientConfig implements Configuration {
 	
     public String nickname = "Slyther";
     public SkinEnum skin = SkinEnum.RAINBOW;
+    public SkinCustom customSkin;
     public String server;
     public boolean shouldRecord = true;
     public boolean debugMode = false;

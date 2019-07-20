@@ -150,7 +150,12 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
 
         SkinDetails details = SkinHandler.INSTANCE.getDetails(skin);
 
-        Color[] pattern = new Color[] { Color.values()[skin.ordinal() % Color.values().length] };
+        Color[] pattern;
+        if (skin.isCustom())
+        	pattern = ((SkinCustom)skin).getColorsUnpacked();
+        else
+        	pattern = new Color[] { Color.values()[skin.ordinal() % Color.values().length] };
+        
 
         if (details != null) {
             antenna = details.hasAntenna;

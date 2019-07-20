@@ -116,19 +116,9 @@ public class MessageNewSnake extends SlytherServerMessageBase {
 		if (skinLength > 0) {
 			byte[] sarray = buffer.readBytes(skinLength);
 			SkinCustom skinCustom = new SkinCustom();
-			skin = skinCustom;
 			skinCustom.setPackedColors(sarray);
+			skin = skinCustom;
 			
-//			int crap1 = buffer.readUInt24();
-//			int crap0 = buffer.readUInt24();
-//			int crapr = buffer.readUInt16();
-//			skinLength -= 8;
-//			Log.debug("Snake {} \"{}\" crap1={} crap0={} crapr={}", id, name, crap1, crap0, crapr);
-//			for (int i = 0; i<skinLength; i+=2) {
-//				int colorsize = buffer.readUInt8();
-//				int colorid = buffer.readUInt8();
-//				Log.debug("Snake {} \"{}\" colorsize={} colorid={}", id, name, colorsize, colorid);
-//			}
 		}
 		float prevPointX;
 		float prevPointY;

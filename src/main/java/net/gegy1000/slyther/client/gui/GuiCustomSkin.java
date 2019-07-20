@@ -4,9 +4,13 @@
 package net.gegy1000.slyther.client.gui;
 
 
+import org.lwjgl.input.Keyboard;
+
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.game.Color;
+import net.gegy1000.slyther.game.SkinCustom;
+import net.gegy1000.slyther.game.SkinHandler;
 import net.gegy1000.slyther.game.entity.SnakePoint;
 import net.gegy1000.slyther.util.Log;
 
@@ -15,19 +19,23 @@ import net.gegy1000.slyther.util.Log;
  *
  */
 public class GuiCustomSkin extends GuiWithSnakeEditor {
-	ClientSnake esnake;
+	private ClientSnake esnake;		// edit snake
+	private ClientSnake dsnake;		// display snake
 	Color[]	pattern = new Color[0];
 
 	@Override
 	public void init() {
 		elements.clear();
         esnake = createSnake();
+        dsnake = createSnake();
         updateSkin();
         esnake.editingSkin = true;
+        dsnake.scale = 0.8F;
 		elements.add(new ButtonElement(this, "Done", renderResolution.getWidth() / 2.0F, 
 				renderResolution.getHeight() - 40.0F, 
 				100.0F, 40.0F,
 				(button) -> {
+					saveCustomSkin();
 					renderHandler.openGui(new GuiSelectSkin());
 					return true;
 				}));
@@ -70,7 +78,13 @@ public class GuiCustomSkin extends GuiWithSnakeEditor {
             point.posY = (float) (15.0F * Math.cos(snakePointIndex / 4.0F + (client.frameTicks) / 4.0F) * (1.0F - ((float) snakePointIndex / esnake.points.size())));
             snakePointIndex++;
         }
-        drawSnake(esnake, renderHandler.centerX, renderHandler.renderResolution.getHeight()*3/4, 1.0F);
+        snakePointIndex = 0;
+        for (SnakePoint point : dsnake.points) {
+            point.posY = (float) (15.0F * Math.cos(snakePointIndex / 4.0F + (client.frameTicks) / 5.0F) * (1.0F - ((float) snakePointIndex / esnake.points.size())));
+            snakePointIndex++;
+        }
+        drawSnake(esnake, renderHandler.centerX, renderHandler.renderResolution.getHeight()*0.65F, 1.0F);
+        drawSnake(dsnake, renderHandler.centerX, renderHandler.renderResolution.getHeight()*0.80F, 1.0F);
 
 	}
 
@@ -82,7 +96,18 @@ public class GuiCustomSkin extends GuiWithSnakeEditor {
 
 	@Override
 	public void keyPressed(int key, char character) {
-		// TODO Auto-generated method stub
+		if (key == Keyboard.KEY_BACK) {
+			if (pattern.length > 0) {
+				Color[] newpattern = new Color[pattern.length-1];
+				for (int i=0; i<pattern.length-1; i++)
+					newpattern[i] = pattern[i];
+				pattern = newpattern;
+				updateSkin();
+			}
+		} else if (key == Keyboard.KEY_ESCAPE) {
+			renderHandler.openGui(new GuiSelectSkin());
+			return;
+		}
 
 	}
 
@@ -110,10 +135,19 @@ public class GuiCustomSkin extends GuiWithSnakeEditor {
 			newpattern[i] = pattern[i];
 		newpattern[newpattern.length-1] = color;
 		pattern = newpattern;
-		esnake.pattern = pattern;
+		updateSkin();
 	}
 
 	private void updateSkin() {
 		esnake.pattern = pattern;
+		dsnake.pattern = pattern;
+	}
+	
+	private void saveCustomSkin() {
+		SkinCustom sc = new SkinCustom();
+		sc.setUnpackedColors(pattern);
+		SkinHandler.INSTANCE.putCustomSkin(0, sc);
+		client.configuration.customSkin = sc;
+        client.saveConfig();
 	}
 }

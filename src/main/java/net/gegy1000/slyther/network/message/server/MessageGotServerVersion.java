@@ -32,7 +32,8 @@ public class MessageGotServerVersion extends SlytherServerMessageBase {
 			data[i] = b[i] & 0xFF;
 //		version = buffer.readASCIIBytes();
 		networkManager.send(new MessageClientRiddleAnswer(data));
-		networkManager.send(new MessageClientSetup(client.configuration.nickname, client.configuration.skin));
+		networkManager.send(new MessageClientSetup(client.configuration.nickname, 
+				client.configuration.customSkin != null ? client.configuration.customSkin : client.configuration.skin));
 	}
 
 	@Override

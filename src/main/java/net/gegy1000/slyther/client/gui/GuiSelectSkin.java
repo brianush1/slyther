@@ -38,57 +38,71 @@ public class GuiSelectSkin extends GuiWithSnakeEditor {
         }));
     }
 
-    @Override
-    public void render(float mouseX, float mouseY) {
-    	renderBackground();
-        int snakePointIndex = 0;
-        for (SnakePoint point : snake.points) {
-            point.posY = (float) (15.0F * Math.cos(snakePointIndex / 4.0F + (client.frameTicks) / 4.0F) * (1.0F - ((float) snakePointIndex / snake.points.size())));
-            snakePointIndex++;
-        }
-        drawCenteredLargeString("Select Skin", renderResolution.getWidth() / 2.0F, 25.0F, 0.5F, 0xFFFFFF);
-        drawSnake(snake, renderHandler.centerX, renderHandler.centerY, 1.0F);
-    }
+	@Override
+	public void render(float mouseX, float mouseY) {
+		renderBackground();
+		int snakePointIndex = 0;
+		for (SnakePoint point : snake.points) {
+			point.posY = (float) (15.0F * Math.cos(snakePointIndex / 4.0F + (client.frameTicks) / 4.0F) * (1.0F - ((float) snakePointIndex / snake.points.size())));
+			snakePointIndex++;
+		}
+		drawCenteredLargeString("Select Skin", renderResolution.getWidth() / 2.0F, 25.0F, 0.5F, 0xFFFFFF);
+		drawSnake(snake, renderHandler.centerX, renderHandler.centerY, 1.0F);
+		if (client.configuration.showDebug) {
+			int yinc = (int)(font.getHeight() / 2.0F + 2);
 
-    @Override
-    public void update() {
-    }
+			String s;
+			int debugY = (int)(font.getHeight() / 2.0F + 2);
+			drawString(client.configuration.skin.toString(), 10, debugY, 0.5F, 0xFFFFFF);
+			debugY += yinc;
+		}
+	}
 
-    @Override
-    public void keyPressed(int key, char character) {
-        if (key == Keyboard.KEY_RIGHT || key == Keyboard.KEY_LEFT) {
-            updateSkin(key == Keyboard.KEY_RIGHT);
-        } else if (key == Keyboard.KEY_ESCAPE || key == Keyboard.KEY_BACK) {
-            exit();
-        }
-    }
+	@Override
+	public void update() {
+	}
 
-    private void exit() {
-        closeGui();
-        renderHandler.openGui(new GuiMainMenu());
-    }
+	@Override
+	public void keyPressed(int key, char character) {
+		if (key == Keyboard.KEY_RIGHT || key == Keyboard.KEY_LEFT) {
+			updateSkin(key == Keyboard.KEY_RIGHT);
+		}
+		if (key == Keyboard.KEY_ESCAPE || key == Keyboard.KEY_BACK) {
+			exit();
+		}
+		if (key == Keyboard.KEY_F3) {
+			client.configuration.showDebug = !client.configuration.showDebug;
+		}
 
-    @Override
-    public void mouseClicked(float mouseX, float mouseY, int button) {
+	}
 
-    }
+	private void exit() {
+		closeGui();
+		renderHandler.openGui(new GuiMainMenu());
+	}
 
-    public void updateSkin(boolean side) {
-        int skin = client.configuration.skin.ordinal();
-        if (side) {
-            skin++;
-        } else {
-            skin--;
-        }
-        Skin[] values = SkinEnum.values();
-        skin %= values.length;
-        if (skin < 0) {
-            skin += values.length;
-        }
-        client.configuration.skin = (SkinEnum) values[skin];
-        client.saveConfig();
-        createSnake();
-    }
+	@Override
+	public void mouseClicked(float mouseX, float mouseY, int button) {
+
+	}
+
+	public void updateSkin(boolean side) {
+		int skin = client.configuration.skin.ordinal();
+		if (side) {
+			skin++;
+		} else {
+			skin--;
+		}
+		Skin[] values = SkinEnum.values();
+		skin %= values.length;
+		if (skin < 0) {
+			skin += values.length;
+		}
+		client.configuration.skin = (SkinEnum) values[skin];
+		client.configuration.customSkin = null;
+		client.saveConfig();
+		snake = createSnake();
+	}
 	@Override
 	public void resize() {
 		super.resize();

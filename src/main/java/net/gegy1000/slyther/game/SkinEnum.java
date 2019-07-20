@@ -60,6 +60,11 @@ public enum SkinEnum implements Skin {
     SHINY_GREEN,
     
     CUSTOM;
+
+	@Override
+	public boolean isCustom() {
+		return false;
+	}
     
     
 }
