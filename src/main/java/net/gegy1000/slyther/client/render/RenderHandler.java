@@ -82,7 +82,6 @@ public class RenderHandler {
 			}
 			//Log.debug("Load " + color.name() + " textures.");
 		}
-		openGui(new GuiMainMenu());
     }
 
 //    private ByteBuffer toBuffer(String directory) throws IOException {
