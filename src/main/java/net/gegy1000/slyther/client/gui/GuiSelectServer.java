@@ -15,17 +15,18 @@ import java.util.List;
 public class GuiSelectServer extends GuiWithBanner {
     private static final int ENTRIES_PER_PAGE = 10;
 
-    private Gui parentMenu;
+//    private Gui parentMenu;
     private int page;
 
     private TextBoxElement serverTextBox;
 
-    public GuiSelectServer(Gui parentMenu) {
-        this.parentMenu = parentMenu;
-    }
+//    public GuiSelectServer(Gui parentMenu) {
+//        this.parentMenu = parentMenu;
+//    }
 
     @Override
     public void init() {
+		elements.clear();
         elements.add(new ArrowElement(this, renderResolution.getWidth() / 6.0F, renderResolution.getHeight() / 2.0F, false, (arrow) -> {
             updateSelection(-1);
             return true;
@@ -157,6 +158,12 @@ public class GuiSelectServer extends GuiWithBanner {
 
     private void exit() {
         closeGui();
-        renderHandler.openGui(parentMenu);
+        renderHandler.openGui(new GuiMainMenu());
     }
+	@Override
+	public void resize() {
+		super.resize();
+		init();
+	}
+
 }

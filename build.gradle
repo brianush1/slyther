@@ -12,6 +12,9 @@ archivesBaseName = "slyther"
 mainClassName = "net.gegy1000.slyther.client.ClientMain"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
+compileJava {
+  options.compilerArgs.addAll(['--release', '8'])
+}
 
 repositories {
     mavenCentral()

@@ -95,6 +95,10 @@ public class MessageByteBuffer {
         buf.position(((Buffer)buf).position() + n);
     }
 
+    /** Does this buffer have at least this many bytes remaining?
+     * @param n The number of bytes in question
+     * @return yes/no
+     */
     public boolean hasRemaining(int n) {
         return ((Buffer)buf).position() + n <= buf.limit();
     }

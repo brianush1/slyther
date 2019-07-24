@@ -3,6 +3,7 @@ package net.gegy1000.slyther.game;
 import net.gegy1000.slyther.game.entity.*;
 import net.gegy1000.slyther.network.NetworkManager;
 import net.gegy1000.slyther.util.BridedList;
+import net.gegy1000.slyther.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,7 +41,9 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
                 task.run();
                 task.get();
             } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+                //throw new RuntimeException(e);
+            	Log.catching(e);
+                System.exit(1);
             }
         }
     }

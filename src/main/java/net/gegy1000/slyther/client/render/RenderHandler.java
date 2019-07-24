@@ -42,7 +42,7 @@ public class RenderHandler {
     public float apx2;
     public float apy2;
 
-    private List<Gui> guis = new ArrayList<>();
+    public Gui activeGui;
 
     public RenderHandler(SlytherClient client) {
         this.client = client;
@@ -90,18 +90,14 @@ public class RenderHandler {
 //    }
 
     public void init() {
-    	renderResolution = new RenderResolution(client);
-    	centerX = renderResolution.getWidth() / 2.0F;
-    	centerY = renderResolution.getHeight() / 2.0F;
-    	for (Gui gui : getGuis()) {
-    		gui.initBase(client, this);
-    	}
+        renderResolution = new RenderResolution(client);
+        centerX = renderResolution.getWidth() / 2.0F;
+        centerY = renderResolution.getHeight() / 2.0F;
     }
 
     public void update() {
-    	for (Gui gui : getGuis()) {
-    		gui.updateBase();
-    	}
+   		if (activeGui != null)
+    		activeGui.updateBase();
 //    	while (Keyboard.next()) {
 //    		if (Keyboard.getEventKeyState()) {
 //    			int key = Keyboard.getEventKey();
@@ -120,35 +116,27 @@ public class RenderHandler {
         renderResolution.applyScale();
         float mouseX = (float) (client.mouseX / renderResolution.getScale());
         float mouseY = (float) ((client.frameBufferHeight - client.mouseY) / renderResolution.getScale());
-        for (Gui gui : getGuis()) {
-            gui.renderBase(mouseX, mouseY);
-        }
-//        while (Mouse.next()) {
-//            int button = Mouse.getEventButton();
-//            if (Mouse.getEventButtonState()) {
-//                for (Gui gui : getGuis()) {
-//                    gui.mouseClickedBase(mouseX, mouseY, button);
-//                }
-//            }
-//        }
-    }
-
-    public void openGui(Gui gui) {
-        if (!guis.contains(gui)) {
-            guis.add(gui);
-            gui.initBase(client, this);
+        if (activeGui != null) {
+	        activeGui.renderBase(mouseX, mouseY);
+//	        while (Mouse.next()) {
+//	            int button = Mouse.getEventButton();
+//	            if (Mouse.getEventButtonState()) {
+//	            	activeGui.mouseClickedBase(mouseX, mouseY, button);
+//	            }
+//	        }
         }
     }
 
-	public void closeGui(Gui gui) {
-		guis.remove(gui);
+	public void openGui(Gui gui) {
+		gui.initBase(client, this);
+		activeGui = gui;
 	}
 
-	public List<Gui> getGuis() {
-		return new ArrayList<>(guis);
-	}
+    public void closeGui() {
+    	activeGui = null;
+    }
 
-    public void closeAllGuis() {
-        guis.clear();
+    public Gui	getGui() {
+    	return(activeGui);
     }
 }

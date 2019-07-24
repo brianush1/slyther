@@ -29,6 +29,7 @@ import net.gegy1000.slyther.client.game.entity.ClientFood;
 import net.gegy1000.slyther.client.game.entity.ClientPrey;
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.Gui;
+import net.gegy1000.slyther.client.gui.GuiAbout;
 import net.gegy1000.slyther.client.gui.GuiMainMenu;
 import net.gegy1000.slyther.client.render.RenderHandler;
 import net.gegy1000.slyther.game.ConfigHandler;
@@ -211,7 +212,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
     @SuppressWarnings("unused")
     private GLFWFramebufferSizeCallback	framebufferSizeCallback;
 
-	public SlytherClient() {
+    public SlytherClient() {
 		try {
 			configuration = ConfigHandler.INSTANCE.readConfig(CONFIGURATION_FILE, ClientConfig.class);
 			saveConfig();
@@ -222,23 +223,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}
 		userServerSelection = configuration.server;
 		setController(new DefaultController());
-//		Reflections reflections = new Reflections("net.gegy1000.slyther");
-//		Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
-//		for (Class<?> controller : annotated) {
-//			if (IController.class.isAssignableFrom(controller)) {
-//				try {
-//					Controller annotation = controller.getAnnotation(Controller.class);
-//					setController((IController) controller.getDeclaredConstructor().newInstance());
-//					Log.info("Using controller \"{}\" ({})", annotation.name(), controller.getSimpleName());
-//					break;
-//				} catch (Exception e) {
-//				}
-//			}
-//		}
 		setup();
 
 	}
-	
+
+
 	@Override
 	public void run() {
 
@@ -251,10 +240,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 		// Window Hints for OpenGL context
 		glfwWindowHint(GLFW_SAMPLES, 4);
-//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-//		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		//		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 1);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
@@ -272,7 +261,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			displayWidth = vidMode.width();
 			displayHeight = vidMode.height();
 			glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
-			
+
 		}
 		windowId = glfwCreateWindow(displayWidth, displayHeight, "Slyther", NULL, NULL);
 
@@ -285,9 +274,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		//Set resizable
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 		//Request an OpenGL 3.3 Core context.
-//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
+		//		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		//		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		//		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
 		//Create the window with the specified title.
 		//        window = glfwCreateWindow(windowWidth, windowHeight, "Pong - LWJGL3", monitor, 0);       
 		//
@@ -325,20 +314,20 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		 */
 		glfwSetKeyCallback(windowId, (window, key, scancode, action, mods) -> {
 			Log.debug("keyCallback key= {} scancode= {}", key, scancode);
-//			ctrlDown = (mods & GLFW_MOD_CONTROL) != 0;
+			//			ctrlDown = (mods & GLFW_MOD_CONTROL) != 0;
 			if (action == GLFW_RELEASE) {
 				return;
 			}
 			handleKeyboard(key);
-//			for (Gui gui : renderHandler.getGuis()) {
-//				gui.keyPressedBase(key);
-//			}
+			//			for (Gui gui : renderHandler.getGuis()) {
+			//				gui.keyPressedBase(key);
+			//			}
 		});
 		glfwSetCharCallback(windowId, (window, codePoint) -> {
 			Log.debug("charCallback {}", codePoint);
-			for (Gui gui : renderHandler.getGuis()) {
-				gui.keyCharPressed(codePoint);
-			}
+			
+			renderHandler.activeGui.keyCharPressed(codePoint);
+			
 		});
 		glfwSetMouseButtonCallback(windowId,  (mouseButtonCallback = new GLFWMouseButtonCallback() {
 
@@ -353,9 +342,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 					}
 					if (action == GLFW_PRESS && !isMouseDown) {
 						isMouseDown = true;
-						for (Gui gui : renderHandler.getGuis()) {
-							gui.mouseClickedBase(mouseX, displayHeight - mouseY, button);
-						}
+						renderHandler.activeGui.mouseClickedBase(mouseX, displayHeight - mouseY, button);
+						
 					}
 					if (action == GLFW_RELEASE)
 						isMouseDown = false;
@@ -365,30 +353,30 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}));
 		glfwSetCursorPosCallback(windowId, (cursorPosCallback = new GLFWCursorPosCallback() {
 
-		    @Override
-		    public void invoke(long window, double xpos, double ypos) {
-		        mouseX = (float)xpos;
-		        mouseY = displayHeight - (float)ypos;
-		        //cursorPos.y = framebuffer.height - ypos;
-		    }
+			@Override
+			public void invoke(long window, double xpos, double ypos) {
+				mouseX = (float)xpos;
+				mouseY = displayHeight - (float)ypos;
+				//cursorPos.y = framebuffer.height - ypos;
+			}
 
 		}));
 		glfwSetScrollCallback(windowId, (mouseWheelCallback = new GLFWScrollCallback() {
 
-		    @Override
-		    public void invoke(long window, double xpos, double ypos) {
-//		        mouseWheelX = xpos;
-		        mouseWheelY += ypos*20;
-		        //cursorPos.y = framebuffer.height - ypos;
-		    }
+			@Override
+			public void invoke(long window, double xpos, double ypos) {
+				//		        mouseWheelX = xpos;
+				mouseWheelY += ypos*20;
+				//cursorPos.y = framebuffer.height - ypos;
+			}
 
 		}));
 		glfwSetFramebufferSizeCallback(windowId, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-		    @Override
-		    public void invoke(long window, int width, int height) {
-		    	Log.debug("onResize");
-		        onResize(width, height);
-		    }
+			@Override
+			public void invoke(long window, int width, int height) {
+				Log.debug("onResize");
+				onResize(width, height);
+			}
 		}));
 		onResize(displayWidth, displayHeight);
 		//boolean doResize = false;
@@ -412,8 +400,8 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			Log.catching(e);
 		}
 		glfwDestroyWindow(windowId);
-	}
-/*
+		}
+		/*
 	private void setupDisplay() {
 		int height = Display.getHeight();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -424,482 +412,482 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		GL11.glViewport(0, 0, width, height);
 		renderHandler.init();
 	}
-*/
-	private void onResize(int width, int height) {
-		frameBufferWidth = width;
-		frameBufferHeight = height;
-	}
-	
-	private void setup() {
-		clearEntities();
-		delta = 0;
-		ticks = 0;
-		lastTicks = 0;
-		player = null;
-		lagging = false;
-		globalScale = INITIAL_SCALE;
-		lagMultiplier = 1.0F;
-		zoomOffset = 0.0F;
-		globalAlpha = 0.0F;
-		ServerHandler.INSTANCE.pingServers();
-	}
-
-	private void mainLoop() {
-		double delta = 0;
-		long previousTime = System.nanoTime();
-		long timer = System.currentTimeMillis();
-		int ups = 0;
-		double nanoUpdates = 1000000000.0 / 30.0;
-
-		GL.createCapabilities();
-
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDisable(GL11.GL_LIGHTING);
-
-		GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-		GL11.glClearDepth(1);
-		glfwMakeContextCurrent(windowId);
-
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		renderHandler.setup();
-		while(!glfwWindowShouldClose(windowId) && remainOpen) {
-			//if (Display.wasResized() && doResize) {
-			//	setupDisplay();
-			//}
-			//doResize = true;
-
-			long currentTime = System.nanoTime();
-			double currentTickDelta = (currentTime - previousTime) / nanoUpdates;
-			delta += currentTickDelta;
-			frameDelta = (frameDelta + currentTickDelta) % 1.0;
-			previousTime = currentTime;
-
-			while (delta >= 1) {
-				update();
-				renderHandler.update();
-				delta--;
-				ups++;
-			}
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-			GL11.glOrtho(0, frameBufferWidth, frameBufferHeight, 0, 1, -1);
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glPushMatrix();
-
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-
-			renderHandler.render();
-
-			fps++;
-
-			if (System.currentTimeMillis() - timer > 1000) {
-				int bytesPerSecond = 0;
-				int packetsPerSecond = 0;
-				if (networkManager != null) {
-					bytesPerSecond = networkManager.bytesPerSecond;
-					packetsPerSecond = networkManager.packetsPerSecond;
-					networkManager.bytesPerSecond = 0;
-					networkManager.packetsPerSecond = 0;
-				}
-				fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
-				//Display.setTitle("Slyther - " + fpsMessage);
-				fps = 0;
-
-				timer += 1000;
-				//gamePlayTime++;
-				gameStatistic.incDuration();
-				ups = 0;
-			}
-
-			GL11.glPopMatrix();
-			glfwPollEvents();
-			glfwSwapBuffers(windowId);
+		 */
+		private void onResize(int width, int height) {
+			frameBufferWidth = width;
+			frameBufferHeight = height;
 		}
 
-	}
+		private void setup() {
+			clearEntities();
+			delta = 0;
+			ticks = 0;
+			lastTicks = 0;
+			player = null;
+			lagging = false;
+			globalScale = INITIAL_SCALE;
+			lagMultiplier = 1.0F;
+			zoomOffset = 0.0F;
+			globalAlpha = 0.0F;
+			ServerHandler.INSTANCE.pingServers();
+		}
 
-	public void toggleFullscreen() {
-		long 		monitor = glfwGetPrimaryMonitor();
-		GLFWVidMode mode =  glfwGetVideoMode(monitor);
-//		if (mode.width() == displayWidth && mode.height() == displayHeight) {
-//			
-//		} else {
+		private void mainLoop() {
+			double delta = 0;
+			long previousTime = System.nanoTime();
+			long timer = System.currentTimeMillis();
+			int ups = 0;
+			double nanoUpdates = 1000000000.0 / 30.0;
+
+			GL.createCapabilities();
+
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_LIGHTING);
+
+			GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+			GL11.glClearDepth(1);
+			glfwMakeContextCurrent(windowId);
+
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			renderHandler.setup();
+			while(!glfwWindowShouldClose(windowId) && remainOpen) {
+				//if (Display.wasResized() && doResize) {
+				//	setupDisplay();
+				//}
+				//doResize = true;
+
+				long currentTime = System.nanoTime();
+				double currentTickDelta = (currentTime - previousTime) / nanoUpdates;
+				delta += currentTickDelta;
+				frameDelta = (frameDelta + currentTickDelta) % 1.0;
+				previousTime = currentTime;
+
+				while (delta >= 1) {
+					update();
+					renderHandler.update();
+					delta--;
+					ups++;
+				}
+
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+				GL11.glMatrixMode(GL11.GL_PROJECTION);
+				GL11.glLoadIdentity();
+				GL11.glOrtho(0, frameBufferWidth, frameBufferHeight, 0, 1, -1);
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				GL11.glPushMatrix();
+
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+				renderHandler.render();
+
+				fps++;
+
+				if (System.currentTimeMillis() - timer > 1000) {
+					int bytesPerSecond = 0;
+					int packetsPerSecond = 0;
+					if (networkManager != null) {
+						bytesPerSecond = networkManager.bytesPerSecond;
+						packetsPerSecond = networkManager.packetsPerSecond;
+						networkManager.bytesPerSecond = 0;
+						networkManager.packetsPerSecond = 0;
+					}
+					fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
+					//Display.setTitle("Slyther - " + fpsMessage);
+					fps = 0;
+
+					timer += 1000;
+					//gamePlayTime++;
+					gameStatistic.incDuration();
+					ups = 0;
+				}
+
+				GL11.glPopMatrix();
+				glfwPollEvents();
+				glfwSwapBuffers(windowId);
+			}
+
+		}
+
+		public void toggleFullscreen() {
+			long 		monitor = glfwGetPrimaryMonitor();
+			GLFWVidMode mode =  glfwGetVideoMode(monitor);
+			//		if (mode.width() == displayWidth && mode.height() == displayHeight) {
+			//			
+			//		} else {
 			glfwSetWindowMonitor(windowId, monitor, 0, 0, mode.width(), mode.height(), mode.refreshRate());
 			//		}
-		onResize(displayWidth, displayHeight);
-/*		try {
+			onResize(displayWidth, displayHeight);
+			/*		try {
 			if (Display.isFullscreen()) {
 				Display.setFullscreen(false);
 				Display.setDisplayMode(new DisplayMode(displayWidth, displayHeight));
 				configuration.showFullScreen = false;
+				renderHandler.resize();
 			} else {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
 				Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
 				configuration.showFullScreen = true;
+				renderHandler.resize();
 			}
 			saveConfig();
 			} catch (LWJGLException e) {
 			Log.warn("Can't set fullscreen mode");
 		}
-*/	}
+			 */	}
 
-	/** Check and handle if this key is a global client key.
-	 * Currently only F11=Fullscreen toggle is handled
-	 * @param key
-	 * @param character
-	 * @return true if we ate the key
-	 */
-	public boolean handleKeyboard(int key) {
-		//Log.debug("Key = {} char = {}", key, character);
-		if (key == GLFW_KEY_F11) {
-			toggleFullscreen();
-//			setupDisplay();
-			return(true);
+		/** Check and handle if this key is a global client key.
+		 * Currently only F11=Fullscreen toggle is handled
+		 * @param key
+		 * @param character
+		 * @return true if we ate the key
+		 */
+		public boolean handleKeyboard(int key) {
+			//Log.debug("Key = {} char = {}", key, character);
+			if (key == GLFW_KEY_F11) {
+				toggleFullscreen();
+				//			setupDisplay();
+				return(true);
+			}
+			//		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
+			//			return(true);
+			//		if (key == Keyboard.KEY_LMENU)
+			//			return(true);
+			renderHandler.activeGui.keyPressedBase(key);
+			return(false);
 		}
-//		if (key == Keyboard.KEY_RMENU)	// eat the alt keys
-//			return(true);
-//		if (key == Keyboard.KEY_LMENU)
-//			return(true);
-		for (Gui gui : renderHandler.getGuis()) {
-			gui.keyPressedBase(key);
-		}
-		return(false);
-	}
 
-	void scrollCallback(long windowId, double xoffset, double yoffset) {
-		
-	}
-	
-	public void connect() {
-		allowUserInput = true;
-		new Thread(() -> {
+		void scrollCallback(long windowId, double xoffset, double yoffset) {
+
+		}
+
+		public void connect() {
+			allowUserInput = true;
+			new Thread(() -> {
+				try {
+					if (userServerSelection == null) {
+						ServerHandler.Server server = ServerHandler.INSTANCE.getServerForPlay();
+						networkManager = ClientNetworkManager.create(SlytherClient.this, server, configuration.shouldRecord);
+					} else {
+						networkManager = ClientNetworkManager.create(SlytherClient.this, userServerSelection, configuration.shouldRecord);
+					}
+					server = networkManager.getIp();
+				} catch (Exception e) {
+					UIUtils.displayException("Connection failed", e);
+				}
+			}).start();
+		}
+
+		public void replay() {
+			allowUserInput = false;
 			try {
-				if (userServerSelection == null) {
-					ServerHandler.Server server = ServerHandler.INSTANCE.getServerForPlay();
-					networkManager = ClientNetworkManager.create(SlytherClient.this, server, configuration.shouldRecord);
-				} else {
-					networkManager = ClientNetworkManager.create(SlytherClient.this, userServerSelection, configuration.shouldRecord);
-				}
-				server = networkManager.getIp();
+				networkManager = ClientNetworkManager.create(this);
 			} catch (Exception e) {
-				UIUtils.displayException("Connection failed", e);
+				UIUtils.displayException("Replay failed", e);
 			}
-		}).start();
-	}
-
-	public void replay() {
-		allowUserInput = false;
-		try {
-			networkManager = ClientNetworkManager.create(this);
-		} catch (Exception e) {
-			UIUtils.displayException("Replay failed", e);
 		}
-	}
 
-	public void setup(int gameRadius, int mscps, int sectorSize, int sectorCountAlongEdge, float spangDV, float nsp1, float nsp2, float nsp3, float snakeTurnSpeed, float preyTurnSpeed, float cst, int protocolVersion) {
-		GAME_RADIUS = gameRadius;
-		SECTOR_SIZE = sectorSize;
-		SECTORS_ALONG_EDGE = sectorCountAlongEdge;
-		SPANG_DV = spangDV;
-		NSP1 = nsp1;
-		NSP2 = nsp2;
-		NSP3 = nsp3;
-		SNAKE_TURN_SPEED = snakeTurnSpeed;
-		PREY_TURN_SPEED = preyTurnSpeed;
-		CST = cst;
-		PROTOCOL_VERSION = protocolVersion;
-		setMSCPS(mscps);
-		Log.debug("PROTOCOL_VERSION: {}", PROTOCOL_VERSION);
-		if (PROTOCOL_VERSION < 8) {
-			throw new RuntimeException("Unsupported protocol version (" + PROTOCOL_VERSION + ")" + "!");
+		public void setup(int gameRadius, int mscps, int sectorSize, int sectorCountAlongEdge, float spangDV, float nsp1, float nsp2, float nsp3, float snakeTurnSpeed, float preyTurnSpeed, float cst, int protocolVersion) {
+			GAME_RADIUS = gameRadius;
+			SECTOR_SIZE = sectorSize;
+			SECTORS_ALONG_EDGE = sectorCountAlongEdge;
+			SPANG_DV = spangDV;
+			NSP1 = nsp1;
+			NSP2 = nsp2;
+			NSP3 = nsp3;
+			SNAKE_TURN_SPEED = snakeTurnSpeed;
+			PREY_TURN_SPEED = preyTurnSpeed;
+			CST = cst;
+			PROTOCOL_VERSION = protocolVersion;
+			setMSCPS(mscps);
+			Log.debug("PROTOCOL_VERSION: {}", PROTOCOL_VERSION);
+			if (PROTOCOL_VERSION < 8) {
+				throw new RuntimeException("Unsupported protocol version (" + PROTOCOL_VERSION + ")" + "!");
+			}
 		}
-	}
 
-	public void setMSCPS(int mscps) {
-		if (MSCPS != mscps) {
-			MSCPS = mscps;
-			fmlts = new float[mscps];
-			fpsls = new float[mscps + 1];
-			for (int i = 0; i <= mscps; i++) {
-				if (i < mscps) {
-					fmlts[i] = (float) Math.pow(1.0F - i / (float) mscps, 2.25F);
-				}
-				if (i != 0) {
-					fpsls[i] = fpsls[i - 1] + 1.0F / fmlts[i - 1];
+		public void setMSCPS(int mscps) {
+			if (MSCPS != mscps) {
+				MSCPS = mscps;
+				fmlts = new float[mscps];
+				fpsls = new float[mscps + 1];
+				for (int i = 0; i <= mscps; i++) {
+					if (i < mscps) {
+						fmlts[i] = (float) Math.pow(1.0F - i / (float) mscps, 2.25F);
+					}
+					if (i != 0) {
+						fpsls[i] = fpsls[i - 1] + 1.0F / fmlts[i - 1];
+					}
 				}
 			}
 		}
-	}
 
-	@Override
-	public float getFMLT(int i) {
-		return fmlts[Math.min(i, fmlts.length - 1)];
-	}
+		@Override
+		public float getFMLT(int i) {
+			return fmlts[Math.min(i, fmlts.length - 1)];
+		}
 
-	@Override
-	public float getFPSL(int i) {
-		return fpsls[Math.min(i, fpsls.length - 1)];
-	}
+		@Override
+		public float getFPSL(int i) {
+			return fpsls[Math.min(i, fpsls.length - 1)];
+		}
 
-	public void update() {
-		runTasks();
-		if (networkManager != null) {
-			long time = System.currentTimeMillis();
-			float lastDelta2;
-			delta = (time - lastTickTime) / 8.0F;
-			lastTickTime = time;
-			if (!lagging && networkManager.waitingForPingReturn && time - networkManager.lastPacketTime > 420) {
-				lagging = true;
-			}
-			if (lagging) {
-				lagMultiplier *= 0.85F;
-				if (lagMultiplier < 0.01F) {
-					lagMultiplier = 0.01F;
+		public void update() {
+			runTasks();
+			if (networkManager != null) {
+				long time = System.currentTimeMillis();
+				float lastDelta2;
+				delta = (time - lastTickTime) / 8.0F;
+				lastTickTime = time;
+				if (!lagging && networkManager.waitingForPingReturn && time - networkManager.lastPacketTime > 420) {
+					lagging = true;
+				}
+				if (lagging) {
+					lagMultiplier *= 0.85F;
+					if (lagMultiplier < 0.01F) {
+						lagMultiplier = 0.01F;
+					}
+				} else {
+					if (lagMultiplier < 1.0F) {
+						lagMultiplier += 0.05F;
+						if (lagMultiplier >= 1.0F) {
+							lagMultiplier = 1.0F;
+						}
+					}
+				}
+				if (delta > 120) {
+					delta = 120;
+				}
+				delta *= lagMultiplier;
+				errorTime *= lagMultiplier;
+				lastTicks = ticks;
+				ticks += delta;
+				lastDelta = (float) (Math.floor(ticks) - Math.floor(lastTicks));
+				lastTicks2 = ticks2;
+				ticks2 += delta * 2;
+				lastDelta2 = (float) (Math.floor(ticks2) - Math.floor(lastTicks2));
+				if (globalAlpha < 1.0F) {
+					globalAlpha += 0.0075F * delta;
+					if (globalAlpha > 1.0F) {
+						globalAlpha = 1.0F;
+					}
+				} else if (globalAlpha > 0.0F) {
+					globalAlpha -= 0.0075F * delta;
+					if (globalAlpha < 0.0F) {
+						globalAlpha = 0.0F;
+					}
+				}
+				if (qsm > 1.0F) {
+					qsm -= 0.00004F * delta;
+					if (qsm < 1.0F) {
+						qsm = 1.0F;
+					}
+				} else if (qsm < MAX_QSM) {
+					qsm += 0.00004F;
+					if (qsm > MAX_QSM) {
+						qsm = MAX_QSM;
+					}
+				}
+				if (player != null) {
+					if (!networkManager.waitingForPingReturn) {
+						if (time - networkManager.lastPingSendTime > 250) {
+							networkManager.lastPingSendTime = time;
+							networkManager.ping();
+						}
+					}
+					errorTime *= Math.pow(0.993, lastDelta);
+					if (allowUserInput) {
+						controller.update(this);
+						float targetAngle = controller.getTargetAngle();
+						targetAngle %= PI_2;
+						if (targetAngle < 0) {
+							targetAngle += PI_2;
+						}
+						if (targetAngle != lastSendAngle || lastSendAngleTime == 0) {
+							if (time - lastSendAngleTime > 100) {
+								lastSendAngle = targetAngle;
+								networkManager.send(new MessageSetAngle(targetAngle));
+							}
+						}
+						player.accelerating = accelerating;
+						if (time - lastAccelerateUpdateTime > 150) {
+							if (player.accelerating != player.wasAccelerating) {
+								lastAccelerateUpdateTime = time;
+								networkManager.send(new MessageAccelerate(player.accelerating));
+								player.wasAccelerating = player.accelerating;
+							}
+						}
+					}
+					Iterator<Entity<?>> entityIter = entityIterator();
+					while (entityIter.hasNext()) {
+						@SuppressWarnings("rawtypes")
+						Entity entity = entityIter.next();
+						if (entity.updateBase(delta, lastDelta, lastDelta2)) {
+							entityIter.remove();
+						}
+					}
 				}
 			} else {
-				if (lagMultiplier < 1.0F) {
-					lagMultiplier += 0.05F;
-					if (lagMultiplier >= 1.0F) {
-						lagMultiplier = 1.0F;
+				ticks++;
+			}
+		}
+
+		public float getAngleTo(float x, float y) {
+			return (float) Math.atan2(y - player.posY, x - player.posX);
+		}
+
+		public ClientSnake getSnake(int id) {
+			for (@SuppressWarnings("rawtypes") Snake snake : getSnakes()) {
+				if (snake.id == id) {
+					return (ClientSnake) snake;
+				}
+			}
+			return null;
+		}
+
+		public ClientPrey getPrey(int id) {
+			for (@SuppressWarnings("rawtypes") Prey prey : getPreys()) {
+				if (prey.id == id) {
+					return (ClientPrey) prey;
+				}
+			}
+			return null;
+		}
+
+		public ClientFood getFood(int id) {
+			for (@SuppressWarnings("rawtypes") Food food : getFoods()) {
+				if (food.id == id) {
+					return (ClientFood) food;
+				}
+			}
+			return null;
+		}
+
+		public void openGui(Gui gui) {
+			renderHandler.openGui(gui);
+		}
+
+		public void closeGui() {
+			renderHandler.closeGui();
+		}
+
+		//	public void closeAllGuis() {
+		//		renderHandler.closeAllGuis();
+		//	}
+
+		public void reset() {
+			closeGui();
+			openGui(new GuiMainMenu());
+			networkManager = null;
+			setup();
+		}
+
+		public void setController(IController controller) {
+			this.controller = controller;
+		}
+
+		@Override
+		public int getGameRadius() {
+			return GAME_RADIUS;
+		}
+
+		@Override
+		public int getMSCPS() {
+			return MSCPS;
+		}
+
+		@Override
+		public int getSectorSize() {
+			return SECTOR_SIZE;
+		}
+
+		@Override
+		public int getSectorsAlongEdge() {
+			return SECTORS_ALONG_EDGE;
+		}
+
+		@Override
+		public float getSpangDv() {
+			return SPANG_DV;
+		}
+
+		@Override
+		public float getNsp1() {
+			return NSP1;
+		}
+
+		@Override
+		public float getNsp2() {
+			return NSP2;
+		}
+
+		@Override
+		public float getNsp3() {
+			return NSP3;
+		}
+
+		@Override
+		public float getBaseSnakeTurnSpeed() {
+			return SNAKE_TURN_SPEED;
+		}
+
+		@Override
+		public float getBasePreyTurnSpeed() {
+			return PREY_TURN_SPEED;
+		}
+
+		@Override
+		public float getCST() {
+			return CST;
+		}
+
+		public void saveConfig() {
+			try {
+				ConfigHandler.INSTANCE.saveConfig(CONFIGURATION_FILE, configuration);
+			} catch (Exception e) {
+				Log.catching(e);
+			}
+		}
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public void removeSector(Sector sector) {
+			super.removeSector(sector);
+			if (sector != null) {
+				int sectorSize = getSectorSize();
+				List<Entity> entitiesInSector = new ArrayList<>();
+				for (Entity entity : getFoods()) {
+					int sectorX = (int) (entity.posX / sectorSize);
+					int sectorY = (int) (entity.posY / sectorSize);
+					if (sectorX == sector.posX && sectorY == sector.posY) {
+						entitiesInSector.add(entity);
 					}
 				}
-			}
-			if (delta > 120) {
-				delta = 120;
-			}
-			delta *= lagMultiplier;
-			errorTime *= lagMultiplier;
-			lastTicks = ticks;
-			ticks += delta;
-			lastDelta = (float) (Math.floor(ticks) - Math.floor(lastTicks));
-			lastTicks2 = ticks2;
-			ticks2 += delta * 2;
-			lastDelta2 = (float) (Math.floor(ticks2) - Math.floor(lastTicks2));
-			if (globalAlpha < 1.0F) {
-				globalAlpha += 0.0075F * delta;
-				if (globalAlpha > 1.0F) {
-					globalAlpha = 1.0F;
+				for (Entity entity : entitiesInSector) {
+					removeEntity(entity);
 				}
-			} else if (globalAlpha > 0.0F) {
-				globalAlpha -= 0.0075F * delta;
-				if (globalAlpha < 0.0F) {
-					globalAlpha = 0.0F;
-				}
-			}
-			if (qsm > 1.0F) {
-				qsm -= 0.00004F * delta;
-				if (qsm < 1.0F) {
-					qsm = 1.0F;
-				}
-			} else if (qsm < MAX_QSM) {
-				qsm += 0.00004F;
-				if (qsm > MAX_QSM) {
-					qsm = MAX_QSM;
-				}
-			}
-			if (player != null) {
-				if (!networkManager.waitingForPingReturn) {
-					if (time - networkManager.lastPingSendTime > 250) {
-						networkManager.lastPingSendTime = time;
-						networkManager.ping();
-					}
-				}
-				errorTime *= Math.pow(0.993, lastDelta);
-				if (allowUserInput) {
-					controller.update(this);
-					float targetAngle = controller.getTargetAngle();
-					targetAngle %= PI_2;
-					if (targetAngle < 0) {
-						targetAngle += PI_2;
-					}
-					if (targetAngle != lastSendAngle || lastSendAngleTime == 0) {
-						if (time - lastSendAngleTime > 100) {
-							lastSendAngle = targetAngle;
-							networkManager.send(new MessageSetAngle(targetAngle));
-						}
-					}
-					player.accelerating = accelerating;
-					if (time - lastAccelerateUpdateTime > 150) {
-						if (player.accelerating != player.wasAccelerating) {
-							lastAccelerateUpdateTime = time;
-							networkManager.send(new MessageAccelerate(player.accelerating));
-							player.wasAccelerating = player.accelerating;
-						}
-					}
-				}
-				Iterator<Entity<?>> entityIter = entityIterator();
-				while (entityIter.hasNext()) {
-					@SuppressWarnings("rawtypes")
-					Entity entity = entityIter.next();
-					if (entity.updateBase(delta, lastDelta, lastDelta2)) {
-						entityIter.remove();
-					}
-				}
-			}
-		} else {
-			ticks++;
-		}
-	}
-
-	public float getAngleTo(float x, float y) {
-		return (float) Math.atan2(y - player.posY, x - player.posX);
-	}
-
-	public ClientSnake getSnake(int id) {
-		for (@SuppressWarnings("rawtypes") Snake snake : getSnakes()) {
-			if (snake.id == id) {
-				return (ClientSnake) snake;
 			}
 		}
-		return null;
-	}
 
-	public ClientPrey getPrey(int id) {
-		for (@SuppressWarnings("rawtypes") Prey prey : getPreys()) {
-			if (prey.id == id) {
-				return (ClientPrey) prey;
+		public void close() {
+			if (networkManager != null) {
+				networkManager.close(1000, "Forcefully closed by player");
 			}
+			glfwSetInputMode(windowId, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			player = null;
+			networkManager = null;
 		}
-		return null;
-	}
 
-	public ClientFood getFood(int id) {
-		for (@SuppressWarnings("rawtypes") Food food : getFoods()) {
-			if (food.id == id) {
-				return (ClientFood) food;
-			}
+		public String getServer() {
+			return server;
 		}
-		return null;
-	}
 
-	public void openGui(Gui gui) {
-		renderHandler.openGui(gui);
-	}
-
-	public void closeGui(Gui gui) {
-		renderHandler.closeGui(gui);
-	}
-
-	public void closeAllGuis() {
-		renderHandler.closeAllGuis();
-	}
-
-	public void reset() {
-		closeAllGuis();
-		openGui(new GuiMainMenu());
-		networkManager = null;
-		setup();
-	}
-
-	public void setController(IController controller) {
-		this.controller = controller;
-	}
-
-	@Override
-	public int getGameRadius() {
-		return GAME_RADIUS;
-	}
-
-	@Override
-	public int getMSCPS() {
-		return MSCPS;
-	}
-
-	@Override
-	public int getSectorSize() {
-		return SECTOR_SIZE;
-	}
-
-	@Override
-	public int getSectorsAlongEdge() {
-		return SECTORS_ALONG_EDGE;
-	}
-
-	@Override
-	public float getSpangDv() {
-		return SPANG_DV;
-	}
-
-	@Override
-	public float getNsp1() {
-		return NSP1;
-	}
-
-	@Override
-	public float getNsp2() {
-		return NSP2;
-	}
-
-	@Override
-	public float getNsp3() {
-		return NSP3;
-	}
-
-	@Override
-	public float getBaseSnakeTurnSpeed() {
-		return SNAKE_TURN_SPEED;
-	}
-
-	@Override
-	public float getBasePreyTurnSpeed() {
-		return PREY_TURN_SPEED;
-	}
-
-	@Override
-	public float getCST() {
-		return CST;
-	}
-
-	public void saveConfig() {
-		try {
-			ConfigHandler.INSTANCE.saveConfig(CONFIGURATION_FILE, configuration);
-		} catch (Exception e) {
-			Log.catching(e);
+		public void gameOver() {
+			gameStatistic.setLength(player.getLength());
+			saveConfig();
+			database.addGame(gameStatistic);
 		}
 	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void removeSector(Sector sector) {
-		super.removeSector(sector);
-		if (sector != null) {
-			int sectorSize = getSectorSize();
-			List<Entity> entitiesInSector = new ArrayList<>();
-			for (Entity entity : getFoods()) {
-				int sectorX = (int) (entity.posX / sectorSize);
-				int sectorY = (int) (entity.posY / sectorSize);
-				if (sectorX == sector.posX && sectorY == sector.posY) {
-					entitiesInSector.add(entity);
-				}
-			}
-			for (Entity entity : entitiesInSector) {
-				removeEntity(entity);
-			}
-		}
-	}
-
-	public void close() {
-		if (networkManager != null) {
-			networkManager.close(1000, "Forcefully closed by player");
-		}
-		glfwSetInputMode(windowId, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		player = null;
-		networkManager = null;
-	}
-
-	public String getServer() {
-		return server;
-	}
-	
-	public void gameOver() {
-        gameStatistic.setLength(player.getLength());
-        saveConfig();
-        database.addGame(gameStatistic);
-	}
-}

@@ -575,6 +575,14 @@ public class GuiGame extends Gui {
 				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
 				debugY += yinc;
 
+//				s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
+//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+//				debugY += yinc;
+
+//				s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
+//					+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(mouseDWheel);
+//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+
 				s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
 				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
 				debugY += yinc;
@@ -599,8 +607,10 @@ public class GuiGame extends Gui {
 		} catch (Exception ex) {
 			Log.error("Error while rendering game");
 			Log.catching(ex);
+			GL11.glPopMatrix();
 			client.close();
 			closeGui();
+			renderHandler.openGui(new GuiMainMenu());
 		}
 	}
 

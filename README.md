@@ -6,6 +6,7 @@ Dick Balaska's fork of [gegy1000](https://github.com/gegy1000)'s [Slyther](https
 * Database of previous game scores
 * LWJGL 3 (on the slyther3 branch)
 * Tool for monitoring/configuring/debugging the server
+* Custom snakes (protocol 11)
 
 
 ## Building
@@ -25,4 +26,4 @@ and
 ## Branches
 * master contains the LWJGL 2 client and the server
 * slyther3 contains the LWJGL 3 client
-* slythermon contains the monitoring tool
+* slythermon contains the server monitoring tool

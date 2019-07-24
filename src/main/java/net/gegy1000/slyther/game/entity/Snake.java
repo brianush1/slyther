@@ -12,6 +12,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
     public String name;
     public int id;
     public Skin skin;
+    public boolean editingSkin = false;
 
     public float chl;
     public float tsp;
@@ -140,7 +141,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
         wehang = angle;
     }
 
-    public void setSkin(Skin skin) {
+    private void setSkin(Skin skin) {
         this.skin = skin;
         eyeRadius = 6;
         pupilRadius = 3.5F;
@@ -149,7 +150,12 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
 
         SkinDetails details = SkinHandler.INSTANCE.getDetails(skin);
 
-        Color[] pattern = new Color[] { Color.values()[skin.ordinal() % Color.values().length] };
+        Color[] pattern;
+        if (skin.isCustom())
+        	pattern = ((SkinCustom)skin).getColorsUnpacked();
+        else
+        	pattern = new Color[] { Color.values()[skin.ordinal() % Color.values().length] };
+        
 
         if (details != null) {
             antenna = details.hasAntenna;
