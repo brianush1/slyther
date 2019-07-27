@@ -87,8 +87,8 @@ public class StatisticsGraph {
 		na.configure();
 		plot.setRangeAxis(1, na);
 		na = new NumberAxis("Rank");
-		na.setInverted(true);
-		plot.setRangeAxis(2, na);
+		//na.setInverted(true);
+		//plot.setRangeAxis(2, na);
 		plot.setDomainAxis(new NumberAxis());
 
 		//Map the data to the appropriate axis
@@ -96,38 +96,9 @@ public class StatisticsGraph {
 		plot.mapDatasetToRangeAxis(1, 1);
 
 		//generate the chart
-		JFreeChart chart = new JFreeChart("MyPlot", null, plot, true);
+		JFreeChart chart = new JFreeChart("", null, plot, true);
 		
-		// Create chart
-//		JFreeChart chart = ChartFactory.createLineChart(
-//				"Site Traffic (WWW.BUCKOSOFT.COM)", // Chart title
-//				"Date", // X-Axis Label
-//				"Number of Visitor", // Y-Axis Label
-//				dataset
-//				);
-
-		//    ChartPanel panel = new ChartPanel(chart);
-		//    setContentPane(panel);
 		return(chart);
 	}
 
-//	private DefaultCategoryDataset createDataset(Database database) {
-//
-//		List<GameStatistic> gsl = database.getGames();
-//		String series1 = "Score";
-//		String series2 = "Rank";
-//		String series3 = "Kills";
-//		String series4 = "Time";
-//
-//		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//
-//		for (GameStatistic gs : gsl) {
-//			dataset.addValue(gs.getLength(), series1, gs.getGamedate());
-//			dataset.addValue(gs.getRank(), series2, gs.getGamedate());
-//			dataset.addValue(gs.getKills(), series3, gs.getGamedate());
-//			dataset.addValue(gs.getDuration(), series4, gs.getGamedate());
-//		}
-//
-//		return dataset;
-//	}
 }
