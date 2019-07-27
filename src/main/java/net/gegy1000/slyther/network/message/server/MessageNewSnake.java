@@ -94,9 +94,6 @@ public class MessageNewSnake extends SlytherServerMessageBase {
 			}
 			return;
 		}
-		if (id < 100) {
-			Log.warn("id < 100 = {}", id);
-		}
 		float angle = (float) (buffer.readUInt24() * (2 * Math.PI / 0xFFFFFF));
 		buffer.skipBytes(1);
 		float wantedAngle = (float) (buffer.readUInt24() * (2 * Math.PI / 0xFFFFFF));
