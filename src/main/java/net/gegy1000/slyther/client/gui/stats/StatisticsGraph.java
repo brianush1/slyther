@@ -65,7 +65,7 @@ public class StatisticsGraph {
 		XYPlot plot = new XYPlot();
 		plot.setDataset(0, dataset1);
 		plot.setDataset(1, dataset2);
-		plot.setDataset(2, dataset3);
+//		plot.setDataset(2, dataset3);
 //		plot.setDataset(3, dataset4);
 
  		//customize the plot with renderers and axis
@@ -75,9 +75,9 @@ public class StatisticsGraph {
 		splinerenderer = new XYSplineRenderer();
 		splinerenderer.setSeriesFillPaint(0, Color.BLUE);
 		plot.setRenderer(1, splinerenderer);
-		splinerenderer = new XYSplineRenderer();
-		splinerenderer.setSeriesFillPaint(2, Color.GREEN);
-		plot.setRenderer(2, splinerenderer);
+//		splinerenderer = new XYSplineRenderer();
+//		splinerenderer.setSeriesFillPaint(2, Color.GREEN);
+//		plot.setRenderer(2, splinerenderer);
 //		splinerenderer = new XYSplineRenderer();
 //		splinerenderer.setSeriesFillPaint(0, Color.BLACK);
 //		plot.setRenderer(3, splinerenderer);
