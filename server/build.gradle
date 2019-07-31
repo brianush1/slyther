@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "0.2.0"
+version = "0.2.6"
 archivesBaseName = "slyther-server"
 mainClassName = "net.gegy1000.slyther.server.ServerMain"
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
