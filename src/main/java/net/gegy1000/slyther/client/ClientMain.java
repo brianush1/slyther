@@ -137,8 +137,16 @@ public class ClientMain {
         } catch (IOException e) {
             UIUtils.displayException("Failed to extract file", e);
         } finally {
-            IOUtils.closeQuietly(fin);
-            IOUtils.closeQuietly(out);
+            if (fin != null) {
+            	try {
+					fin.close();
+				} catch (IOException e) {}
+            }
+        	if (out != null) {
+	            try {
+					out.close();
+				} catch (IOException e) {}
+        	}
         }
     }
 }

@@ -13,8 +13,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import net.gegy1000.slyther.util.UIUtils;
 
-import org.apache.commons.io.IOUtils;
-
 public class GameRecorder extends Thread implements Closeable {
     private static final TimedMessage POISON = new TimedMessage();
 
@@ -65,7 +63,11 @@ public class GameRecorder extends Thread implements Closeable {
         } catch (Exception e) {
             UIUtils.displayException("A problem occured while recording", e);
         } finally {
-            IOUtils.closeQuietly(fout);
+            if (fout != null) {
+            	try {
+            		fout.close();
+				} catch (IOException e) {}
+            }
             msgPool.clear();
         }
     }
