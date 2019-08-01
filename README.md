@@ -8,20 +8,29 @@ Dick Balaska's fork of [gegy1000](https://github.com/gegy1000)'s [Slyther](https
 * Tool for monitoring/configuring/debugging the server
 * Custom snakes (protocol 11)
 
+## Installing
+
+You can fetch a prebuilt jar from [the releases](https://github.com/dickbalaska/slyther/releases) area.
+
+Debian systems can install from [launchpad](https://launchpad.net/~dickbalaska/+archive/ubuntu/slyther).
+
+	sudo add-apt-repository ppa:dickbalaska/slyther
+	sudo apt update
+	sudo apt install slyther
 
 ## Building
 
 Slyther builds with Gradle, to build the standalone executable client and server jars run the following in the project root directory:
 
-    gradle uberjar
+    gradle jar
 
 Run with
 
-	java -jar server/build/libs/slyther-server-0.2.jar
+	java -jar server/build/libs/slyther-server-2.0.0.jar
 
 and
 
-	java -jar build/libs/slyther-0.2.jar
+	java -jar build/libs/slyther-2.0.0.jar
 
 ## Branches
 * master contains the LWJGL 2 client and the server
