@@ -3,6 +3,9 @@ package net.gegy1000.slyther.client;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.apache.commons.io.IOUtils;
+
+import net.gegy1000.slyther.Version;
 import net.gegy1000.slyther.client.db.DatabaseImpl;
 import net.gegy1000.slyther.client.db.GameStatistic;
 import net.gegy1000.slyther.client.db.HibernateUtil;
@@ -12,6 +15,7 @@ import net.gegy1000.slyther.util.SystemUtils;
 public class ClientMain {
 
 	public static void main(String[] args) throws Exception {
+		parseParams(args);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		//loadNatives();
 		SlytherClient client = new SlytherClient();
@@ -29,10 +33,25 @@ public class ClientMain {
 		}
 		if (client.gameStatistic == null)
 			client.gameStatistic = new GameStatistic();
-		if (args.length >= 1)
-			Log.showDebug = true;
 		client.run();
 	}
 
+    private static void parseParams(String[] args) {
+    	for (int i=0; i<args.length; i++) {
+    		if (args[i].equals("-d")) {
+   				Log.showDebug = true;
+    		} else if (args[i].equals("-g")) {
+    			if (i+1 < args.length) {
+    				SystemUtils.setGameFolder(args[i+1]);
+    				i++;
+    			} else {
+    				System.err.format("-g requires a directory option");
+    			}
+    		} else if (args[i].equals("-v")) {
+    			System.out.println("Slyther version: " + Version.SlytherVersion);
+    			System.exit(1);
+    		}
+    	}
+    }
 
 }

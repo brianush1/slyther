@@ -27,9 +27,10 @@ public class DatabaseImpl implements Database {
 		Transaction t = session.beginTransaction();
 		List<GameStatistic> gsl = null;
 		try {
-			Query<?> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
-			query.setMaxResults(50);
-			gsl = (List<GameStatistic>)query.getResultList();
+			@SuppressWarnings("unchecked")
+			Query<GameStatistic> query = session.createQuery("FROM GameStatistic ORDER BY GAMEDATE DESC");
+			query.setMaxResults(100);
+			gsl = query.getResultList();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

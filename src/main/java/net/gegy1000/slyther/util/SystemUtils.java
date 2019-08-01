@@ -48,4 +48,12 @@ public final class SystemUtils {
         }
         return gameFolder;
     }
+    public static void setGameFolder(String dir) {
+    	File f = new File(dir);
+    	if (f.exists() && f.isDirectory()) {
+    		gameFolder = f;
+    	} else {
+    		System.err.format("Bad game folder: {}", dir);
+    	}
+    }
 }

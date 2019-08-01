@@ -12,13 +12,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 
-import net.gegy1000.slyther.util.Log;
-import net.gegy1000.slyther.util.UIUtils;
-
-import org.apache.commons.io.IOUtils;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+
+import net.gegy1000.slyther.util.Log;
+import net.gegy1000.slyther.util.UIUtils;
 
 public class GameReplayer implements Runnable {
     private WebSocketServer server;
@@ -126,7 +125,11 @@ public class GameReplayer implements Runnable {
             UIUtils.displayException("A problem occured while playing back recording", e);
         } finally {
             waitingForClose = false;
-            IOUtils.closeQuietly(fin);
+            if (fin != null) {
+            	try {
+					fin.close();
+				} catch (IOException e) {}
+            }
             try {
                 server.stop();
             } catch (IOException | InterruptedException e) {

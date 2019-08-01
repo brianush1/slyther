@@ -4,20 +4,26 @@ plugins {
     id "eclipse"
     id "application"
 }
+apply plugin: 'maven'
 
 
-version = "0.2"
+version = "2.0.0"
 group = "net.gegy1000"
 archivesBaseName = "slyther"
 mainClassName = "net.gegy1000.slyther.client.ClientMain"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 compileJava {
-  options.compilerArgs.addAll(['--release', '8'])
+//  options.compilerArgs.addAll(['--release', '8'])
 }
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
+	maven {  url "http://repo.maven.apache.org/maven2" }
+	flatDir {
+		dir 'debian/lib'
+	}
+
 }
 
 configurations {
@@ -25,7 +31,7 @@ configurations {
 }
 
 dependencies {
-    compile "commons-io:commons-io:2.5"
+    compile "commons-io:commons-io:2.6"
     compile "com.google.code.gson:gson:1.7.2"
     compile "org.apache.logging.log4j:log4j-api:2.11.2"
     compile "org.apache.logging.log4j:log4j-core:2.11.2"
@@ -33,6 +39,8 @@ dependencies {
 	compile group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
 	compile group: 'com.h2database', name: 'h2', version: '1.4.199'
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
+	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+	//compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.0-api', version: '1.0.1.Final'
 	compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
 	compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
 	compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
@@ -45,13 +53,23 @@ dependencies {
 
 }
 
-jar {
-    manifest {
-        attributes("Main-Class": project.mainClassName)
-    }
-}
 
-task uberjar(type: Jar) {
+
+sourceSets {
+	myJar {
+		java {
+			compileClasspath += files("debian/lib/*.jar")
+			//srcDirs = ["src"]
+		}
+	}
+}
+jar {
+//    manifest {
+//        attributes("Main-Class": project.mainClassName)
+//    }
+//}
+//
+//task uberjar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'project',
         'Implementation-Version': project.version,
@@ -65,7 +83,7 @@ task uberjar(type: Jar) {
                 exclude 'META-INF/MANIFEST.MF'
                 exclude 'META-INF/log4j-provider.properties'
             } } }
-    with jar
+//    with jar
 }
 
 processResources {

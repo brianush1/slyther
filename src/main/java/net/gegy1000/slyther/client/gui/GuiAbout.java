@@ -3,6 +3,7 @@
  */
 package net.gegy1000.slyther.client.gui;
 
+import net.gegy1000.slyther.Version;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 
 /**
@@ -104,6 +105,11 @@ public class GuiAbout extends GuiWithBanner {
 			yOfs += yDist;
 			i++;
 		}
+		
+		String vtext = "Version: " + Version.SlytherVersion;
+		y = renderResolution.getHeight() - yDist;
+		x = 20F;
+		drawString(vtext, x, y, 0.45F, 0xFFFFFF);
 	}
 
 	@Override
