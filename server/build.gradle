@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "2.0.0"
+version = "0.3.4"
 archivesBaseName = "slyther-server"
 mainClassName = "net.gegy1000.slyther.server.ServerMain"
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -47,7 +47,7 @@ dependencies {
 	/* If you want symbols in eclipse, comment out the lwjgl jars here and create 
 	 * an LWJGL user library with the jars in it. (Can't attach source to 'external jars'.)
 	 */ 
-    compile fileTree(dir: '../lwjgl', include: '*.jar')
+    compile fileTree(dir: '../lwjgl', exclude: '*-sources.jar', include: '*.jar' )
 }
 
 sourceSets {
@@ -62,12 +62,12 @@ sourceSets {
 }
 
 jar {
-    manifest {
-        attributes("Main-Class": project.mainClassName)
-    }
-}
+//    manifest {
+//        attributes("Main-Class": project.mainClassName)
+//    }
+//}
 
-task uberjar(type: Jar) {
+//task uberjar(type: Jar) {
 	//inputs.files sourceSets.myJar.output
     manifest {
         attributes 'Implementation-Title': 'project',
@@ -82,7 +82,7 @@ task uberjar(type: Jar) {
                 exclude 'META-INF/MANIFEST.MF'
                 exclude 'META-INF/log4j-provider.properties'
             } } }
-    with jar
+//    with jar
 }
 
 processResources {

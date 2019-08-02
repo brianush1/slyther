@@ -1,3 +1,2 @@
-<<<<<<< HEAD
 rootProject.name='slyther'
-// include 'server'
+include 'server'
