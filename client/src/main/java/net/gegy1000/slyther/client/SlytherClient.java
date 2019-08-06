@@ -367,7 +367,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}
 	}
 
-	public void setMSCPS(int mscps) {
+	private void setMSCPS(int mscps) {
 		if (MSCPS != mscps) {
 			MSCPS = mscps;
 			fmlts = new float[mscps];

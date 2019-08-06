@@ -2,6 +2,7 @@ package net.gegy1000.slyther.network.message.client;
 
 import net.gegy1000.slyther.game.ProfanityHandler;
 import net.gegy1000.slyther.game.Skin;
+import net.gegy1000.slyther.game.SkinCustom;
 import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.network.MessageByteBuffer;
 import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
@@ -10,22 +11,9 @@ import net.gegy1000.slyther.server.SlytherServer;
 import net.gegy1000.slyther.util.Log;
 
 public class MessageClientSetup extends SlytherClientMessageBase {
-//	private String username;
-//	private Skin skin;
 
 	public MessageClientSetup() {
 	}
-
-//	public MessageClientSetup(String username, Skin skin) {
-//		this.username = username;
-//		this.skin = skin;
-//		if (this.username.length() > 24) {
-//			this.username = this.username.substring(0, 24);
-//		}
-//		if (!ProfanityHandler.isClean(this.username)) {
-//			this.username = "";
-//		}
-//	}
 
 	@Override
 	public void read(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
@@ -34,6 +22,15 @@ public class MessageClientSetup extends SlytherClientMessageBase {
 		String name = buffer.readSizedString();
 		if (!ProfanityHandler.isClean(name)) {
 			name = "";
+		}
+		if (buffer.hasRemaining()) {
+			@SuppressWarnings("unused")
+//			int toss = buffer.readUInt24();
+//			toss = buffer.readUInt24();
+//			toss = buffer.readUInt16();
+			byte[] colors = buffer.readBytes(buffer.remaining());
+			skin = new SkinCustom();
+			((SkinCustom)skin).setPackedColors(colors);
 		}
 		client.setup(name, skin, protocolVersion);
 		Log.debug("{} ({}) connected with skin {} protocol {}", client.name, client.id, client.skin, protocolVersion);

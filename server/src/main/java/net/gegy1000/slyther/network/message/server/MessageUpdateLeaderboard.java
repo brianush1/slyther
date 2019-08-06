@@ -1,7 +1,5 @@
 package net.gegy1000.slyther.network.message.server;
 
-import net.gegy1000.slyther.game.Color;
-import net.gegy1000.slyther.game.SkinHandler;
 import net.gegy1000.slyther.network.MessageByteBuffer;
 import net.gegy1000.slyther.network.message.SlytherServerServerMessageBase;
 import net.gegy1000.slyther.server.ConnectedClient;
@@ -23,7 +21,8 @@ public class MessageUpdateLeaderboard extends SlytherServerServerMessageBase {
 			ServerSnake snake = leaderboardEntry.client.snake;
 			buffer.writeUInt16(snake.sct);
 			buffer.writeUInt24((int) (snake.fam * 0xFFFFFF));
-			buffer.writeUInt8(SkinHandler.INSTANCE.getDetails(snake.client.skin).pattern[0].ordinal() % Color.values().length);
+			buffer.writeUInt8(snake.client.skin.getHeadColor());
+			// buffer.writeUInt8(SkinHandler.INSTANCE.getDetails(snake.client.skin).pattern[0].ordinal() % Color.values().length);
 			String name = leaderboardEntry.client.name;
 			buffer.writeUInt8(name.length());
 			for (int i = 0; i < name.length(); i++) {

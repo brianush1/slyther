@@ -6,6 +6,7 @@ import net.gegy1000.slyther.game.entity.Food;
 import net.gegy1000.slyther.game.entity.Snake;
 import net.gegy1000.slyther.game.entity.SnakePoint;
 import net.gegy1000.slyther.network.Connection;
+import net.gegy1000.slyther.network.message.server.MessageNewSnake;
 import net.gegy1000.slyther.network.message.server.MessageSnakeMovement;
 import net.gegy1000.slyther.network.message.server.MessageUpdateSnake;
 import net.gegy1000.slyther.network.message.server.MessageUpdateSnakeLength;
@@ -130,13 +131,14 @@ public class ServerSnake extends Snake<SlytherServer> {
 
 	@Override
 	public void startTracking(Connection tracker) {
-		// TODO Auto-generated method stub
-		
+		ConnectedClient t = (ConnectedClient) tracker;
+        t.send(new MessageNewSnake(this));
 	}
 
 	@Override
 	public void stopTracking(Connection tracker) {
-		// TODO Auto-generated method stub
+		ConnectedClient t = (ConnectedClient) tracker;
+        t.send(new MessageNewSnake(this, false));
 		
 	}
 }

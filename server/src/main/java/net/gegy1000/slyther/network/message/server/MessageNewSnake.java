@@ -1,5 +1,6 @@
 package net.gegy1000.slyther.network.message.server;
 
+import net.gegy1000.slyther.game.SkinCustom;
 import net.gegy1000.slyther.game.entity.Snake;
 import net.gegy1000.slyther.game.entity.SnakePoint;
 import net.gegy1000.slyther.network.MessageByteBuffer;
@@ -44,6 +45,16 @@ public class MessageNewSnake extends SlytherServerServerMessageBase {
 			buffer.writeUInt8(name.length());
 			for (int i = 0; i < name.length(); i++) {
 				buffer.writeUInt8((byte) name.charAt(i));
+			}
+			if (snake.skin.isCustom()) {
+				SkinCustom sc = (SkinCustom)snake.skin;
+				buffer.writeUInt8(sc.getColorsPacked().length);
+				//buffer.writeUInt24(0xFFFFFF);
+				//buffer.writeUInt24(0);
+				//buffer.writeUInt16(420);
+				buffer.writeBytes(sc.getColorsPacked());
+			} else {
+				buffer.writeUInt8(0);
 			}
 			boolean head = true;
 			float prevPosX = 0.0F;

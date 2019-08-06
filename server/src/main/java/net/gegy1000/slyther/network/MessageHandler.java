@@ -7,6 +7,7 @@ import net.gegy1000.slyther.network.message.SlytherClientMessageBase;
 import net.gegy1000.slyther.network.message.SlytherMonitorMessageBase;
 import net.gegy1000.slyther.network.message.client.MessageAccelerate;
 import net.gegy1000.slyther.network.message.client.MessageClientPing;
+import net.gegy1000.slyther.network.message.client.MessageClientRiddleAnswer;
 import net.gegy1000.slyther.network.message.client.MessageClientSetup;
 import net.gegy1000.slyther.network.message.client.MessageSetAngle;
 import net.gegy1000.slyther.network.message.client.MessageSetTurn;
@@ -17,46 +18,11 @@ public enum MessageHandler {
 	INSTANCE;
 
 	private static boolean LOG_NETWORK = false;
-//	private final Map<Byte, Class<? extends SlytherServerMessageBase>> SERVER_MESSAGES = new HashMap<>();
 	private final Map<Byte, Class<? extends SlytherMonitorMessageBase>> MONITOR_MESSAGES = new HashMap<>();
 
 	MessageHandler() {
-//		registerServer(MessagePreLoginBase.class);
-//		registerServer(MessagePingBase.class);
-//		registerServer(MessageSetupBase.class);
-//		registerServer(MessageNewSnakeBase.class);
-//		registerServer(MessagePopulateSectorBase.class);
-//		registerServer(MessageNewFoodBase.class);
-//		registerServer(MessageNewPreyBase.class);
-//		registerServer(MessageUpdateSnakeBase.class);
-//		registerServer(MessageSnakeMovementBase.class);
-//		registerServer(MessagePreyPositionUpdateBase.class);
-//		registerServer(MessageUpdateSnakeLengthBase.class);
-//		registerServer(MessageRemoveFoodBase.class);
-//		registerServer(MessageRemoveSnakePointBase.class);
-//		registerServer(MessageUpdateLeaderboardBase.class);
-//		registerServer(MessageUpdateLongestPlayerBase.class);
-//		registerServer(MessageAddSectorBase.class);
-//		registerServer(MessageRemoveSectorBase.class);
-//		registerServer(MessagePlayerDeathBase.class);
-//		registerServer(MessageUpdateMapBase.class);
-//		registerServer(MessageGotServerVersionBase.class);
-//		registerServer(MessageKillBase.class);
-
 		registerMonitor(MessageInfo.class);
 	}
-
-//	private void registerServer(Class<? extends SlytherServerMessageBase> message) {
-//		try {
-//			SlytherServerMessageBase messageObject = message.getConstructor().newInstance();
-//			for (int id : messageObject.getMessageIds()) {
-//				SERVER_MESSAGES.put((byte) id, message);
-//			}
-//		} catch (Exception e) {
-//			Log.error("Error while registering message {}", message.getName());
-//			Log.catching(e);
-//		}
-//	}
 
 	private void registerMonitor(Class<? extends SlytherMonitorMessageBase> message) {
 		try {
@@ -91,17 +57,13 @@ public enum MessageHandler {
 				return new MessageClientSetup();
 			} else if (type == 252) {
 				return new MessageSetTurn();
-//			} else if (type == 79) {
-//				return(new MessageClientRiddleAnswer());
+			} else if (type == 79) {
+				return(new MessageClientRiddleAnswer());
 			}
 		}
 		return null;
 	}
 
-//	public Class<? extends SlytherServerMessageBase> getServerMessage(byte id) {
-//		return SERVER_MESSAGES.get(id);
-//	}
-//
 	public SlytherMonitorMessageBase getMonitorMessage(byte id) {
 		Class<? extends SlytherMonitorMessageBase> messageType = MONITOR_MESSAGES.get(id);
 		if (messageType == null)
