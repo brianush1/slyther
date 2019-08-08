@@ -49,9 +49,6 @@ public class MessageNewSnake extends SlytherServerServerMessageBase {
 			if (snake.skin.isCustom()) {
 				SkinCustom sc = (SkinCustom)snake.skin;
 				buffer.writeUInt8(sc.getColorsPacked().length);
-				//buffer.writeUInt24(0xFFFFFF);
-				//buffer.writeUInt24(0);
-				//buffer.writeUInt16(420);
 				buffer.writeBytes(sc.getColorsPacked());
 			} else {
 				buffer.writeUInt8(0);

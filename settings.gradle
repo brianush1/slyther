@@ -1,4 +1,4 @@
 rootProject.name='slyther'
-include 'lib'
+include 'slytherlib'
 include 'client'
 include 'server'

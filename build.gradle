@@ -28,7 +28,7 @@ allprojects {
 	}
 }
 
-project(':lib') {
+project(':slytherlib') {
 	dependencies {
 		compile "commons-io:commons-io:2.6"
 		compile "com.google.code.gson:gson:1.7.2"
@@ -48,7 +48,7 @@ project(':client') {
 		natives
 	}
 	dependencies {
-		compile project(':lib')
+		compile project(':slytherlib')
 
 		compile "org.slick2d:slick2d-core:1.0.2"
 		compile "org.lwjgl.lwjgl:lwjgl:2.9.3"
@@ -90,7 +90,7 @@ project(':client') {
 
 project(':server') {
 	dependencies {
-		implementation project(':lib')
+		implementation project(':slytherlib')
 		compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
 	}
 }

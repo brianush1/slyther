@@ -557,29 +557,34 @@ public class GuiGame extends Gui {
 				drawCenteredLargeString("Warning: Experiencing Network Lag", renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 8.0F, 0.5F, 0xFF0000);
 			}
 			if (client.configuration.showDebug) {
-				drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);	// who cares.
-				int yinc = (int)(font.getHeight() / 2.0F + 2);
-
+				boolean scoreDebug = true;
 				String s;
 				int debugY = (int)(font.getHeight() / 2.0F + 2);
-
-				drawString(client.fpsMessage, 10, debugY, 0.5F, 0xFFFFFF);
-				debugY += yinc;
-
-				s = "Pos: X=" + df3.format(client.player.posX) + " Y=" + df3.format(client.player.posY);
-				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-				debugY += yinc;
-
-//				s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
-//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-//				debugY += yinc;
-
-//				s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
-//					+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(mouseDWheel);
-//				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
-
-				s = "angle=" + df3.format(client.player.angle) + " wangle=" + df3.format(client.player.wantedAngle);
-				drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+				if (scoreDebug) {
+					
+				} else {
+					drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);	// who cares.
+					int yinc = (int)(font.getHeight() / 2.0F + 2);
+	
+	
+					drawString(client.fpsMessage, 10, debugY, 0.5F, 0xFFFFFF);
+					debugY += yinc;
+	
+					s = "Pos: X=" + df3.format(client.player.posX) + " Y=" + df3.format(client.player.posY);
+					drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+					debugY += yinc;
+	
+//					s = "locationMarker X/Y=" + df3.format(locationMarkerX) + " / " + df3.format(locationMarkerY);
+//					drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+//					debugY += yinc;
+//	
+//					s = "globalScale=" + df3.format(globalScale) + " client globalScale=" + df3.format(client.globalScale)
+//						+ " zoomOffset=" + df3.format(client.zoomOffset) + " wheelY=" + df3.format(mouseDWheel);
+//					drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+	
+					s = "angle=" + df3.format(client.player.angle) + " wangle=" + df3.format(client.player.wantedAngle);
+					drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
+				}
 			}
 		} catch (Exception ex) {
 			Log.error("Error while rendering game");

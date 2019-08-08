@@ -21,7 +21,6 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
     private BridedList<Food<?>> foods = new BridedList<>();
     private BridedList<Prey<?>> preys = new BridedList<>();
 
-    //public List<LeaderboardEntry> leaderboard = new ArrayList<>();
     public boolean[][] map = new boolean[80][80];
 
     public NET networkManager;
