@@ -73,6 +73,8 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
     public float[] atay;
     public float antennaScale = 1.0F;
     public String faceTexture;
+    public float mouthX;
+    public float mouthY;
     public boolean isInView;
     public boolean antennaShown;
     public String antennaTexture;

@@ -37,6 +37,7 @@ public class ServerSnake extends Snake<SlytherServer> {
         moveSpeed = game.getNsp1() + game.getNsp2() * scale;
         accelleratingSpeed = moveSpeed * 2.0F;
         speed = accelerating ? accelleratingSpeed : moveSpeed;
+    	angle = (float)Math.PI;
         angle %= SlytherServer.PI_2;
         wantedAngle %= SlytherServer.PI_2;
         if (angle < 0) {
@@ -49,6 +50,8 @@ public class ServerSnake extends Snake<SlytherServer> {
         float moveY = (float) (Math.sin(angle) * speed * delta / 4.0F);
         posX += moveX;
         posY += moveY;
+        mouthX = (float) (Math.cos(angle) * speed * delta / 4.0F);
+        mouthY = (float) (Math.sin(angle) * speed * delta / 4.0F);
         updateDelta += (time - previousTime) / UPDATE_FREQUENCY;
         if (updateDelta >= 1) {
             boolean angleChange = angle != prevAngle;
@@ -119,7 +122,12 @@ public class ServerSnake extends Snake<SlytherServer> {
         } else {
             turnDirection = 0;
         }
-        angle = wantedAngle;
+//        if (wantedAngle < angle)
+//        	angle -= turnSpeed;
+//        else if (wantedAngle > angle)
+//        	angle += turnSpeed;
+//        else
+//        	angle = wantedAngle;
         for (SnakePoint point : points) {
             point.update();
         }
