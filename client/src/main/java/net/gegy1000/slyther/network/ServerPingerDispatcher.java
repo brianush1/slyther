@@ -111,7 +111,11 @@ public class ServerPingerDispatcher implements Runnable {
                     long currentTime = System.currentTimeMillis();
                     pings[pingCount++] = (int) (currentTime - pingSendTime);
                     pingSendTime = currentTime;
-                    send("p");
+                    try {
+						send("p");
+					} catch (Exception e) {
+						Log.info("ping failed on {}", this.uri.toASCIIString());
+					}
                 } else {
                     server.setPing(pings);
                     Log.debug("Ping time of {}", server.getPing());
