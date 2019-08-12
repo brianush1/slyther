@@ -27,6 +27,8 @@ public class GuiGame extends Gui {
     private int		playerNameAlpha;
     private int mouseDWheel = 0;
     private final DecimalFormat df3 = new DecimalFormat("0.000");
+    private final DecimalFormat df4 = new DecimalFormat("0.0000");
+    private final DecimalFormat df5 = new DecimalFormat("0.00000");
     
     @Override
     public void init() {
@@ -561,7 +563,9 @@ public class GuiGame extends Gui {
 				String s;
 				int debugY = (int)(font.getHeight() / 2.0F + 2);
 				if (scoreDebug) {
-					
+					s = "sct: " + client.player.sct + " fpsls:" + df4.format(client.getFPSL(client.player.sct))
+						+ " fam:"+ df3.format(client.player.fam) + " fmlts:" + df5.format(client.getFMLT(client.player.sct));
+					drawString(s, 10, debugY, 0.5F, 0xFFFFFF);
 				} else {
 					drawString(client.getServer(), 2.0F, 2.0F, 0.4F, 0xFFFFFF);	// who cares.
 					int yinc = (int)(font.getHeight() / 2.0F + 2);
