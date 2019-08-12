@@ -158,27 +158,7 @@ sourceSets {
 		}
 	}
 }
-jar {
-//    manifest {
-//        attributes("Main-Class": project.mainClassName)
-//    }
-//}
-//
-//task uberjar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'project',
-        'Implementation-Version': project.version,
-        'Main-Class': project.mainClassName
-    }
-    //baseName = project.name + '-all'
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it).matching {
-                exclude 'META-INF/**.RSA'
-                exclude 'META-INF/MANIFEST.MF'
-                exclude 'META-INF/log4j-provider.properties'
-            } } }
-//    with jar
+
+gradle.buildFinished {
+	project.buildDir.deleteDir()
 }
-
-
