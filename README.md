@@ -17,6 +17,12 @@ Debian systems can install from [launchpad](https://launchpad.net/~dickbalaska/+
 	sudo add-apt-repository ppa:dickbalaska/slyther
 	sudo apt update
 	sudo apt install slyther
+or
+	sudo apt install slyther3
+
+slyther and slyther3 differ only slightly.  
+* slyther3 uses a manual cursor instead of the system cursor.
+* slyther3 needs a better video card (even though the graphics are the same).
 
 ## Building
 
