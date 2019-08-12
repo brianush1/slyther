@@ -3,6 +3,7 @@ out/
 *.iml
 *.ipr
 *.iws
+*.log
 *.swp
 gradle/
 .gradle/
