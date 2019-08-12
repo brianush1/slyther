@@ -30,12 +30,17 @@ public abstract class Game<NET extends NetworkManager, CFG extends Configuration
     private Queue<FutureTask<?>> tasks = new LinkedBlockingDeque<>();
 
     public void scheduleTask(Callable<?> callable) {
-        tasks.add(new FutureTask<>(callable));
+    	synchronized (tasks) {
+    		tasks.add(new FutureTask<>(callable));
+    	}
     }
 
     protected final void runTasks() {
         while (tasks.size() > 0) {
-            FutureTask<?> task = tasks.poll();
+        	FutureTask<?> task;
+        	synchronized (tasks) {
+        		task = tasks.poll();
+        	}
             try {
                 task.run();
                 task.get();

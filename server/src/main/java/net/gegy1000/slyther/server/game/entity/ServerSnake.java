@@ -63,6 +63,10 @@ public class ServerSnake extends Snake<SlytherServer> {
             prevTurnDirection = turnDirection;
             for (ConnectedClient client : game.getTrackingClients(this)) {
                 client.send(new MessageUpdateSnake(this, turnDirectionChange, angleChange, wantedAngleChange, speedChange));
+                if (fam != prevFam) {
+                	client.send(new MessageUpdateSnakeLength(this));
+                	prevFam = fam;
+                }
             }
             updateDelta %= 1;
         }

@@ -67,6 +67,7 @@ public abstract class Snake<GME extends Game<?, ?>> extends Entity<GME> implemen
 	public int ehl;
 	public int msl;
 	public double fam;
+	protected double prevFam;
 	public float angle;
 	public float prevAngle;
 	public float eyeAngle;

@@ -19,7 +19,7 @@ public class MessageUpdateSnakeLength extends SlytherServerServerMessageBase {
 	@Override
 	public void write(MessageByteBuffer buffer, SlytherServer server, ConnectedClient client) {
 		buffer.writeUInt16(snake.id);
-		buffer.writeUInt24((int) (snake.fam * 0xFFFFFF));
+		buffer.writeUInt24((int) (snake.fam * 0xFFFFFF) & 0xFFFFFF);
 	}
 
 	@Override

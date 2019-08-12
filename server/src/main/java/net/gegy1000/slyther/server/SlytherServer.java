@@ -83,7 +83,7 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
         double delta = 0;
         long previousTime = System.nanoTime();
         long timer = System.currentTimeMillis();
-        double nanoUpdates = 1000000000.0 / 30.0;
+        final double nanoUpdates = 1000000000.0 / 30.0;
         lastTickTime = System.currentTimeMillis();
         while (true) {
         	if (clients.isEmpty()) {
@@ -102,10 +102,20 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
             }
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
+                oneSecondTick(timer/1000);
             }
         }
     }
 
+    private void oneSecondTick(long time) {
+        for (ConnectedClient client : clients) {
+            ServerSnake snake = client.snake;
+            if (snake != null)
+            	snake.fam += 0.04;
+        }
+
+    }
+    
 	@SuppressWarnings("unchecked")
 	private void update() {
         runTasks();
@@ -150,9 +160,9 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
             lastLeaderboardUpdateTime = time;
         }
     }
-	public void startTracking(ConnectedClient tracker) {}
+//	public void startTracking(ConnectedClient tracker) {}
 
-	public void stopTracking(ConnectedClient tracker) {}
+//	public void stopTracking(ConnectedClient tracker) {}
 
     public ServerSnake createSnake(ConnectedClient client) {
         int spawnFuzz = configuration.gameRadius / 4;
