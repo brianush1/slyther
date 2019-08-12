@@ -134,7 +134,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	private int displayWidth;
 	private int displayHeight;
 
-	public SlytherClient() {
+//    private final DecimalFormat df3 = new DecimalFormat("0.000");
+//    private final DecimalFormat df4 = new DecimalFormat("0.0000");
+//    private final DecimalFormat df5 = new DecimalFormat("0.00000");
+
+    public SlytherClient() {
 		try {
 			configuration = ConfigHandler.INSTANCE.readConfig(CONFIGURATION_FILE, ClientConfig.class);
 			saveConfig();
@@ -374,12 +378,16 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			fpsls = new float[mscps + 1];
 			for (int i = 0; i <= mscps; i++) {
 				if (i < mscps) {
-					fmlts[i] = (float) Math.pow(1.0F - i / (float) mscps, 2.25F);
+					fmlts[i] = (float)Math.pow(1.0F - i / (float)mscps, 2.25F);
 				}
 				if (i != 0) {
 					fpsls[i] = fpsls[i - 1] + 1.0F / fmlts[i - 1];
 				}
 			}
+//			Log.info("fmlts  fpsls");
+//			for (int i=0; i<=mscps; i++) {
+//				Log.info("{}  {}", i< mscps ? df4.format(fmlts[i]) : "----", df5.format(fpsls[i]));
+//			}
 		}
 	}
 
