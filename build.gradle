@@ -9,10 +9,11 @@ apply plugin: 'maven'
 
 allprojects {
 	apply plugin: 'java'
-	version = "3.1.0-alpha1"
+	version = "3.0.0"
 	group = "net.gegy1000"
 	archivesBaseName = "slyther"
 	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 
 	compileJava {
 	//  options.compilerArgs.addAll(['--release', '8'])
@@ -22,6 +23,7 @@ allprojects {
 		mavenCentral()
 		//maven {  url "http://repo.maven.apache.org/maven2" }
 		flatDir {
+			dir '../debian/lib'
 			dir 'debian/lib'
 		}
 
@@ -39,19 +41,54 @@ project(':slytherlib') {
 		compile group: 'org.jboss.logging', name: 'jboss-logging', version: '3.3.2.Final'
 	
 	}
+	processResources {
+		configurations {
+		  all*.exclude group: 'log4j', module: 'log4j'
+		}
+	   
+		configurations.compile.each {
+			from (zipTree(it)) {
+				exclude "**/META-INF/"
+			}
+		}
+		
+		// native processing will probably change
+		//configurations.natives.each {
+		//	from (zipTree(it)) {
+		//		exclude "**/META-INF/"
+		//	}
+		//}
+	}
 	jar {
+		manifest {
+			attributes 'Implementation-Title': 'project',
+			'Implementation-Version': project.version
+			//'Main-Class': project.mainClassName
+		}
+		from {
+			configurations.compile.collect {
+				it.isDirectory() ? it : zipTree(it).matching {
+					exclude 'META-INF/**.RSA'
+					exclude 'META-INF/MANIFEST.MF'
+					exclude 'META-INF/log4j-provider.properties'
+				} } }
+	//    with jar
 	}
 }
 
 project(':client') {
 	mainClassName = "net.gegy1000.slyther.client.ClientMain"
-	configurations {
-		natives
-	}
+	//configurations {
+	//	natives
+	//}
 	dependencies {
 		compile project(':slytherlib')
 
-	compile group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version: '1.1.1.Final'
+		compile group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version: '1.1.1.Final'
+		compile "org.apache.logging.log4j:log4j-api:2.11.2"
+		compile "org.apache.logging.log4j:log4j-core:2.11.2"
+		compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.2'
+		compile group: 'org.jboss.logging', name: 'jboss-logging', version: '3.3.2.Final'
     	compile group: 'org.dom4j', name: 'dom4j', version: '2.1.1'
     	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     	compile group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.10'
@@ -68,6 +105,7 @@ project(':client') {
 		compile group: 'org.jfree', name: 'jfreechart', version: '1.0.19'
 		compile group: 'org.jfree', name: 'jcommon', version: '1.0.24'
 		compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
+		compile group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version: '1.1.1.Final'
 	
 	/* If you want symbols in eclipse, comment out the lwjgl jars here and create 
 	 * an LWJGL user library with the jars in it. (Can't attach source to 'external jars'.)
@@ -88,11 +126,11 @@ project(':client') {
 		}
 		
 		// native processing will probably change
-		configurations.natives.each {
-			from (zipTree(it)) {
-				exclude "**/META-INF/"
-			}
-		}
+		//configurations.natives.each {
+		//	from (zipTree(it)) {
+		//		exclude "**/META-INF/"
+		//	}
+		//}
 	}
 	jar {
 		manifest {
@@ -142,7 +180,6 @@ dependencies {
     compile "org.apache.logging.log4j:log4j-core:2.11.2"
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.2'
 	compile group: 'org.jboss.logging', name: 'jboss-logging', version: '3.3.2.Final'
-	compile group: 'org.jboss.spec.javax.transaction', name: 'jboss-transaction-api_1.2_spec', version: '1.1.1.Final'
 }
 
 
