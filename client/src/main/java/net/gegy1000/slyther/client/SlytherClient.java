@@ -687,7 +687,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 				}
 				Iterator<Entity<?>> entityIter = entityIterator();
 				while (entityIter.hasNext()) {
-					@SuppressWarnings("rawtypes")
 					Entity entity = entityIter.next();
 					if (entity.updateBase(delta, lastDelta, lastDelta2)) {
 						entityIter.remove();
@@ -704,7 +703,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientSnake getSnake(int id) {
-		for (@SuppressWarnings("rawtypes") Snake snake : getSnakes()) {
+		for (Snake snake : getSnakes()) {
 			if (snake.id == id) {
 				return (ClientSnake) snake;
 			}
@@ -713,7 +712,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientPrey getPrey(int id) {
-		for (@SuppressWarnings("rawtypes") Prey prey : getPreys()) {
+		for (Prey prey : getPreys()) {
 			if (prey.id == id) {
 				return (ClientPrey) prey;
 			}
@@ -722,7 +721,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public ClientFood getFood(int id) {
-		for (@SuppressWarnings("rawtypes") Food food : getFoods()) {
+		for (Food food : getFoods()) {
 			if (food.id == id) {
 				return (ClientFood) food;
 			}
@@ -816,7 +815,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public void removeSector(Sector sector) {
 		super.removeSector(sector);

@@ -1,7 +1,6 @@
 package net.gegy1000.slyther.server;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.java_websocket.WebSocket;

@@ -3,8 +3,6 @@ package net.gegy1000.slyther.client;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.apache.commons.io.IOUtils;
-
 import net.gegy1000.slyther.Version;
 import net.gegy1000.slyther.client.db.DatabaseImpl;
 import net.gegy1000.slyther.client.db.GameStatistic;

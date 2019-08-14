@@ -1,23 +1,18 @@
 package net.gegy1000.slyther.client.gui;
 
 
-import net.gegy1000.slyther.client.SlytherClient;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+
 import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.element.ArrowElement;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.game.Skin;
 import net.gegy1000.slyther.game.SkinEnum;
 import net.gegy1000.slyther.game.entity.SnakePoint;
-import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class GuiSelectSkin extends GuiWithSnakeEditor {

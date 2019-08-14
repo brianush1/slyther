@@ -1,9 +1,5 @@
 package net.gegy1000.slyther.client.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import com.buckosoft.glelements.TrueTypeFont;
 
 //import org.lwjgl.input.Keyboard;
@@ -13,7 +9,6 @@ import com.buckosoft.glelements.TrueTypeFont;
 
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.Gui;
-import net.gegy1000.slyther.client.gui.GuiMainMenu;
 import net.gegy1000.slyther.game.Color;
 //import net.gegy1000.slyther.util.Log;
 
