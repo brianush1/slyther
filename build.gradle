@@ -9,9 +9,9 @@ apply plugin: 'maven'
 
 allprojects {
 	apply plugin: 'java'
-	version = "3.0.0"
+	version = "3.1.2"
 	group = "net.gegy1000"
-	archivesBaseName = "slyther"
+	archivesBaseName = "slyther3"
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -150,7 +150,7 @@ project(':client') {
 }
 
 project(':server') {
-	archivesBaseName = "slyther-server"
+	archivesBaseName = "slyther3-server"
 	dependencies {
 		implementation project(':slytherlib')
 		compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
