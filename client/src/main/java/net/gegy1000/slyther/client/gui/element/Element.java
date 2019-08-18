@@ -4,7 +4,12 @@ import net.gegy1000.slyther.client.gui.Gui;
 
 public abstract class Element {
 	private static final String BUTTON_TEXTURE = "/textures/button.png";
+	public static int buttonSelectedColor		= 0x3A7E5C;
+	public static int buttonColor				= 0x489E73;
+	public static int altButtonSelectedColor	= 0x684782;
+	public static int altButtonColor			= 0x8D60AF;
 
+	
 	protected Gui gui;
 	protected float posX;
 	protected float posY;
