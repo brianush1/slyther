@@ -172,6 +172,7 @@ public abstract class GuiWithBanner extends Gui {
         client.menuBackgroundY += Math.sin(angle) * 1.5F;
 
         textureManager.bindTexture("/textures/background.png");
+        GL11.glColor4f(1F, 1F, 1F, 1F);
         drawTexture(0.0F, 0.0F, client.menuBackgroundX, client.menuBackgroundY, renderResolution.getWidth() / client.globalScale, renderResolution.getHeight() / client.globalScale, 599, 519);
 		
 	}
