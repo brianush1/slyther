@@ -24,10 +24,6 @@ public class MessageClientSetup extends SlytherClientMessageBase {
 			name = "";
 		}
 		if (buffer.hasRemaining()) {
-			@SuppressWarnings("unused")
-//			int toss = buffer.readUInt24();
-//			toss = buffer.readUInt24();
-//			toss = buffer.readUInt16();
 			byte[] colors = buffer.readBytes(buffer.remaining());
 			skin = new SkinCustom();
 			((SkinCustom)skin).setPackedColors(colors);
