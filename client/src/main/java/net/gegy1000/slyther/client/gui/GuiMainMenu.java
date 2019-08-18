@@ -2,7 +2,6 @@ package net.gegy1000.slyther.client.gui;
 
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
-import net.gegy1000.slyther.client.gui.element.CheckBoxElement;
 import net.gegy1000.slyther.client.gui.element.TextBoxElement;
 import net.gegy1000.slyther.util.TimeUtils;
 

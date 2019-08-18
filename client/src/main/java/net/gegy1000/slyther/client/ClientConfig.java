@@ -15,6 +15,7 @@ public class ClientConfig implements Configuration {
     public SkinCustom customSkin;
     public String server;
     public boolean shouldRecord = true;
+    public boolean autoSelectCloseServer = true;
     public boolean debugMode = false;
     public boolean showDebug = false;
     public int	scoreDisplayMode = ScoreTypeOriginal;
