@@ -20,7 +20,6 @@ public class GuiMainMenu extends GuiWithBanner {
 
 	private String killAndTimeMessage = null;
 
-	private	CheckBoxElement checkboxRecord;
 
 	public GuiMainMenu() {
 
@@ -71,10 +70,6 @@ public class GuiMainMenu extends GuiWithBanner {
 					System.exit(0);
 					return true;
 				}));
-		checkboxRecord = new CheckBoxElement(this, true, "Hi mom", 20F, 20F, 20F, 20F, (checkbox) -> {
-			return(true);
-		});
-		elements.add(checkboxRecord);
 	}
 
 	@Override
