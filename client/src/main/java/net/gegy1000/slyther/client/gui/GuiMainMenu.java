@@ -2,26 +2,29 @@ package net.gegy1000.slyther.client.gui;
 
 import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
+import net.gegy1000.slyther.client.gui.element.CheckBoxElement;
 import net.gegy1000.slyther.client.gui.element.TextBoxElement;
 import net.gegy1000.slyther.util.TimeUtils;
 
 public class GuiMainMenu extends GuiWithBanner {
 
-    final private float PlayY1			= 0F;
-    final private float MoreY1	 		= 50F;
-    final private float ReplayGameY1	= 200F;
-    final private float QuitY1			= 200F;
-    
-    private float playY;
-    private float moreY;
-    private float replayGameY;
-    private float quitY;
+	final private float PlayY1			= 0F;
+	final private float MoreY1	 		= 50F;
+	final private float ReplayGameY1	= 200F;
+	final private float QuitY1			= 200F;
 
-    private String killAndTimeMessage = null;
-    
-    public GuiMainMenu() {
-    	
-    }
+	private float playY;
+	private float moreY;
+	private float replayGameY;
+	private float quitY;
+
+	private String killAndTimeMessage = null;
+
+	private	CheckBoxElement checkboxRecord;
+
+	public GuiMainMenu() {
+
+	}
 
 	void calcElementPos() {
 		playY = PlayY1;
@@ -68,17 +71,21 @@ public class GuiMainMenu extends GuiWithBanner {
 					System.exit(0);
 					return true;
 				}));
+		checkboxRecord = new CheckBoxElement(this, true, "Hi mom", 20F, 20F, 20F, 20F, (checkbox) -> {
+			return(true);
+		});
+		elements.add(checkboxRecord);
 	}
 
 	@Override
 	public void update() {
-		
+
 	}
 
-    @Override
-    public void keyPressed(int key, char character) {
+	@Override
+	public void keyPressed(int key, char character) {
 
-    }
+	}
 
 	@Override
 	public void render(float mouseX, float mouseY) {
@@ -99,10 +106,10 @@ public class GuiMainMenu extends GuiWithBanner {
 		}
 	}
 
-    @Override
-    public void mouseClicked(float mouseX, float mouseY, int button) {
+	@Override
+	public void mouseClicked(float mouseX, float mouseY, int button) {
 
-    }
+	}
 
 	@Override
 	public void resize() {

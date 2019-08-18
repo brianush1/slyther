@@ -222,6 +222,15 @@ public abstract class Gui {
         GL11.glRectf(x, y, x + width, y + height);
     }
 
+    public void drawBox(float x, float y, float width, float height, int color) {
+    	beginConnectedLines(2, color);
+    	drawConnectedLine(x, y, x+width, y);
+    	drawConnectedLine(x+width, y, x+width, y+height);
+    	drawConnectedLine(x+width, y+height, x, y+height);
+    	drawConnectedLine(x, y+height, x, y);
+    	endConnectedLines();
+    }
+
     public void drawRect(float x, float y, float width, float height, int color) {
         GL11.glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
         drawRect(x, y, width, height);
