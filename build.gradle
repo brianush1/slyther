@@ -152,8 +152,9 @@ project(':client') {
 
 project(':server') {
 	archivesBaseName = "slyther2-server"
+	mainClassName = "net.gegy1000.slyther.server.ServerMain"
 	dependencies {
-		implementation project(':slytherlib')
+		compile project(':slytherlib')
 		compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.4.0'
 	}
 	jar {
