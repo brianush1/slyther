@@ -649,8 +649,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 	
 	public void gameOver() {
-        gameStatistic.setLength(player.getLength());
-        saveConfig();
-        database.addGame(gameStatistic);
+		if (!networkManager.isReplaying) {
+	        saveConfig();
+	        gameStatistic.setLength(player.getLength());
+	        database.addGame(gameStatistic);
+		}
 	}
 }
