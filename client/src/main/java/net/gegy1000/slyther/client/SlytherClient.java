@@ -110,6 +110,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int longestPlayerScore;
 	public String longestPlayerMessage;
 	public String fpsMessage = "";
+	public String	errorMessage = null;
 
 	public ClientConfig configuration;
 
@@ -195,6 +196,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		Gui firstGui = configuration.virgin ? new GuiAbout() : new GuiMainMenu();
 		configuration.virgin = false;	
         openGui(firstGui);
+        ClientMain.clientStarted = true;
 		boolean doResize = false;
 
 		while (!Display.isCloseRequested()) {
@@ -286,6 +288,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		ServerMan.INSTANCE.pingServers();
 	}
 
+	public void setErrorMessage(String msg) {
+		
+	}
 	public void toggleFullscreen() {
 		try {
 			if (Display.isFullscreen()) {

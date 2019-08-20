@@ -44,6 +44,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
     public long packetTimeOffset;
 
     public long currentPacketTime;
+    public GameReplayer replayer;
 
     public ClientNetworkManager(URI uri, SlytherClient client, String ip, Map<String, String> headers, boolean shouldRecord, boolean isReplaying) throws IOException {
         super(uri, new Draft_6455(), headers, 0);
@@ -73,7 +74,9 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
 
     public static ClientNetworkManager create(SlytherClient client) throws IOException, URISyntaxException {
         GameReplayer replayer = new GameReplayer(SlytherClient.RECORD_FILE);
-        return new ClientNetworkManager(replayer.getURI(), client, "GameReplayer", null, false, true);
+        ClientNetworkManager cnm = new ClientNetworkManager(replayer.getURI(), client, "GameReplayer", null, false, true);
+        cnm.replayer = replayer;
+        return(cnm);
     }
 
     @Override

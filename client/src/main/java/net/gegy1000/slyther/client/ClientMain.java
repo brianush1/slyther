@@ -26,12 +26,14 @@ import net.gegy1000.slyther.util.UIUtils;
 
 public class ClientMain {
     private static final String NATIVES_DIR = "natives";
+    public static boolean clientStarted = false;
+    public static SlytherClient client;
 
 	public static void main(String[] args) throws Exception {
 		parseParams(args);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		loadNatives();
-		SlytherClient client = new SlytherClient();
+		client = new SlytherClient();
 		HibernateUtil.buildSessionFactory(SystemUtils.getGameFolder());
 		client.database = new DatabaseImpl();
 		try {
