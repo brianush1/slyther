@@ -39,7 +39,7 @@ public class GameReplayer implements Runnable {
 
     public GameReplayer(File file) {
         this.file = file;
-        server = new WebSocketServer(new InetSocketAddress(8004)) {
+        server = new WebSocketServer(new InetSocketAddress(0)) {
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 if (waitingForOpen) {
@@ -77,7 +77,6 @@ public class GameReplayer implements Runnable {
 			@Override
 			public void onStart() {
 				serverStarted = true;
-				
 			}
         };
         server.start();
@@ -92,7 +91,8 @@ public class GameReplayer implements Runnable {
     public URI getURI() {
         try {
             InetSocketAddress addr = server.getAddress();
-            return new URI("ws://" + addr.getHostString() + ":" + addr.getPort());
+            Log.debug("Returning {}:{}", addr.getHostString(), server.getPort());
+            return new URI("ws://" + addr.getHostString() + ":" + server.getPort());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
