@@ -10,7 +10,7 @@ import net.gegy1000.slyther.util.Log;
  *
  */
 public class SkinCustom implements Skin {
-
+	private final static boolean DEBUG = false;
 	private Color[] colorsUnpacked;
 	private	byte[] colorsPacked;
 	
@@ -44,7 +44,8 @@ public class SkinCustom implements Skin {
 		for (int i = 8, c=0; i<packedColors.length; i+=2) {
 			byte colorsize = packedColors[i];
 			byte colorid = packedColors[i+1];
-			Log.debug("SkinCustom colorsize={} colorid={}", colorsize, colorid);
+			if (DEBUG)
+				Log.debug("SkinCustom colorsize={} colorid={}", colorsize, colorid);
 			for (int j=0; j<colorsize; j++, c++)
 				colorsUnpacked[c] = Color.values()[colorid];
 		}
