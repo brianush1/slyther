@@ -9,6 +9,9 @@ public class GameStatistic {
 	private	int		length = -1;
 	private	int		rank;
 	private	int		snakeCount;
+	
+	// not persistent
+	private	int		timeIndex = 0;
 
 	public void reset() {
 		gamedate = new Date();
@@ -32,6 +35,21 @@ public class GameStatistic {
 	public void setGamedate(Date gamedate) {
 		this.gamedate = gamedate;
 	}
+	/** During gameplay, this is the same as {@link #duration}, during playback
+	 * this is the time into the playback 
+	 * @return the timeIndex
+	 */
+	public int getTimeIndex() {
+		return timeIndex;
+	}
+
+	/**
+	 * @param timeIndex the timeIndex to set
+	 */
+	public void setTimeIndex(int timeIndex) {
+		this.timeIndex = timeIndex;
+	}
+
 	/**
 	 * @return the duration
 	 */
@@ -46,8 +64,12 @@ public class GameStatistic {
 	}
 	
 	/** Increment the number of seconds this game has been played */
-	public void incDuration() {
-		this.duration++;
+	public void incDuration(boolean replaying) {
+		if (!replaying) {
+			this.duration++;
+			this.timeIndex = duration;
+		} else
+			this.timeIndex++;
 	}
 
 	/**
@@ -101,4 +123,5 @@ public class GameStatistic {
 		this.snakeCount = snakeCount;
 	}
 
+	
 }

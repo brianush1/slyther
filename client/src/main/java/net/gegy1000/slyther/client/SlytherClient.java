@@ -230,19 +230,18 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			if (System.currentTimeMillis() - timer > 1000) {
 				int bytesPerSecond = 0;
 				int packetsPerSecond = 0;
+				timer += 1000;
 				if (networkManager != null) {
 					bytesPerSecond = networkManager.bytesPerSecond;
 					packetsPerSecond = networkManager.packetsPerSecond;
 					networkManager.bytesPerSecond = 0;
 					networkManager.packetsPerSecond = 0;
+					gameStatistic.incDuration(networkManager.isReplaying);
 				}
 				fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
 				Display.setTitle("Slyther - " + fpsMessage);
 				fps = 0;
 
-				timer += 1000;
-				//gamePlayTime++;
-				gameStatistic.incDuration();
 				ups = 0;
 			}
 
@@ -336,7 +335,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		new Thread(() -> {
 			try {
 				if (userServerSelection == null) {
-					ServerMan.Server server = ServerMan.INSTANCE.getServerForPlay();
+					ServerMan.Server server = ServerMan.INSTANCE.getServerForPlay(configuration.autoSelectCloseServer);
 					networkManager = ClientNetworkManager.create(SlytherClient.this, server, configuration.shouldRecord);
 				} else {
 					networkManager = ClientNetworkManager.create(SlytherClient.this, userServerSelection, configuration.shouldRecord);
@@ -352,6 +351,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		allowUserInput = false;
 		try {
 			networkManager = ClientNetworkManager.create(this);
+			gameStatistic.setTimeIndex(0);
 		} catch (Exception e) {
 			UIUtils.displayException("Replay failed", e);
 		}
