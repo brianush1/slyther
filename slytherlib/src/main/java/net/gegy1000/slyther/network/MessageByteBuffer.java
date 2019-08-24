@@ -54,6 +54,12 @@ public class MessageByteBuffer {
         buf.putInt(value);
     }
 
+    public void writeInt64(long value) {
+    	long l = value >> 32 & 0xFFFFFFFFFL;
+    	writeInt32((int)l);
+    	writeInt32((int)(value & 0xFFFFFFFFL));
+    }
+   
     public void writeBytes(byte[] src) {
         buf.put(src);
     }
@@ -78,6 +84,11 @@ public class MessageByteBuffer {
         return buf.getInt();
     }
 
+    public long readInt64() {
+    	long l = (long)readInt32() << 32;
+    	l |= readInt32();
+    	return(l);
+    }
     public byte[] readBytes(int length) {
         byte[] dst = new byte[length];
         buf.get(dst);
