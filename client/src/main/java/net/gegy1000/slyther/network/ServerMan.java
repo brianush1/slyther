@@ -83,10 +83,13 @@ public enum ServerMan {
 		return countryCodes.codes;
 	}
 
-	public Server getServerForPlay() {
+	public Server getServerForPlay(boolean pickClosest) {
 		serversAvailable.lock();
 		serverList.sort(null);
 		Server server = serverList.get(new Random().nextInt(5));
+		if (pickClosest) {
+			server = serverList.get(0);
+		}
 		serversAvailable.unlock();
 		return server;
 	}
