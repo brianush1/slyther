@@ -116,7 +116,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	public String userServerSelection;
 
-	public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
+	//public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
 
 
 	public float delta;
@@ -347,10 +347,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}).start();
 	}
 
-	public void replay() {
+	public void replay(File replayFile) {
 		allowUserInput = false;
 		try {
-			networkManager = ClientNetworkManager.create(this);
+			networkManager = ClientNetworkManager.create(this, replayFile);
 			gameStatistic.setTimeIndex(0);
 		} catch (Exception e) {
 			UIUtils.displayException("Replay failed", e);

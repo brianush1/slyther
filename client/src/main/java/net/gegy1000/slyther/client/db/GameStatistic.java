@@ -3,7 +3,7 @@ package net.gegy1000.slyther.client.db;
 import java.util.Date;
 
 public class GameStatistic {
-	private Date	gamedate;
+	protected Date	gamedate;
 	private	int		duration;
 	private	int		kills;
 	private	int		length = -1;

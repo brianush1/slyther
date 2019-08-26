@@ -2,7 +2,6 @@ package net.gegy1000.slyther.client.gui;
 
 import java.util.function.Function;
 
-import net.gegy1000.slyther.client.SlytherClient;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.element.Element;
 
@@ -13,7 +12,7 @@ public class GuiMore extends GuiWithBanner {
 		ChangeSkin,
 		SelectServer,
 		LocalServer,
-		ReplayLastGame,
+		ReplayMan,
 		ShowStats,
 		About,
 		Done
@@ -76,15 +75,13 @@ public class GuiMore extends GuiWithBanner {
 				
 			}));
 		}
-		if (SlytherClient.RECORD_FILE.exists()) {
-			elements.add(createButton(ButtonType.ReplayLastGame, "Replay Last Game", (button) -> {
-				closeGui();
-				client.replay();
-				renderHandler.openGui(new GuiGame());
-				return true;
-				
-			}));
-		}
+		elements.add(createButton(ButtonType.ReplayMan, "Replay Manager", (button) -> {
+			closeGui();
+			//client.replay();
+			renderHandler.openGui(new GuiReplayMan());
+			return true;
+			
+		}));
 		elements.add(createButton(ButtonType.Done, "Done", (button) -> {
 			gotoMainMenu();
 			return true;
@@ -115,8 +112,8 @@ public class GuiMore extends GuiWithBanner {
 		buttonCoords[ButtonType.SelectServer.ordinal()][Y]	= -50F;
 		buttonCoords[ButtonType.LocalServer.ordinal()][X] 	= right;
 		buttonCoords[ButtonType.LocalServer.ordinal()][Y] 	=   0F;
-		buttonCoords[ButtonType.ReplayLastGame.ordinal()][X]= right;
-		buttonCoords[ButtonType.ReplayLastGame.ordinal()][Y]= 100F;
+		buttonCoords[ButtonType.ReplayMan.ordinal()][X]		= right;
+		buttonCoords[ButtonType.ReplayMan.ordinal()][Y]		= 100F;
 		buttonCoords[ButtonType.Done.ordinal()][X] = renderResolution.getWidth() / 2.0F;
 		buttonCoords[ButtonType.Done.ordinal()][Y] = 200F;
 	}
