@@ -11,7 +11,7 @@ import net.gegy1000.slyther.client.db.GameStatistic;
  */
 public class Replay extends GameStatistic implements Comparable<Replay>{
 	private String	pathname;
-	private boolean	keep;
+//	private boolean	keep;
 
 	/**
 	 * @return the pathname
@@ -27,20 +27,20 @@ public class Replay extends GameStatistic implements Comparable<Replay>{
 		this.pathname = pathname;
 	}
 
-	/** Should we keep this replay or let it auto-delete
-	 * @return the keep
-	 */
-	public boolean isKeep() {
-		return keep;
-	}
-
-	/**
-	 * @param keep the keep to set
-	 */
-	public void setKeep(boolean keep) {
-		this.keep = keep;
-	}
-
+//	/** Should we keep this replay or let it auto-delete
+//	 * @return the keep
+//	 */
+//	public boolean isKeep() {
+//		return keep;
+//	}
+//
+//	/**
+//	 * @param keep the keep to set
+//	 */
+//	public void setKeep(boolean keep) {
+//		this.keep = keep;
+//	}
+//
 	@Override
 	public int compareTo(Replay o) {
 		return(Long.compare(o.gamedate.getTime(), gamedate.getTime()));

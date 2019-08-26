@@ -58,7 +58,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
 //      }
 		connect();
 		if (shouldRecord) {
-			recorder = new GameRecorder(ReplayMan.INSTANCE.getNewReplayFile());
+			recorder = new GameRecorder(ReplayMan.INSTANCE.getNewReplayFile(client.configuration));
 			recorder.start();
 		}
 	}

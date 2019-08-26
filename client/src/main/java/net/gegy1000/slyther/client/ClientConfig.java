@@ -1,5 +1,7 @@
 package net.gegy1000.slyther.client;
 
+import java.util.ArrayList;
+
 import net.gegy1000.slyther.game.Configuration;
 import net.gegy1000.slyther.game.SkinCustom;
 import net.gegy1000.slyther.game.SkinEnum;
@@ -21,4 +23,6 @@ public class ClientConfig implements Configuration {
     public int	scoreDisplayMode = ScoreTypeOriginal;
     public boolean showFullScreen = true;
     public boolean virgin = true;
+    public int	numReplaysToKeep = 5;
+    public ArrayList<String>	replaysToKeep = new ArrayList<String>();
 }

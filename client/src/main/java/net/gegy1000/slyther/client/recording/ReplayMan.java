@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
+import net.gegy1000.slyther.client.ClientConfig;
 import net.gegy1000.slyther.network.MessageByteBuffer;
 import net.gegy1000.slyther.util.Log;
 import net.gegy1000.slyther.util.SystemUtils;
@@ -32,9 +34,10 @@ public enum ReplayMan {
 	INSTANCE;
 	public List<Replay>	replayFiles;
 	
-	public File getNewReplayFile() {
+	public File getNewReplayFile(ClientConfig config) {
 		GregorianCalendar cal = new GregorianCalendar();
 		String s = String.format("slyther.%1$tY%1$tm%1$td%1$tH%1$tM%1$ts.record", cal);
+		maybeDeleteReplayFiles(config);
 		File f = new File(SystemUtils.getReplayFolder(), s);
 		try {
 			f.createNewFile();
@@ -102,4 +105,23 @@ public enum ReplayMan {
 		replayFiles = list;
 	}
 	
+	private void maybeDeleteReplayFiles(ClientConfig config) {
+		getReplayFiles();
+
+		for (String s : config.replaysToKeep) {
+			ListIterator<Replay> iter = replayFiles.listIterator();
+			while (iter.hasNext()) {
+				Replay r = iter.next();
+				if (r.getPathname().equals(s)) {
+					iter.remove();
+					break;
+				}
+			}
+		}
+		for (int i = config.numReplaysToKeep-1; i<replayFiles.size(); i++) {
+			Replay r = replayFiles.get(i);
+			File f = new File(r.getPathname());
+			f.delete();
+		}
+	}
 }

@@ -5,8 +5,10 @@ package net.gegy1000.slyther.client.gui;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import net.gegy1000.slyther.client.gui.element.ArrowElement;
 import net.gegy1000.slyther.client.gui.element.ButtonElement;
 import net.gegy1000.slyther.client.gui.element.CheckBoxElement;
 import net.gegy1000.slyther.client.recording.Replay;
@@ -19,6 +21,9 @@ import net.gegy1000.slyther.util.TimeUtils;
  *
  */
 public class GuiReplayMan extends GuiWithBanner {
+	private int page = 0;
+	private int entriesPerPage;
+	//private int numPages;
 	private float margin;
 	private float left;
 	private float lineHeight;
@@ -31,12 +36,14 @@ public class GuiReplayMan extends GuiWithBanner {
 	private float deleteWidth;
 	private float dateLeft;
 	private float dateWidth;
+	private float killsLeft;
 	//private float killsWidth;
-	private float lengthWidth;
+	//private float lengthWidth;
 	private float durationWidth;
-	private float rankWidth;
+	//private float rankWidth;
 	
-	private float entryTop = 40F;	// top line for the entries
+	private final float entryTop = 40F;	// top line for the entries
+	private final float tscale = 0.6F;
 	
 	private final SimpleDateFormat dateformat = new SimpleDateFormat("MMMM d, YYYY  HH:mm");
 	
@@ -55,13 +62,12 @@ public class GuiReplayMan extends GuiWithBanner {
 		if (list == null || list.isEmpty())
 			return;
 		margin = renderResolution.getWidth() * 0.01F;
-		left = renderResolution.getWidth()*0.3333F;
 		lineHeight = font.getHeight();
-		entryHeight = lineHeight + (lineHeight*0.6F*2) + margin;
+		entryHeight = lineHeight + (lineHeight*tscale*2) + margin;
 
 		playWidth = 40F;	// font.getWidth("Play") + 40F;
-		//keepWidth = font.getWidth("Keep") + 20F + margin;
-		//deleteWidth = font.getWidth("delete");
+		keepWidth = font.getWidth("Keep") + 20F + margin;
+		deleteWidth = font.getWidth("delete");
 		String s;
 		int w;
 		for (Replay r : list) {
@@ -69,25 +75,56 @@ public class GuiReplayMan extends GuiWithBanner {
 			w = font.getWidth(s);
 			if (w > dateWidth)
 				dateWidth = w;
+			s = "Duration: " + r.getDuration();
+			w = font.getWidth(s);
+			if (w > durationWidth)
+				durationWidth = w;
 		}
+		//durationWidth *= tscale;
 		dateLeft = playWidth + margin;
-		keepLeft = dateLeft + dateWidth + margin + margin;
-		int entryIndex = 0;
+		keepLeft = dateLeft + dateWidth + margin*3;
+		killsLeft = durationWidth + margin*2;
+		
+		entryWidth = keepLeft + keepWidth + margin;
+		left = renderResolution.getWidth()/2 - entryWidth/2;
+		
+		int availableHeight = (int)(renderResolution.getHeight() - 40.0F - entryTop);
+		entriesPerPage = (int)(availableHeight / entryHeight);
+		//numPages = list.size() / entriesPerPage;
+		ArrayList<String> al = client.configuration.replaysToKeep;
+		int lineIndex = 0;
 		float lineOfs = lineHeight/2;
 		final String playTexture = "/textures/play2.png";
-		for (Replay r : list) {
-			float line = entryIndex*entryHeight+entryTop;
-			elements.add(new CheckBoxElement(this, r.isKeep(), "Keep", keepLeft+left, line+lineOfs, 25F, 25F, (checkbox) -> {
+		int entry;
+		for (lineIndex = 0, entry = entriesPerPage*page; lineIndex < entriesPerPage && entry < list.size(); lineIndex++, entry++) {
+			Replay r = list.get(entry);
+			float line = lineIndex*entryHeight+entryTop;
+			boolean isKeep = al.contains(r.getPathname());
+			elements.add(new CheckBoxElement(this, isKeep, "Keep", keepLeft+left, line+lineOfs, 25F, 25F, (checkbox) -> {
+				keepChecked(r.getPathname(), checkbox.isChecked());
 				return true;
 			}));
-			elements.add(new ButtonElement(this, playLeft+left, line, playWidth, playWidth, playTexture, playTexture,(button) -> {
+			elements.add(new ButtonElement(this, playLeft+left, line+playWidth, playWidth, playWidth, playTexture, playTexture,(button) -> {
 				client.replay(new File(r.getPathname()));
 				renderHandler.openGui(new GuiGame());
 				return true;
 			}));
-			entryIndex++;
 		}
-
+		if (page > 0) {
+	        elements.add(new ArrowElement(this, renderResolution.getWidth() / 9.0F, renderResolution.getHeight() / 2.0F, false, (arrow) -> {
+	            page--;
+	            init();
+	            return true;
+	        }));
+		}
+		if ((page+1)*entriesPerPage < list.size()) {
+	        elements.add(new ArrowElement(this, renderResolution.getWidth() - renderResolution.getWidth() / 9.0F, renderResolution.getHeight() / 2.0F, true, (arrow) -> {
+	            page++;
+	            init();
+	            return true;
+	        }));
+		}
+		
 	}
 	@Override
 	public void render(float mouseX, float mouseY) {
@@ -98,21 +135,28 @@ public class GuiReplayMan extends GuiWithBanner {
 		if (list == null || list.isEmpty())
 			return;
 		String s;
-		int entryIndex = 0;
-		for (Replay r : list) {
-			float line = entryIndex*entryHeight+entryTop;
+		int lineIndex = 0;
+		final int yellow = Color.YELLOW.toHex();
+		int entry;
+		for (lineIndex = 0, entry = entriesPerPage*page; lineIndex < entriesPerPage && entry < list.size(); lineIndex++, entry++) {
+			Replay r = list.get(entry);
+			float line = lineIndex*entryHeight+entryTop;
 			s = dateformat.format(r.getGamedate());
 			drawString(s, dateLeft+left, line, 1.0F, Color.WHITE.toHex());
 			
 			line += lineHeight;
 			s = "Length: " + r.getLength();
-			drawString(s, dateLeft+left, line, 0.6F, Color.YELLOW.toHex());
+			drawString(s, dateLeft+left, line, tscale, yellow);
 			
-			line += lineHeight*0.6F;
+			s = "Kills: " + r.getKills();
+			drawString(s, killsLeft+left, line, tscale, yellow);
+			
+			line += lineHeight*tscale;
 			s = "Duration: " + TimeUtils.toString(r.getDuration());
-			drawString(s, dateLeft+left, line, 0.6F, Color.YELLOW.toHex());
+			drawString(s, dateLeft+left, line, tscale, yellow);
 
-			entryIndex++;
+			s = "Rank: " + r.getRank();
+			drawString(s, killsLeft+left, line, tscale, yellow);
 
 		}
 	}
@@ -135,12 +179,12 @@ public class GuiReplayMan extends GuiWithBanner {
 		init();
 	}
 
-//	private void play(String filepath) {
-//		File f;
-//		f = new File(filepath);
-//		client.replay(new File(filepath));
-//	}
-//	private void readReplayFiles() {
-//		
-//	}
+	private void keepChecked(String filepath, boolean checked) {
+		ArrayList<String> al = client.configuration.replaysToKeep;
+		if (!checked) {
+			al.remove(filepath);
+		} else if (!al.contains(filepath))
+			al.add(filepath);
+        client.saveConfig();
+	}
 }
