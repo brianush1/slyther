@@ -22,6 +22,7 @@ import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.Gui;
 import net.gegy1000.slyther.client.gui.GuiAbout;
 import net.gegy1000.slyther.client.gui.GuiMainMenu;
+import net.gegy1000.slyther.client.gui.GuiReplayMan;
 import net.gegy1000.slyther.client.render.RenderHandler;
 import net.gegy1000.slyther.game.ConfigHandler;
 import net.gegy1000.slyther.game.Game;
@@ -548,9 +549,12 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 //		renderHandler.closeAllGuis();
 //	}
 
-	public void reset() {
+	public void reset(boolean wasReplaying) {
 		closeGui();
-		openGui(new GuiMainMenu());
+		if (wasReplaying)
+			openGui(new GuiReplayMan());
+		else
+			openGui(new GuiMainMenu());
 		networkManager = null;
 		setup();
 	}
