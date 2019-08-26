@@ -157,7 +157,7 @@ public class ClientNetworkManager extends WebSocketClient implements NetworkMana
 	public void onClose(int code, String reason, boolean remote) {
 		Log.debug("Connection closed with code {} for reason \"{}\"", code, reason);
 		if (code != SHUTDOWN_CODE) {
-			client.reset();   
+			client.reset(isReplaying);   
 		}
 		if (recorder != null) {
 			recorder.close(client.gameStatistic);
