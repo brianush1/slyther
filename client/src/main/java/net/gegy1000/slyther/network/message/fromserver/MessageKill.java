@@ -9,12 +9,14 @@ import net.gegy1000.slyther.network.message.server.MessageKillBase;
 import net.gegy1000.slyther.util.Log;
 
 public class MessageKill extends MessageKillBase implements MessageFromServer {
+	private final static boolean DEBUG = false;
 
 	@Override
 	public void read(MessageByteBuffer buffer, SlytherClient client, ClientNetworkManager networkManager) {
 		int me = buffer.readUInt16();
 		client.gameStatistic.setKills(buffer.readUInt24());
-		Log.debug("Kill: me={} count={}", me, client.gameStatistic.getKills());
+		if (DEBUG)
+			Log.debug("Kill: me={} count={}", me, client.gameStatistic.getKills());
 	}
 
 }

@@ -112,12 +112,9 @@ public class RenderHandler {
         float mouseY = (float) ((client.frameBufferHeight - client.mouseY) / renderResolution.getScale());
         if (activeGui != null) {
 	        activeGui.renderBase(mouseX, mouseY);
-//	        while (Mouse.next()) {
-//	            int button = Mouse.getEventButton();
-//	            if (Mouse.getEventButtonState()) {
-//	            	activeGui.mouseClickedBase(mouseX, mouseY, button);
-//	            }
-//	        }
+	        if (client.errorMessage != null) {
+	        	activeGui.drawCenteredLargeString(client.errorMessage, renderResolution.getWidth() / 2.0F, renderResolution.getHeight() / 8.0F, 0.5F, 0xFF0000);
+	        }
         }
     }
 

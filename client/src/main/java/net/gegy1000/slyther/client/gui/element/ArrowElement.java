@@ -25,7 +25,7 @@ public class ArrowElement extends Element {
     public void render(float mouseX, float mouseY) {
         gui.textureManager.bindTexture(type ? RIGHT_TEXTURE : LEFT_TEXTURE);
         boolean selected = isSelected(mouseX, mouseY);
-        int color = selected ? 0x3A7E5C : 0x489E73;
+        int color = selected ? buttonSelectedColor : buttonColor;
         GL11.glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
         gui.drawTexture(posX, posY, 0.0F, 0.0F, 128.0F, 128.0F, 128.0F, 128.0F);
     }

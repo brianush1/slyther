@@ -31,6 +31,7 @@ import net.gegy1000.slyther.client.game.entity.ClientSnake;
 import net.gegy1000.slyther.client.gui.Gui;
 import net.gegy1000.slyther.client.gui.GuiAbout;
 import net.gegy1000.slyther.client.gui.GuiMainMenu;
+import net.gegy1000.slyther.client.gui.GuiReplayMan;
 import net.gegy1000.slyther.client.render.RenderHandler;
 import net.gegy1000.slyther.game.ConfigHandler;
 import net.gegy1000.slyther.game.Game;
@@ -133,6 +134,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	public int longestPlayerScore;
 	public String longestPlayerMessage;
 	public String fpsMessage = "";
+	public String	errorMessage = null;
 
 	public ClientConfig configuration;
 
@@ -141,8 +143,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	//private static final boolean START_FULLSCREEN = false;
 	private boolean accelerating = false;
 	private boolean isMouseDown = false;
-
-	public static final File RECORD_FILE = new File(SystemUtils.getGameFolder(), "game.record");
 
 
 	public float delta;
@@ -413,6 +413,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		Gui firstGui = configuration.virgin ? new GuiAbout() : new GuiMainMenu();
 		configuration.virgin = false;	
 		openGui(firstGui);
+        ClientMain.clientStarted = true;
 		while(!glfwWindowShouldClose(windowId) && remainOpen) {
 			//if (Display.wasResized() && doResize) {
 			//	setupDisplay();
@@ -448,19 +449,18 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 			if (System.currentTimeMillis() - timer > 1000) {
 				int bytesPerSecond = 0;
 				int packetsPerSecond = 0;
+				timer += 1000;
 				if (networkManager != null) {
 					bytesPerSecond = networkManager.bytesPerSecond;
 					packetsPerSecond = networkManager.packetsPerSecond;
 					networkManager.bytesPerSecond = 0;
 					networkManager.packetsPerSecond = 0;
+					gameStatistic.incDuration(networkManager.isReplaying);
 				}
 				fpsMessage = "FPS:" + fps + " - UPS: " + ups + " - BPS: " + bytesPerSecond + " - PPS: " + packetsPerSecond;
 				//Display.setTitle("Slyther - " + fpsMessage);
 				fps = 0;
 
-				timer += 1000;
-				//gamePlayTime++;
-				gameStatistic.incDuration();
 				ups = 0;
 			}
 
@@ -471,6 +471,9 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 
 	}
 
+	public void setErrorMessage(String msg) {
+		
+	}
 	public void toggleFullscreen() {
 		long 		monitor = glfwGetPrimaryMonitor();
 		GLFWVidMode mode =  glfwGetVideoMode(monitor);
@@ -529,7 +532,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		new Thread(() -> {
 			try {
 				if (userServerSelection == null) {
-					ServerMan.Server server = ServerMan.INSTANCE.getServerForPlay();
+					ServerMan.Server server = ServerMan.INSTANCE.getServerForPlay(configuration.autoSelectCloseServer);
 					networkManager = ClientNetworkManager.create(SlytherClient.this, server, configuration.shouldRecord);
 				} else {
 					networkManager = ClientNetworkManager.create(SlytherClient.this, userServerSelection, configuration.shouldRecord);
@@ -541,10 +544,11 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		}).start();
 	}
 
-	public void replay() {
+	public void replay(File replayFile) {
 		allowUserInput = false;
 		try {
-			networkManager = ClientNetworkManager.create(this);
+			networkManager = ClientNetworkManager.create(this, replayFile);
+			gameStatistic.setTimeIndex(0);
 		} catch (Exception e) {
 			UIUtils.displayException("Replay failed", e);
 		}
@@ -685,7 +689,7 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 						}
 					}
 				}
-				Iterator<Entity<?>> entityIter = entityIterator();
+				Iterator<Entity> entityIter = entityIterator();
 				while (entityIter.hasNext()) {
 					Entity entity = entityIter.next();
 					if (entity.updateBase(delta, lastDelta, lastDelta2)) {
@@ -741,9 +745,12 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	//		renderHandler.closeAllGuis();
 	//	}
 
-	public void reset() {
+	public void reset(boolean wasReplaying) {
 		closeGui();
-		openGui(new GuiMainMenu());
+		if (wasReplaying)
+			openGui(new GuiReplayMan());
+		else
+			openGui(new GuiMainMenu());
 		networkManager = null;
 		setup();
 	}
@@ -848,8 +855,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	}
 
 	public void gameOver() {
-		gameStatistic.setLength(player.getLength());
-		saveConfig();
-		database.addGame(gameStatistic);
+		if (!networkManager.isReplaying) {
+	        saveConfig();
+	        gameStatistic.setLength(player.getLength());
+	        database.addGame(gameStatistic);
+		}
 	}
 }

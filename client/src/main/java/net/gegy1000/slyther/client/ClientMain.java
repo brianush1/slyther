@@ -11,12 +11,13 @@ import net.gegy1000.slyther.util.Log;
 import net.gegy1000.slyther.util.SystemUtils;
 
 public class ClientMain {
+    public static boolean clientStarted = false;
+    public static SlytherClient client;
 
 	public static void main(String[] args) throws Exception {
 		parseParams(args);
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		//loadNatives();
-		SlytherClient client = new SlytherClient();
+		client = new SlytherClient();
 		HibernateUtil.buildSessionFactory(SystemUtils.getGameFolder());
 		client.database = new DatabaseImpl();
 		try {

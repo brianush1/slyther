@@ -15,6 +15,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import net.gegy1000.slyther.util.Log;
 
 public class ServerPingerDispatcher implements Runnable {
+	private static final boolean DEBUG = false;
     private static final int PING_TIMEOUT = 20000;
 
     private static final int MIN_FOR_PLAY = 5;
@@ -118,7 +119,8 @@ public class ServerPingerDispatcher implements Runnable {
 					}
                 } else {
                     server.setPing(pings);
-                    Log.debug("Ping time of {}", server.getPing());
+                    if (DEBUG)
+                    	Log.debug("Ping time of {}", server.getPing());
                     close();
                     finishedPingers.add(this);
                 }

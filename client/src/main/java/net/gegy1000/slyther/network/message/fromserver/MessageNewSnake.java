@@ -18,6 +18,7 @@ import net.gegy1000.slyther.network.message.server.MessageNewSnakeBase;
 import net.gegy1000.slyther.util.Log;
 
 public class MessageNewSnake extends MessageNewSnakeBase implements MessageFromServer {
+	private final static boolean DEBUG = false;
 
     public MessageNewSnake() {
     }
@@ -31,7 +32,8 @@ public class MessageNewSnake extends MessageNewSnakeBase implements MessageFromS
 			boolean dead = buffer.readUInt8() == 1;
 			Snake<?> snake = client.getSnake(id);
 			if (snake != null) {
-				Log.debug("Remove snake {} \"{}\" with skin {}, dead {}", snake.id, snake.name, snake.skin, dead);
+				if (DEBUG)
+					Log.debug("Remove snake {} \"{}\" with skin {}, dead {}", snake.id, snake.name, snake.skin, dead);
 				if (dead) {
 					snake.dead = true;
 					snake.deadAmt = 0;
@@ -57,7 +59,8 @@ public class MessageNewSnake extends MessageNewSnakeBase implements MessageFromS
 			name += (char) buffer.readUInt8();
 		}
 		int skinLength = buffer.readUInt8();
-		Log.debug("Snake {} \"{}\" skinLength={}", id, name, skinLength);
+		if (DEBUG)
+			Log.debug("Snake {} \"{}\" skinLength={}", id, name, skinLength);
 		if (skinLength > 0) {
 			byte[] sarray = buffer.readBytes(skinLength);
 			SkinCustom skinCustom = new SkinCustom();
@@ -118,7 +121,8 @@ public class MessageNewSnake extends MessageNewSnakeBase implements MessageFromS
 		}
 		snake.partSeparation = snake.wantedSeperation;
 
-		Log.debug("Added snake \"{}\" with skin {} remaining {}", snake.name, snake.skin, buffer.remaining());
+		if (DEBUG)
+			Log.debug("Added snake \"{}\" with skin {} remaining {}", snake.name, snake.skin, buffer.remaining());
 		if (buffer.remaining() != 0) {
 			Log.info("****************** remaining: {}", buffer.remaining());
 		}

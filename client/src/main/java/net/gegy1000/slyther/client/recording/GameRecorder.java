@@ -11,6 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import net.gegy1000.slyther.client.db.GameStatistic;
 import net.gegy1000.slyther.util.UIUtils;
 
 public class GameRecorder extends Thread implements Closeable {
@@ -84,5 +85,10 @@ public class GameRecorder extends Thread implements Closeable {
     @Override
     public void close() {
         messages.add(POISON);
+    }
+    
+    public void close(GameStatistic gameStatistic) {
+    	messages.add(new MessageSlytherGameFinished(gameStatistic));
+    	close();
     }
 }

@@ -33,12 +33,13 @@ public class GameReplayer implements Runnable {
     private ByteBuffer messageBuffer = ByteBuffer.allocate(1024);
 
     private boolean waitingForOpen = true;
+    private boolean serverStarted = false;
 
     private boolean waitingForClose;
 
     public GameReplayer(File file) {
         this.file = file;
-        server = new WebSocketServer(new InetSocketAddress(8004)) {
+        server = new WebSocketServer(new InetSocketAddress(0)) {
             @Override
             public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 if (waitingForOpen) {
@@ -53,6 +54,7 @@ public class GameReplayer implements Runnable {
 
             @Override
             public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+            	Log.info("GameReplayer. onClose");
                 waitingForClose = true;
                 // Interrupt a long message delay
                 while (waitingForClose) {
@@ -74,17 +76,23 @@ public class GameReplayer implements Runnable {
 
 			@Override
 			public void onStart() {
-				// TODO Auto-generated method stub
-				
+				serverStarted = true;
 			}
         };
         server.start();
+		long timer = System.currentTimeMillis() + 500;
+		while (System.currentTimeMillis() < timer) {
+			if (serverStarted)
+				return;
+		}
+		Log.warn("GameReplayer server startup timeout");
     }
 
     public URI getURI() {
         try {
             InetSocketAddress addr = server.getAddress();
-            return new URI("ws://" + addr.getHostString() + ":" + addr.getPort());
+            Log.debug("Returning {}:{}", addr.getHostString(), server.getPort());
+            return new URI("ws://" + addr.getHostString() + ":" + server.getPort());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -124,6 +132,7 @@ public class GameReplayer implements Runnable {
         } catch (Exception e) {
             UIUtils.displayException("A problem occured while playing back recording", e);
         } finally {
+        	Log.info("GameReplayer.finally shutdown");
             waitingForClose = false;
             if (fin != null) {
             	try {
@@ -137,5 +146,13 @@ public class GameReplayer implements Runnable {
                 Log.catching(e);
             }
         }
+    }
+    
+    public void shutdown() {
+    	try {
+			server.stop();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 }

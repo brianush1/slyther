@@ -33,8 +33,8 @@ public class ButtonElement extends Element {
      * @param posY
      * @param width
      * @param height
-     * @param texture0
-     * @param texture1
+     * @param texture0 normal texture
+     * @param texture1 selected texture
      * @param function
      */
     public ButtonElement(Gui gui, float posX, float posY, float width, float height,
@@ -54,9 +54,10 @@ public class ButtonElement extends Element {
         boolean selected = isSelected(mouseX, mouseY);
         if (texture0 != null) {
         	String t = selected ? texture1 : texture0;
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         	drawButton(posX, posY, width, height, t);
         } else {
-	        int color = selected ? 0x3A7E5C : 0x489E73;
+	        int color = selected ? buttonSelectedColor : buttonColor;
 	        GL11.glColor4f((color >> 16 & 0xFF) / 255.0F, (color >> 8 & 0xFF) / 255.0F, (color & 0xFF) / 255.0F, 1.0F);
 	        drawButton(posX, posY, width, height);
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

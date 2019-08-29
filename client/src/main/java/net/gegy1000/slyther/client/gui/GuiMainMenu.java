@@ -13,26 +13,27 @@ import net.gegy1000.slyther.util.TimeUtils;
 
 public class GuiMainMenu extends GuiWithBanner {
 
-    final private float PlayY1			= 0F;
-    final private float MoreY1	 		= 50F;
-    final private float ReplayGameY1	= 200F;
-    final private float QuitY1			= 200F;
-    
-    private float playY;
-    private float moreY;
-    private float replayGameY;
-    private float quitY;
+	final private float PlayY1			= 0F;
+	final private float MoreY1	 		= 50F;
+	//final private float ReplayGameY1	= 200F;
+	final private float QuitY1			= 200F;
 
-    private String killAndTimeMessage = null;
-    
-    public GuiMainMenu() {
-    	
-    }
+	private float playY;
+	private float moreY;
+	//private float replayGameY;
+	private float quitY;
+
+	private String killAndTimeMessage = null;
+
+
+	public GuiMainMenu() {
+
+	}
 
 	void calcElementPos() {
 		playY = PlayY1;
 		moreY = MoreY1;
-		replayGameY = ReplayGameY1;
+		//replayGameY = ReplayGameY1;
 		quitY = QuitY1;
 	}
 
@@ -61,15 +62,15 @@ public class GuiMainMenu extends GuiWithBanner {
 					renderHandler.openGui(new GuiMore(this));
 					return true;
 				}));
-		if (SlytherClient.RECORD_FILE.exists()) {
-			elements.add(new ButtonElement(this, "Replay Last Game", renderResolution.getWidth() / 2.0F,
-					renderResolution.getHeight() / 2.0F + replayGameY, 150.0F, 40.0F, (button) -> {
-						closeGui();
-						client.replay();
-						renderHandler.openGui(new GuiGame());
-						return true;
-					}));
-		}
+//		if (SlytherClient.RECORD_FILE.exists()) {
+//			elements.add(new ButtonElement(this, "Replay Last Game", renderResolution.getWidth() / 2.0F,
+//					renderResolution.getHeight() / 2.0F + replayGameY, 150.0F, 40.0F, (button) -> {
+//						closeGui();
+//						client.replay();
+//						renderHandler.openGui(new GuiGame());
+//						return true;
+//					}));
+//		}
 		elements.add(new ButtonElement(this, "Exit", renderResolution.getWidth() / 2.0F, 
 				renderResolution.getHeight() / 2.0F + quitY, 150.0F, 40.0F, (button) -> {
 					System.exit(0);
@@ -79,13 +80,13 @@ public class GuiMainMenu extends GuiWithBanner {
 
 	@Override
 	public void update() {
-		
+
 	}
 
     @Override
     public void keyPressed(int key) {
 
-    }
+	}
 
 	@Override
 	public void render(float mouseX, float mouseY) {
@@ -107,10 +108,10 @@ public class GuiMainMenu extends GuiWithBanner {
 		}
 	}
 
-    @Override
-    public void mouseClicked(float mouseX, float mouseY, int button) {
+	@Override
+	public void mouseClicked(float mouseX, float mouseY, int button) {
 
-    }
+	}
 
 	@Override
 	public void resize() {

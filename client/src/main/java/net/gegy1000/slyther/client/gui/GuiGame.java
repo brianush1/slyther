@@ -503,7 +503,7 @@ public class GuiGame extends Gui {
 				drawString("Rank " + client.gameStatistic.getRank() + "/" + client.gameStatistic.getSnakeCount(), 3.0F,
 						renderResolution.getHeight() - (18.0F + ofs), 0.5F, 0xAAAAAA);
 				if (client.configuration.scoreDisplayMode == ClientConfig.ScoreTypeExtended) {
-					String fl = "Kills: " + client.gameStatistic.getKills() + " Time: " + TimeUtils.toString(client.gameStatistic.getDuration());
+					String fl = "Kills: " + client.gameStatistic.getKills() + " Time: " + TimeUtils.toString(client.gameStatistic.getTimeIndex());
 					drawString(fl, 3.0F, renderResolution.getHeight() - 18.0F, 0.5F, 0xAAAAAA);
 				}
 			}
