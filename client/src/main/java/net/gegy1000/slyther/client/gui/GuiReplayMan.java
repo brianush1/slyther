@@ -16,7 +16,7 @@ import net.gegy1000.slyther.client.recording.ReplayMan;
 import net.gegy1000.slyther.game.Color;
 import net.gegy1000.slyther.util.TimeUtils;
 
-/**
+/** Display the ReplayManager gui
  * @author dick
  *
  */
@@ -33,14 +33,10 @@ public class GuiReplayMan extends GuiWithBanner {
 	private float playWidth;
 	private float keepLeft;
 	private float keepWidth;
-	private float deleteWidth;
 	private float dateLeft;
 	private float dateWidth;
 	private float killsLeft;
-	//private float killsWidth;
-	//private float lengthWidth;
 	private float durationWidth;
-	//private float rankWidth;
 	
 	private final float entryTop = 40F;	// top line for the entries
 	private final float tscale = 0.6F;
@@ -65,9 +61,8 @@ public class GuiReplayMan extends GuiWithBanner {
 		lineHeight = font.getHeight();
 		entryHeight = lineHeight + (lineHeight*tscale*2) + margin;
 
-		playWidth = 40F;	// font.getWidth("Play") + 40F;
+		playWidth = 40F;
 		keepWidth = font.getWidth("Keep") + 20F + margin;
-		deleteWidth = font.getWidth("delete");
 		String s;
 		int w;
 		for (Replay r : list) {
@@ -80,7 +75,6 @@ public class GuiReplayMan extends GuiWithBanner {
 			if (w > durationWidth)
 				durationWidth = w;
 		}
-		//durationWidth *= tscale;
 		dateLeft = playWidth + margin;
 		keepLeft = dateLeft + dateWidth + margin*3;
 		killsLeft = durationWidth + margin*2;
