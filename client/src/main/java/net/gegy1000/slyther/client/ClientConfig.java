@@ -23,6 +23,6 @@ public class ClientConfig implements Configuration {
     public int	scoreDisplayMode = ScoreTypeOriginal;
     public boolean showFullScreen = true;
     public boolean virgin = true;
-    public int	numReplaysToKeep = 5;
+    public int	numReplaysToKeep = 3;
     public ArrayList<String>	replaysToKeep = new ArrayList<String>();
 }
