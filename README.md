@@ -1,4 +1,4 @@
-# slyther
+# slyther2
 
 Dick Balaska's fork of [gegy1000](https://github.com/gegy1000)'s [Slyther](https://github.com/gegy1000/Slyther)
 #### Features
@@ -16,11 +16,11 @@ Debian systems can install from [launchpad](https://launchpad.net/~dickbalaska/+
 
 	sudo add-apt-repository ppa:dickbalaska/slyther
 	sudo apt update
-	sudo apt install slyther
+	sudo apt install slyther2
 	or
 	sudo apt install slyther3
 
-slyther and slyther3 differ only slightly.  
+slyther2 and slyther3 differ only slightly.  
 * slyther3 uses a manual cursor instead of the system cursor.
 * slyther3 needs a better video card (even though the graphics are the same).
 
@@ -34,11 +34,11 @@ Slyther builds with Gradle, to build the standalone executable client and server
 
 Run with
 
-	java -jar server/build/libs/slyther-server-2.0.0.jar
+	java -jar server/build/libs/slyther-server-2.1.0.jar
 
 and
 
-	java -jar build/libs/slyther-2.0.0.jar
+	java -jar build/libs/slyther-2.1.0.jar
 
 ## Branches
 * master contains the LWJGL 2 client and the server
