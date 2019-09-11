@@ -15,166 +15,176 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public abstract class Game<NET extends NetworkManager, CFG extends Configuration> {
-    private BridedList<Entity<?>> entities = new BridedList<>();
-    private BridedList<Snake<?>> snakes = new BridedList<>();
-    private BridedList<Sector<?>> sectors = new BridedList<>();
-    private BridedList<Food<?>> foods = new BridedList<>();
-    private BridedList<Prey<?>> preys = new BridedList<>();
+	private BridedList<Entity<?>> entities = new BridedList<>();
+	private BridedList<Snake<?>> snakes = new BridedList<>();
+	private BridedList<Sector<?>> sectors = new BridedList<>();
+	private BridedList<Food<?>> foods = new BridedList<>();
+	private BridedList<Prey<?>> preys = new BridedList<>();
 
-    public boolean[][] map = new boolean[80][80];
+	public boolean[][] map = new boolean[80][80];
 
-    public NET networkManager;
+	public NET networkManager;
 
-    public CFG configuration;
+	public CFG configuration;
 
-    private Queue<FutureTask<?>> tasks = new LinkedBlockingDeque<>();
+	private Queue<FutureTask<?>> tasks = new LinkedBlockingDeque<>();
 
-    public void scheduleTask(Callable<?> callable) {
-    	synchronized (tasks) {
-    		tasks.add(new FutureTask<>(callable));
-    	}
-    }
+	public void scheduleTask(Callable<?> callable) {
+		synchronized (tasks) {
+			tasks.add(new FutureTask<>(callable));
+		}
+	}
 
-    protected final void runTasks() {
-        while (tasks.size() > 0) {
-        	FutureTask<?> task;
-        	synchronized (tasks) {
-        		task = tasks.poll();
-        	}
-            try {
-                task.run();
-                task.get();
-            } catch (InterruptedException | ExecutionException e) {
-                //throw new RuntimeException(e);
-            	Log.catching(e);
-                System.exit(1);
-            }
-        }
-    }
+	protected final void runTasks() {
+		while (tasks.size() > 0) {
+			FutureTask<?> task;
+			synchronized (tasks) {
+				task = tasks.poll();
+			}
+			try {
+				task.run();
+				task.get();
+			} catch (InterruptedException | ExecutionException e) {
+				//throw new RuntimeException(e);
+				Log.catching(e);
+//				if (networkManager.c)
+//				if (recorder != null) {
+//					recorder.close(client.gameStatistic);
+//				}
 
-    public void addSector(Sector<?> sector) {
-        if (!sectors.contains(sector)) {
-            sectors.add(sector);
-        }
-    }
+				System.exit(1);
+			}
+		}
+	}
 
-    public void removeSector(Sector<?> sector) {
-        sectors.remove(sector);
-    }
+	public void addSector(Sector<?> sector) {
+		if (!sectors.contains(sector)) {
+			sectors.add(sector);
+		}
+	}
 
-    public Sector<?> getSector(int x, int y) {
-        for (Sector<?> sector : sectors) {
-            if (sector.posX == x && sector.posY == y) {
-                return sector;
-            }
-        }
-        return null;
-    }
+	public void removeSector(Sector<?> sector) {
+		sectors.remove(sector);
+	}
 
-    public List<Entity> getMovingEntitiesInSector(Sector sector) {
-        List<Entity> entities = new ArrayList<>();
-        for (Entity entity : this.entities) {
-            if (entity.canMove() && entity.shouldTrack(sector)) {
-                entities.add(entity);
-            }
-        }
-        return entities;
-    }
+	public Sector<?> getSector(int x, int y) {
+		for (Sector<?> sector : sectors) {
+			if (sector.posX == x && sector.posY == y) {
+				return sector;
+			}
+		}
+		return null;
+	}
 
-    public void addEntity(Entity<?> entity) {
-        if (!entities.contains(entity)) {
-            entities.add(entity);
-            if (entity instanceof Snake) {
-                snakes.add((Snake) entity);
-            } else if (entity instanceof Food) {
-                foods.add((Food) entity);
-            } else if (entity instanceof Prey) {
-                preys.add((Prey) entity);
-            }
-        }
-    }
+	public List<Entity> getMovingEntitiesInSector(Sector sector) {
+		List<Entity> entities = new ArrayList<>();
+		for (Entity entity : this.entities) {
+			if (entity.canMove() && entity.shouldTrack(sector)) {
+				entities.add(entity);
+			}
+		}
+		return entities;
+	}
 
-    public void removeEntity(Entity<?> entity) {
-        if (entities.remove(entity)) {
-            if (entity instanceof Snake) {
-                snakes.remove(entity);
-            } else if (entity instanceof Food) {
-                foods.remove(entity);
-            } else if (entity instanceof Prey) {
-                preys.remove(entity);
-            }
-        }
-    }
+	public void addEntity(Entity<?> entity) {
+		if (!entities.contains(entity)) {
+			entities.add(entity);
+			if (entity instanceof Snake) {
+				snakes.add((Snake) entity);
+			} else if (entity instanceof Food) {
+				foods.add((Food) entity);
+			} else if (entity instanceof Prey) {
+				preys.add((Prey) entity);
+			}
+		}
+	}
 
-    public void clearEntities() {
-        entities.clear();
-        snakes.clear();
-        foods.clear();
-        preys.clear();
-        sectors.clear();
-    }
+	public void removeEntity(Entity<?> entity) {
+		if (entities.remove(entity)) {
+			if (entity instanceof Snake) {
+				snakes.remove(entity);
+			} else if (entity instanceof Food) {
+				foods.remove(entity);
+			} else if (entity instanceof Prey) {
+				preys.remove(entity);
+			}
+		}
+	}
 
-    public Iterator<Entity> entityIterator() {
-        return new Iterator<Entity>() {
-            private int index;
+	public void clearEntities() {
+		entities.clear();
+		snakes.clear();
+		foods.clear();
+		preys.clear();
+		sectors.clear();
+	}
 
-            private Entity lastEntity;
+	public Iterator<Entity> entityIterator() {
+		return new Iterator<Entity>() {
+			private int index;
 
-            @Override
-            public boolean hasNext() {
-                return index < entities.size();
-            }
+			private Entity lastEntity;
 
-            @Override
-            public Entity next() {
-                return lastEntity = entities.get(index++);
-            }
+			@Override
+			public boolean hasNext() {
+				return index < entities.size();
+			}
 
-            @Override
-            public void remove() {
-                if (lastEntity == null) {
-                    throw new IllegalStateException();
-                }
-                removeEntity(lastEntity);
-                index--;
-            }
-        };
-    }
+			@Override
+			public Entity next() {
+				return lastEntity = entities.get(index++);
+			}
 
-    public List<Entity<?>> getEntities() {
-        return entities.unmodifiable();
-    }
+			@Override
+			public void remove() {
+				if (lastEntity == null) {
+					throw new IllegalStateException();
+				}
+				removeEntity(lastEntity);
+				index--;
+			}
+		};
+	}
 
-    public List<Snake<?>> getSnakes() {
-        return snakes.unmodifiable();
-    }
+	public List<Entity<?>> getEntities() {
+		return entities.unmodifiable();
+	}
 
-    public List<Food<?>> getFoods() {
-        return foods.unmodifiable();
-    }
+	public List<Snake<?>> getSnakes() {
+		return snakes.unmodifiable();
+	}
 
-    public List<Sector<?>> getSectors() {
-        return sectors.unmodifiable();
-    }
+	public List<Food<?>> getFoods() {
+		return foods.unmodifiable();
+	}
 
-    public List<Prey<?>> getPreys() {
-        return preys.unmodifiable();
-    }
+	public List<Sector<?>> getSectors() {
+		return sectors.unmodifiable();
+	}
 
-    public abstract int getGameRadius();
-    public abstract int getMSCPS();
-    public abstract int getSectorSize();
-    public abstract int getSectorsAlongEdge();
-    public abstract float getSpangDv();
-    public abstract float getNsp1();
-    public abstract float getNsp2();
-    public abstract float getNsp3();
+	public List<Prey<?>> getPreys() {
+		return preys.unmodifiable();
+	}
 
-    public abstract float getBaseSnakeTurnSpeed();
+	public abstract int getGameRadius();
+	public abstract int getMSCPS();
+	public abstract int getSectorSize();
+	public abstract int getSectorsAlongEdge();
+	public abstract float getSpangDv();
+	public abstract float getNsp1();
+	public abstract float getNsp2();
+	public abstract float getNsp3();
 
-    public abstract float getBasePreyTurnSpeed();
-    public abstract float getCST();
+	public abstract float getBaseSnakeTurnSpeed();
 
-    public abstract float getFPSL(int sct);
-    public abstract float getFMLT(int sct);
+	public abstract float getBasePreyTurnSpeed();
+	public abstract float getCST();
+
+	public abstract float getFPSL(int sct);
+	public abstract float getFMLT(int sct);
+	
+	/** Game threw an exception. 
+	 * This call allows the client to close any recorder file.
+	 */
+	public abstract void gameAbort();
 }

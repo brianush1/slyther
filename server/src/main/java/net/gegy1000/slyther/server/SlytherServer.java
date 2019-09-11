@@ -312,4 +312,8 @@ public class SlytherServer extends Game<ServerNetworkManager, ServerConfig> {
     public float getFPSL(int i) {
         return fpsls[Math.min(i, fpsls.length - 1)];
     }
+
+	@Override
+	public void gameAbort() {
+	}
 }

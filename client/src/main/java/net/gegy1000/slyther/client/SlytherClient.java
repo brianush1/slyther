@@ -107,10 +107,10 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
     public float menuBackgroundX = 0;
     public float menuBackgroundY = 0;
     
-	public String longestPlayerName;
-	public int longestPlayerScore;
-	public String longestPlayerMessage;
-	public String fpsMessage = "";
+	public String	longestPlayerName;
+	public int		longestPlayerScore;
+	public String	longestPlayerMessage;
+	public String	fpsMessage = "";
 	public String	errorMessage = null;
 
 	public ClientConfig configuration;
@@ -545,10 +545,6 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 		renderHandler.closeGui();
 	}
 
-//	public void closeAllGuis() {
-//		renderHandler.closeAllGuis();
-//	}
-
 	public void reset(boolean wasReplaying) {
 		closeGui();
 		if (wasReplaying)
@@ -662,6 +658,18 @@ public class SlytherClient extends Game<ClientNetworkManager, ClientConfig> impl
 	        saveConfig();
 	        gameStatistic.setLength(player.getLength());
 	        database.addGame(gameStatistic);
+		}
+	}
+
+	@Override
+	public void gameAbort() {
+		if (networkManager != null && networkManager.recorder!= null) {
+			try {
+				networkManager.recorder.close();
+			} catch (Exception e) {
+				Log.catching(e);
+				Log.error("gameAbort failed to close the recorder file");
+			}
 		}
 	}
 }
