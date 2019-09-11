@@ -71,27 +71,40 @@ public enum ReplayMan {
 				int bread = raf.read(sig);
 				if (bread != 6)
 					throw new Exception("Failed to read signature");
+				boolean gotSig = true;
 				bb = new MessageByteBuffer(sig);
 				for (char c : SLYT) {
 					int cc = bb.readUInt8();
-					if (c != cc)
-						throw new  Exception("Mismatched sig expected " + c + " got " + cc);
+					if (c != cc) {
+						Log.error("getReplayFiles: Mismatched sig expected {} got {}", c, cc);
+						Log.error("file: {}", f.getPath());
+						try {
+							raf.close();
+						} catch (Exception e) {
+							Log.catching(e);
+						}
+						gotSig = false;
+						break;
+					}
 				}
-				int datalen = bb.readUInt16();
-				raf.seek(flen-datalen-2);
-				byte[] data = new byte[datalen];
-				raf.read(data);
-				bb = new MessageByteBuffer(data);
-				Replay r = new Replay();
-				r.setPathname(f.getAbsolutePath());
-				r.setGamedate(new Date(bb.readInt64()));
-				r.setDuration(bb.readInt32());
-				r.setKills(bb.readInt32());
-				r.setLength(bb.readInt32());
-				r.setRank(bb.readInt32());
-				list.add(r);
+				if (gotSig) {
+					int datalen = bb.readUInt16();
+					raf.seek(flen-datalen-2);
+					byte[] data = new byte[datalen];
+					raf.read(data);
+					bb = new MessageByteBuffer(data);
+					Replay r = new Replay();
+					r.setPathname(f.getAbsolutePath());
+					r.setGamedate(new Date(bb.readInt64()));
+					r.setDuration(bb.readInt32());
+					r.setKills(bb.readInt32());
+					r.setLength(bb.readInt32());
+					r.setRank(bb.readInt32());
+					list.add(r);
+				}
 			} catch (Exception e) {
-				Log.error("getReplayFiles error {}", e.getLocalizedMessage());
+				Log.error("getReplayFiles: error {}", e.getLocalizedMessage());
+				Log.error("file: {}", f.getPath());
 				Log.catching(e);
 			} finally {
 				try {
